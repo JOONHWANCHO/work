@@ -627,7 +627,7 @@
   <!-- ============================================================
        POSTS SECTION — Google Sheets 연동 포스팅 영역
        ============================================================ -->
-  <!-- <section class="posts-section" id="posts">
+  <section class="posts-section" id="posts">
     <div class="posts-head">
       <div>
         <p class="eyebrow">KNOWLEDGE BASE</p>
@@ -645,7 +645,7 @@
       3. 이 파일 하단 스크립트의 <code>SHEET_ID</code> 값을 교체하면 자동 연동됩니다.<br>
       4. 시트 컬럼 순서: <code>id · category · emoji · title · summary · tags · date · content</code>
     </div>
-  </section> -->
+  </section>
 
   <!-- ============================================================
        AD SLOT #3 — 본문 하단 인피드 배너 (반응형 가로형)
@@ -942,8 +942,8 @@
      3. 시트 첫 행(헤더): id | category | emoji | title | summary | tags | date | content
      4. SHEET_ID를 아래에 입력하면 자동으로 데이터를 가져옵니다.
      ============================================================ */
-  const SHEET_ID = ''; // ← 예: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms'
-  const SHEET_NAME = 'Sheet1'; // 시트 탭 이름 (기본값 Sheet1)
+  const SHEET_ID = '1jMKkYQcUZP8DPeMv1dZbM8PIe3HxoInTvmiD3lEVsj4'; // ← 예: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms'
+  const SHEET_NAME = '시트1'; // 시트 탭 이름 (기본값 Sheet1)
 
   /* -------- 샘플 포스팅 (SHEET_ID 미입력 시 표시) -------- */
   const SAMPLE_POSTS = [
@@ -1262,10 +1262,16 @@
     document.getElementById('modalTitleEl').textContent = post.title || '';
     document.getElementById('modalSummary').textContent = post.summary || '';
     document.getElementById('modalTags').innerHTML = tags;
-    document.getElementById('modalContent').innerHTML =
-      typeof marked !== 'undefined'
-        ? marked.parse(post.content || '')
-        : (post.content || '').replace(/\n/g, '<br>');
+    // content 디버그
+    console.log('[Modal] post.content:', JSON.stringify(post.content));
+
+    const rawContent = (post.content || '').trim();
+    const renderedContent = rawContent
+      ? (typeof marked !== 'undefined'
+          ? marked.parse(rawContent)
+          : rawContent.replace(/\n/g, '<br>'))
+      : '<p style="color:var(--ink-faint);font-size:13px;">본문 내용이 없습니다. 구글 시트의 <code>content</code> 컬럼을 확인해주세요.</p>';
+    document.getElementById('modalContent').innerHTML = renderedContent;
 
     const overlay = document.getElementById('postModal');
     overlay.classList.add('open');
@@ -1284,19 +1290,76 @@
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  /* -------- Google Sheets gviz JSON 파싱 -------- */
+  /* ================================================================
+     Google Sheets gviz JSON 파싱 — 버그 수정 버전
+     수정 내역:
+       1. JSON 추출 방식: indexOf('(') ~ lastIndexOf(')') 으로 안정화
+       2. cell 값 추출: cell.v 우선 사용 (cell.f는 날짜만, 문자열은 절대 cell.f 우선 X)
+       3. 컬럼 label이 'A','B','C'일 때 → FALLBACK 위치 기반 컬럼명 적용
+       4. parsedNumHeaders===0 일 때 → 첫 행(헤더 행) 자동 skip
+       5. 스파스 행(r.c 길이가 컬럼 수보다 짧음) 안전 처리
+     ================================================================ */
+  const FIELD_NAMES = ['id','category','emoji','title','summary','tags','date','content'];
+
+  function cellValue(cell, colName) {
+    if (!cell || cell.v == null) return '';
+    // 날짜 컬럼만 cell.f(포맷된 값) 사용, 나머지는 반드시 cell.v 사용
+    if (colName === 'date') {
+      // gviz date: cell.v = "Date(2025,6,1)" → 직접 변환
+      if (cell.f) return cell.f; // "2025. 7. 1." 형태
+      if (typeof cell.v === 'string' && cell.v.startsWith('Date(')) {
+        const m = cell.v.match(/Date\((\d+),(\d+),(\d+)\)/);
+        if (m) return `${m[1]}-${String(+m[2]+1).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
+      }
+      return String(cell.v);
+    }
+    // 문자열/숫자 컬럼: 반드시 cell.v (cell.f는 잘리거나 변형될 수 있음)
+    return String(cell.v);
+  }
+
   function parseGvizJson(text) {
-    // gviz 응답은 /*O_o*/\ngoogle.visualization.Query.setResponse({...}); 형식
-    const jsonStr = text.replace(/^[^{]*/, '').replace(/\);?\s*$/, '');
-    const data = JSON.parse(jsonStr);
-    const cols = data.table.cols.map(c => c.label.toLowerCase().trim());
-    return data.table.rows
-      .filter(r => r && r.c && r.c.some(c => c && c.v))
+    // gviz 응답: /*O_o*/\ngoogle.visualization.Query.setResponse({...});
+    // 가장 바깥 괄호 위치로 JSON 추출 (정규식보다 안정적)
+    const start = text.indexOf('(');
+    const end   = text.lastIndexOf(')');
+    if (start === -1 || end === -1) throw new Error('gviz 응답 형식 오류');
+    const data = JSON.parse(text.slice(start + 1, end));
+
+    const table = data.table;
+    if (!table) throw new Error('table 필드 없음');
+
+    // 컬럼 레이블 추출
+    const rawLabels = (table.cols || []).map(c => (c.label || '').toLowerCase().trim());
+
+    // gviz가 'A','B','C'... 반환 시 또는 빈 label 시 → 위치 기반 FIELD_NAMES 사용
+    const hasRealLabels = FIELD_NAMES.some(f => rawLabels.includes(f));
+    const cols = hasRealLabels ? rawLabels : FIELD_NAMES;
+
+    // 디버그: 파싱 결과를 콘솔에 출력 (배포 후 필요 없으면 제거 가능)
+    console.log('[Sheets] cols detected:', cols);
+    console.log('[Sheets] parsedNumHeaders:', table.parsedNumHeaders);
+
+    let rows = table.rows || [];
+
+    // parsedNumHeaders=0 → 첫 행이 실제로는 헤더 → skip
+    if ((table.parsedNumHeaders === 0 || table.parsedNumHeaders == null) && !hasRealLabels) {
+      rows = rows.slice(1);
+    }
+
+    const result = rows
+      .filter(r => r && r.c && r.c.some(c => c && c.v != null))
       .map(r => {
         const obj = {};
-        r.c.forEach((cell, i) => { obj[cols[i]] = cell ? (cell.f || cell.v || '') : ''; });
+        cols.forEach((col, i) => {
+          // r.c가 cols보다 짧을 수 있으므로 undefined 안전 처리
+          const cell = (r.c && r.c[i] !== undefined) ? r.c[i] : null;
+          obj[col] = cellValue(cell, col);
+        });
         return obj;
       });
+
+    console.log('[Sheets] parsed posts:', result);
+    return result;
   }
 
   /* -------- 초기화 -------- */
@@ -1305,16 +1368,17 @@
     const hint   = document.getElementById('sheetHint');
 
     if (!SHEET_ID || SHEET_ID.trim() === '') {
-      // SHEET_ID 미입력 → 샘플 데이터 표시
       status.textContent = '※ 샘플 포스팅 표시 중 (SHEET_ID를 설정하면 실제 데이터 연동)';
       hint.style.display = 'block';
       renderPosts(SAMPLE_POSTS);
       return;
     }
 
-    // Google Sheets gviz JSON 엔드포인트
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    // &headers=1 명시 → 첫 행을 헤더로 강제 인식
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq`
+              + `?tqx=out:json&headers=1&sheet=${encodeURIComponent(SHEET_NAME)}`;
     status.textContent = '데이터 불러오는 중…';
+    console.log('[Sheets] fetching:', url);
 
     fetch(url)
       .then(r => {
@@ -1323,12 +1387,13 @@
       })
       .then(text => {
         const posts = parseGvizJson(text);
+        if (posts.length === 0) throw new Error('포스팅 데이터가 없습니다.');
         status.textContent = `총 ${posts.length}개 포스팅`;
         renderPosts(posts);
       })
       .catch(err => {
-        console.warn('Sheets fetch 실패:', err);
-        status.textContent = '연동 실패 — 샘플 데이터 표시 중';
+        console.warn('[Sheets] 연동 실패:', err.message);
+        status.textContent = `연동 실패 (${err.message}) — 샘플 데이터 표시 중`;
         hint.style.display = 'block';
         renderPosts(SAMPLE_POSTS);
       });
