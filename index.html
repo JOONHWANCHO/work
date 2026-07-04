@@ -6,7 +6,7 @@
 <title>연봉 실수령액 계산기 | 직장인 노무 계산기 — 4대보험·소득세 자동계산</title>
 <meta name="description" content="연봉을 입력하면 국민연금·건강보험·장기요양보험·고용보험과 소득세를 반영한 월 실수령액을 바로 계산합니다. 2025년 4대보험 요율 기준, 직장인을 위한 무료 노무 계산기.">
 <meta name="keywords" content="연봉 실수령액 계산기, 4대보험 요율, 소득세 계산기, 실수령액, 연봉계산기, 월급 실수령액">
-<meta name="google-adsense-account" content="ca-pub-6517109263592669">
+
 <!-- ============================================================
      GOOGLE ADSENSE 스크립트 자리
      실제 배포 시 아래 주석을 해제하고 ca-pub-XXXXXXXXXXXXXXXX 를
@@ -19,6 +19,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<!-- marked.js — 포스팅 콘텐츠 Markdown 렌더링 -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 
 <style>
   /* ============================================================
@@ -286,12 +288,150 @@
     font-size:12.5px; color:#6B5618; line-height:1.6;
   }
 
-  footer.site{
-    margin-top:60px; border-top:1px solid var(--line);
-    padding:28px 0 40px; font-size:12px; color:var(--ink-faint);
+  /* ---------- 포스팅 섹션 ---------- */
+  .posts-section{ margin-top:72px; }
+  .posts-head{ display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
+  .posts-head h2{ font-family:var(--font-serif); font-size:24px; margin:0; }
+  .posts-head .sheet-status{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); }
+  .posts-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
   }
-  footer.site .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
-  footer.site a{ color:var(--ink-soft); }
+  @media(max-width:900px){ .posts-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:560px){ .posts-grid{ grid-template-columns:1fr; } }
+  .post-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:20px; cursor:pointer; transition:transform .12s, box-shadow .12s, border-color .12s;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .post-card:hover{ transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.07); border-color:var(--ink-soft); }
+  .post-card-top{ display:flex; align-items:center; gap:8px; }
+  .post-emoji{ font-size:22px; line-height:1; }
+  .post-category{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.08em;
+    color:var(--stamp); background:#FBF0EE; padding:2px 7px; border-radius:3px; font-weight:600;
+  }
+  .post-date{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); margin-left:auto; }
+  .post-title{
+    font-family:var(--font-serif); font-weight:700; font-size:15px;
+    color:var(--ink); line-height:1.4; margin:0;
+  }
+  .post-summary{ font-size:12.5px; color:var(--ink-soft); line-height:1.6; margin:0; flex:1; }
+  .post-tags{ display:flex; flex-wrap:wrap; gap:5px; }
+  .post-tag{
+    font-size:11px; color:var(--ink-faint); background:var(--paper-deep);
+    padding:2px 7px; border-radius:3px; border:1px solid var(--line);
+  }
+  .post-card-footer{ display:flex; align-items:center; justify-content:flex-end; }
+  .read-more{
+    font-size:12px; font-weight:600; color:var(--stamp);
+    border:none; background:none; cursor:pointer; padding:0; font-family:var(--font-body);
+  }
+  .posts-loading{ text-align:center; padding:40px; color:var(--ink-faint); font-size:14px; }
+  .posts-error{ padding:16px 18px; background:#FBF0EE; border-left:3px solid var(--stamp); border-radius:0 6px 6px 0; font-size:13px; color:var(--stamp-deep); }
+  .sheet-config-hint{
+    margin-top:14px; padding:12px 16px; background:var(--gold-bg); border:1px solid #E1D3A0;
+    border-radius:6px; font-size:12.5px; color:#6B5618; line-height:1.7;
+  }
+  .sheet-config-hint code{
+    background:rgba(0,0,0,.07); padding:1px 5px; border-radius:3px;
+    font-family:var(--font-mono); font-size:11.5px;
+  }
+
+  /* ---------- 포스트 모달 ---------- */
+  .modal-overlay{
+    display:none; position:fixed; inset:0; z-index:1000;
+    background:rgba(20,26,40,.6); backdrop-filter:blur(4px);
+    align-items:flex-start; justify-content:center; padding:40px 20px 60px;
+    overflow-y:auto;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:var(--surface); border-radius:12px; width:100%; max-width:760px;
+    padding:36px 40px; position:relative; margin:auto;
+    border:1px solid var(--line);
+    animation:modalIn .2s ease;
+  }
+  @media(max-width:600px){ .modal-box{ padding:24px 20px; } }
+  @keyframes modalIn{
+    from{ opacity:0; transform:translateY(12px); }
+    to{   opacity:1; transform:translateY(0); }
+  }
+  .modal-close{
+    position:absolute; top:18px; right:18px;
+    width:36px; height:36px; border-radius:50%;
+    border:1.5px solid var(--line); background:var(--paper-deep);
+    font-size:18px; cursor:pointer; color:var(--ink-soft);
+    display:flex; align-items:center; justify-content:center;
+    transition:background .12s;
+  }
+  .modal-close:hover{ background:var(--line); }
+  .modal-meta{ display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .modal-emoji{ font-size:26px; }
+  .modal-category{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.08em;
+    color:var(--stamp); background:#FBF0EE; padding:3px 8px; border-radius:3px; font-weight:600;
+  }
+  .modal-date{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); }
+  .modal-title{
+    font-family:var(--font-serif); font-weight:900; font-size:clamp(20px,3vw,28px);
+    margin:0 0 6px; line-height:1.3; color:var(--ink);
+  }
+  .modal-summary{ font-size:14px; color:var(--ink-soft); margin:0 0 24px; line-height:1.6; }
+  .modal-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:28px; }
+  .modal-tag{
+    font-size:12px; color:var(--ink-faint); background:var(--paper-deep);
+    padding:3px 9px; border-radius:4px; border:1px solid var(--line);
+  }
+  .modal-divider{ border:none; border-top:2px solid var(--ink); margin:0 0 28px; }
+  /* Markdown 렌더링 스타일 */
+  .post-content{ font-size:15px; color:var(--ink-soft); line-height:1.8; }
+  .post-content h1,.post-content h2,.post-content h3{ font-family:var(--font-serif); color:var(--ink); margin:28px 0 10px; }
+  .post-content h2{ font-size:20px; padding-bottom:8px; border-bottom:1px solid var(--line); }
+  .post-content h3{ font-size:16px; }
+  .post-content p{ margin:0 0 14px; }
+  .post-content ul,.post-content ol{ padding-left:20px; margin:0 0 14px; }
+  .post-content li{ margin-bottom:4px; }
+  .post-content table{ width:100%; border-collapse:collapse; font-size:13.5px; margin:16px 0; }
+  .post-content table th{ background:var(--paper-deep); padding:8px 12px; border-bottom:2px solid var(--ink); text-align:left; font-weight:600; color:var(--ink); }
+  .post-content table td{ padding:8px 12px; border-bottom:1px solid var(--line-soft); font-family:var(--font-mono); }
+  .post-content code{ background:var(--paper-deep); padding:2px 5px; border-radius:3px; font-family:var(--font-mono); font-size:13px; }
+  .post-content pre{ background:var(--ink); color:var(--paper); padding:16px; border-radius:8px; overflow-x:auto; margin:16px 0; }
+  .post-content pre code{ background:none; color:inherit; }
+  .post-content blockquote{ border-left:3px solid var(--gold); padding:10px 16px; margin:16px 0; background:var(--gold-bg); color:#6B5618; border-radius:0 6px 6px 0; }
+  .post-content strong{ color:var(--ink); font-weight:700; }
+  .post-content a{ color:var(--stamp); text-decoration:underline; }
+  .post-content hr{ border:none; border-top:1px solid var(--line); margin:24px 0; }
+
+  /* ---------- 리뉴얼 푸터 ---------- */
+  footer.site{
+    margin-top:0; border-top:1px solid var(--line);
+    background:var(--ink); color:#AEB6C7;
+    padding:36px 0 24px;
+    font-size:12.5px;
+  }
+  .footer-inner{ max-width:1080px; margin:0 auto; padding:0 20px; }
+  .footer-top{
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:32px;
+    padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,.1);
+  }
+  @media(max-width:680px){ .footer-top{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:440px){ .footer-top{ grid-template-columns:1fr; gap:20px; } }
+  .footer-col h4{
+    font-family:var(--font-serif); font-size:13px; color:var(--paper);
+    margin:0 0 10px; letter-spacing:.02em;
+  }
+  .footer-col ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
+  .footer-col ul li a{ color:#8A93A3; text-decoration:none; transition:color .12s; }
+  .footer-col ul li a:hover{ color:var(--paper); }
+  .footer-col p{ color:#8A93A3; line-height:1.6; margin:0; }
+  .footer-legal{
+    margin-top:20px; display:flex; align-items:center;
+    justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:11.5px; color:#636C7E;
+  }
+  .footer-legal-links{ display:flex; gap:16px; flex-wrap:wrap; }
+  .footer-legal-links a{ color:#636C7E; text-decoration:none; }
+  .footer-legal-links a:hover{ color:var(--paper); }
 </style>
 </head>
 <body>
@@ -326,9 +466,9 @@
           data-full-width-responsive="true"></ins>
      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
      ============================================================ -->
-<!-- <div class="wrap">
+<div class="wrap">
   <div class="ad-slot leaderboard"><span>광고 영역 · AdSense Leaderboard (728×90)</span></div>
-</div> -->
+</div>
 
 <main class="wrap">
 
@@ -409,7 +549,7 @@
   <!-- ============================================================
        AD SLOT #2 — 본문 중간 사각 배너 (336x280 / 반응형)
        ============================================================ -->
-  <!-- <div class="ad-slot rectangle"><span>광고 영역 · AdSense Rectangle (336×280)</span></div> -->
+  <div class="ad-slot rectangle"><span>광고 영역 · AdSense Rectangle (336×280)</span></div>
 
   <!-- ---------- 4대보험 요율 안내 ---------- -->
   <section class="info-section" id="rates">
@@ -485,16 +625,84 @@
   </section>
 
   <!-- ============================================================
+       POSTS SECTION — Google Sheets 연동 포스팅 영역
+       ============================================================ -->
+  <section class="posts-section" id="posts">
+    <div class="posts-head">
+      <div>
+        <p class="eyebrow">KNOWLEDGE BASE</p>
+        <h2>알아두면 좋은 노무 지식</h2>
+      </div>
+      <span class="sheet-status" id="sheetStatus"></span>
+    </div>
+    <div id="postsGrid" class="posts-grid">
+      <div class="posts-loading" style="grid-column:1/-1">포스팅을 불러오는 중…</div>
+    </div>
+    <div class="sheet-config-hint" id="sheetHint" style="display:none">
+      📋 <strong>Google Sheets 연동 방법</strong><br>
+      1. 구글 시트를 공개로 설정 후 게시 (파일 → 공유 → 웹에 게시)<br>
+      2. 시트 URL에서 <code>/d/</code> 뒤의 ID를 복사<br>
+      3. 이 파일 하단 스크립트의 <code>SHEET_ID</code> 값을 교체하면 자동 연동됩니다.<br>
+      4. 시트 컬럼 순서: <code>id · category · emoji · title · summary · tags · date · content</code>
+    </div>
+  </section>
+
+  <!-- ============================================================
        AD SLOT #3 — 본문 하단 인피드 배너 (반응형 가로형)
        ============================================================ -->
-  <!-- <div class="ad-slot in-feed"><span>광고 영역 · AdSense In-feed Banner</span></div> -->
+  <div class="ad-slot in-feed"><span>광고 영역 · AdSense In-feed Banner</span></div>
 
 </main>
 
+<!-- ============================================================
+     POST MODAL — 포스팅 상세 모달
+     ============================================================ -->
+<div id="postModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitleEl">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose" aria-label="닫기">✕</button>
+    <div class="modal-meta" id="modalMeta"></div>
+    <h2 class="modal-title" id="modalTitleEl"></h2>
+    <p class="modal-summary" id="modalSummary"></p>
+    <div class="modal-tags" id="modalTags"></div>
+    <hr class="modal-divider">
+    <div class="post-content" id="modalContent"></div>
+  </div>
+</div>
+
 <footer class="site">
-  <div class="wrap">
-    <span>© 2026 직장인 노무 계산기. 본 계산기는 정보 제공 목적이며 법적 효력이 없습니다.</span>
-    <span>참고: 국민연금공단(nps.or.kr) · 국민건강보험공단(nhis.or.kr) · 고용보험(ei.go.kr) · 국세청 홈택스(hometax.go.kr)</span>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-col">
+        <h4>직장인 노무 계산기</h4>
+        <ul>
+          <li><a href="index.html">연봉 실수령액 계산기</a></li>
+          <li><a href="retirement.html">퇴직금 계산기</a></li>
+          <li><a href="annual-leave.html">연차수당 계산기</a></li>
+          <li><a href="year-end-tax.html">연말정산 미리보기</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>참고 기관</h4>
+        <ul>
+          <li><a href="https://www.nps.or.kr" target="_blank" rel="noopener">국민연금공단</a></li>
+          <li><a href="https://www.nhis.or.kr" target="_blank" rel="noopener">국민건강보험공단</a></li>
+          <li><a href="https://www.ei.go.kr" target="_blank" rel="noopener">고용보험 (고용노동부)</a></li>
+          <li><a href="https://www.hometax.go.kr" target="_blank" rel="noopener">국세청 홈택스</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>안내</h4>
+        <p>본 사이트의 계산 결과는 정보 제공 목적의 추정치이며 법적 효력이 없습니다. 4대보험 요율은 매년 변경될 수 있으므로 반드시 공식 기관에서 확인하세요.</p>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>© 2026 직장인 노무 계산기. All rights reserved.</span>
+      <div class="footer-legal-links">
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="terms.html">이용약관</a>
+        <a href="contact.html">문의</a>
+      </div>
+    </div>
   </div>
 </footer>
 
@@ -716,6 +924,417 @@
 
   // 페이지 진입 시 기본값으로 1회 자동 계산해 결과 미리보기 제공
   calculate();
+})();
+</script>
+
+<!-- ============================================================
+     POSTS SCRIPT — Google Sheets 연동 & 모달
+     ============================================================ -->
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     ★ 여기에 Google Sheets ID를 입력하세요 ★
+     -------------------------------------------------
+     1. Google Sheets → 파일 → 공유 → 웹에 게시 → "시트 전체 문서" → CSV → 게시
+     2. 시트 URL: https://docs.google.com/spreadsheets/d/【여기가 SHEET_ID】/edit
+     3. 시트 첫 행(헤더): id | category | emoji | title | summary | tags | date | content
+     4. SHEET_ID를 아래에 입력하면 자동으로 데이터를 가져옵니다.
+     ============================================================ */
+  const SHEET_ID = ''; // ← 예: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms'
+  const SHEET_NAME = 'Sheet1'; // 시트 탭 이름 (기본값 Sheet1)
+
+  /* -------- 샘플 포스팅 (SHEET_ID 미입력 시 표시) -------- */
+  const SAMPLE_POSTS = [
+    {
+      id: 1, category: '4대보험', emoji: '🏥',
+      title: '4대보험료는 어떻게 계산되나요?',
+      summary: '국민연금·건강보험·장기요양보험·고용보험 4가지 보험료의 요율과 계산 방식을 단계별로 쉽게 정리했습니다.',
+      tags: '4대보험,보험료,국민연금,건강보험',
+      date: '2025-07-01',
+      content: `## 4대보험이란?
+
+4대보험은 **국민연금**, **건강보험**, **장기요양보험**, **고용보험**을 통칭합니다. 직장인은 회사(사업주)와 절반씩 부담하는 구조입니다.
+
+## 각 보험별 계산 방법
+
+### 1. 국민연금
+> 보수월액(비과세 제외) × **4.5%** (근로자 부담)
+
+기준소득월액에는 **하한 39만원 / 상한 637만원**이 있어, 그 범위 안에서만 부과됩니다.
+
+### 2. 건강보험
+> 보수월액 × **3.545%** (근로자 절반 부담, 전체 요율 7.09%)
+
+### 3. 장기요양보험
+> 건강보험료 × **12.95%**
+
+건강보험료에 별도 요율을 곱하는 방식입니다.
+
+### 4. 고용보험
+> 보수월액 × **0.9%** (실업급여 계정, 근로자 부담)
+
+## 4대보험료 계산 예시 (월급 400만원, 비과세 20만원 가정)
+
+| 항목 | 계산식 | 월 보험료 |
+|------|--------|-----------|
+| 국민연금 | 380만 × 4.5% | 171,000원 |
+| 건강보험 | 380만 × 3.545% | 134,710원 |
+| 장기요양 | 134,710 × 12.95% | 17,445원 |
+| 고용보험 | 380만 × 0.9% | 34,200원 |
+| **합계** | | **357,355원** |
+
+---
+
+💡 **절세 팁**: 4대보험료 전액은 연말정산 시 소득공제 항목으로 적용됩니다.`
+    },
+    {
+      id: 2, category: '소득세', emoji: '💰',
+      title: '근로소득세, 어떻게 계산되나요?',
+      summary: '누진세율 구조와 근로소득공제·세액공제 흐름을 한눈에 정리합니다. 왜 연봉이 오르면 세금이 더 많이 늘어나는지 알 수 있어요.',
+      tags: '소득세,누진세율,세액공제,연말정산',
+      date: '2025-07-05',
+      content: `## 근로소득세 계산 5단계
+
+근로소득세는 단순히 연봉에 세율을 곱하는 것이 아닙니다. 아래 5단계를 거칩니다.
+
+### Step 1 — 총급여 확인
+연간 총급여 = 기본급 + 각종 수당 - **비과세 항목**
+
+### Step 2 — 근로소득공제 차감
+총급여 구간에 따라 공제율이 달라집니다.
+
+| 총급여 | 공제액 |
+|--------|--------|
+| 500만원 이하 | 총급여 × 70% |
+| 500만~1,500만원 | 350만 + 초과분 × 40% |
+| 1,500만~4,500만원 | 750만 + 초과분 × 15% |
+| 4,500만~1억원 | 1,200만 + 초과분 × 5% |
+| 1억원 초과 | 1,475만 + 초과분 × 2% |
+
+### Step 3 — 인적공제 등 소득공제 차감
+> 과세표준 = 근로소득금액 - 인적공제(1인당 150만원) - 사회보험료 공제 - 기타 공제
+
+### Step 4 — 누진세율 적용 (산출세액)
+
+| 과세표준 | 세율 | 누진공제 |
+|----------|------|----------|
+| 1,200만원 이하 | 6% | — |
+| 1,200만~4,600만원 | 15% | 108만원 |
+| 4,600만~8,800만원 | 24% | 522만원 |
+| 8,800만~1.5억원 | 35% | 1,490만원 |
+
+### Step 5 — 세액공제 차감 (결정세액)
+산출세액에서 **근로소득세액공제**, 자녀공제, 의료비·교육비·보험료 공제 등을 빼면 최종 결정세액이 나옵니다.
+
+---
+
+> **연말정산** = 결정세액 vs 기납부세액 비교 → 많이 냈으면 **환급**, 적게 냈으면 **추납**`
+    },
+    {
+      id: 3, category: '퇴직금', emoji: '📋',
+      title: '퇴직금 계산, 이것만 알면 됩니다',
+      summary: '평균임금 산정 방법부터 퇴직소득세까지, 퇴사 전 반드시 알아야 할 퇴직금 계산 공식과 실제 사례를 설명합니다.',
+      tags: '퇴직금,평균임금,퇴직소득세,이직',
+      date: '2025-07-10',
+      content: `## 퇴직금 공식
+
+> **퇴직금 = 1일 평균임금 × 30 × (재직일수 ÷ 365)**
+
+근로자퇴직급여보장법 제8조에 따라 **1년 이상** 계속 근로한 근로자에게만 발생합니다.
+
+## 평균임금 계산법
+
+퇴직 전 **3개월간** 지급된 임금 총액을 그 기간의 달력일수로 나눕니다.
+
+### 포함 항목
+- ✅ 기본급
+- ✅ 직책수당, 직무수당 등 고정 수당
+- ✅ 연간 상여금의 **3/12**
+- ✅ 연차미사용수당의 **1/12**
+
+### 제외 항목
+- ❌ 실비 변상 성격의 금품 (출장비 등)
+- ❌ 임시로 지급된 임금
+
+## 실제 계산 예시
+
+월 급여 400만원, 연 상여 800만원, 3년 근무 시:
+
+| 항목 | 금액 |
+|------|------|
+| 3개월 급여 합계 | 12,000,000원 |
+| 상여금 가산 (800만 × 3/12) | 2,000,000원 |
+| 3개월 총임금 | 14,000,000원 |
+| 1일 평균임금 (÷92일) | 152,174원 |
+| **퇴직금** (×30×(1095÷365)) | **13,695,652원** |
+
+---
+
+💡 **IRP 계좌로 수령하면** 퇴직소득세를 30~40% 절감할 수 있습니다.`
+    },
+    {
+      id: 4, category: '연차', emoji: '🏖️',
+      title: '입사 1년차 연차, 몇 개가 맞나요?',
+      summary: '2020년 근로기준법 개정으로 바뀐 연차 계산 방식을 정확히 알려드립니다. 월 1일 vs 15일 혼동이 없도록 정리했습니다.',
+      tags: '연차,연차발생,근로기준법,휴가',
+      date: '2025-07-15',
+      content: `## 입사 첫 해의 연차 발생
+
+근로기준법 제60조에 따라 **입사 1년 미만** 근로자는 매월 만근 시 **1일씩 연차**가 발생합니다.
+
+> 최대 11개월이므로 **최대 11일** (12개월차에는 1년치 연차로 전환)
+
+### 핵심 포인트
+
+| 시점 | 연차 |
+|------|------|
+| 입사 1개월 만근 | 1일 발생 |
+| 입사 2개월 만근 | 1일 발생 |
+| … | … |
+| 입사 11개월 만근 | 1일 발생 (누적 11일) |
+| **입사 1주년** | **15일 발생** |
+
+## 2년차 이후 연차 계산
+
+| 근속 연수 | 연차 일수 |
+|-----------|-----------|
+| 1년 | 15일 |
+| 3년 | 16일 |
+| 5년 | 17일 |
+| 7년 | 18일 |
+| … 2년마다 1일 추가 | |
+| **21년 이상** | **25일 (상한)** |
+
+## 월 1일 연차, 1년치와 별개인가요?
+
+**네, 별개입니다.** 2020년 3월 개정 이후 입사 1년 미만 월별 연차(최대 11일)는 1주년에 발생하는 15일에서 **차감하지 않습니다.**
+
+---
+
+> ⚠️ 단, 상시 근로자 **5인 미만** 사업장은 연차 규정이 적용되지 않습니다.`
+    },
+    {
+      id: 5, category: '연말정산', emoji: '🎁',
+      title: '연말정산 환급 늘리는 핵심 공제 5가지',
+      summary: '연금저축·IRP부터 월세 세액공제까지, 직장인이 놓치기 쉬운 핵심 공제 항목 5가지를 정리합니다.',
+      tags: '연말정산,환급,세액공제,IRP,월세공제',
+      date: '2025-07-20',
+      content: `## 환급을 결정하는 5가지 공제
+
+### 1️⃣ 연금저축 + IRP (세액공제)
+연간 최대 **900만원**까지 납입액의 **13.2~16.5%** 세액공제
+
+- 총급여 5,500만원 이하: **16.5%** (148.5만원 한도)
+- 총급여 5,500만원 초과: **13.2%** (118.8만원 한도)
+
+> 💡 900만원 꽉 채우면 최대 **148만원** 환급 가능
+
+### 2️⃣ 신용카드 vs 체크카드
+
+총급여의 **25% 초과분**부터 소득공제 시작
+
+| 결제 수단 | 공제율 |
+|----------|--------|
+| 신용카드 | 15% |
+| 체크카드·현금영수증 | **30%** |
+| 전통시장·대중교통 | **40%** |
+
+> 💡 25% 한도 넘긴 후엔 체크카드·현금영수증 사용이 유리
+
+### 3️⃣ 월세 세액공제
+무주택 세대주, 총급여 **8,000만원 이하** 조건
+
+- 총급여 5,500만원 이하: 월세의 **17%**
+- 5,500만원 초과 ~ 8,000만원 이하: **15%**
+- 연간 최대 750만원 한도 → **최대 127.5만원** 공제
+
+### 4️⃣ 의료비 세액공제
+총급여의 **3% 초과분**에 대해 **15%** 세액공제 (최대 700만원)
+
+### 5️⃣ 보장성 보험료 세액공제
+연간 납입액의 **12%**, 최대 **100만원** 한도 → 최대 **12만원**
+
+---
+
+## 연말정산 시뮬레이션 결과 비교
+
+| 공제 전략 | 환급 예상액 |
+|-----------|-------------|
+| 기본만 적용 | 30만원 |
+| IRP 900만원 추가 | +148만원 |
+| 체크카드 전환 | +15만원 |
+| 월세 신청 (70만/월) | +127만원 |
+| **합계** | **약 320만원** |`
+    },
+    {
+      id: 6, category: '노무상식', emoji: '⚖️',
+      title: '주휴수당이란? 지급 조건과 계산법',
+      summary: '알바, 파트타임도 받을 수 있는 주휴수당의 지급 조건과 정확한 계산 방법을 사례와 함께 설명합니다.',
+      tags: '주휴수당,알바,파트타임,최저임금',
+      date: '2025-07-25',
+      content: `## 주휴수당이란?
+
+근로기준법 제55조에 따라 **1주 동안 소정근로일을 개근한 근로자**에게 1일치 임금을 유급으로 지급하는 수당입니다.
+
+## 지급 조건
+
+1. **주 15시간 이상** 근무
+2. 해당 주의 소정근로일 **전일 출근(개근)**
+3. 계속 근로 여부 관계없이 조건 충족 시 발생
+
+> 알바, 파트타임, 단기계약직도 조건 충족 시 **동일하게 적용**됩니다.
+
+## 주휴수당 계산 공식
+
+> **주휴수당 = (주당 근무시간 ÷ 40) × 8 × 시급**
+
+### 예시 — 주 20시간, 시급 10,030원(2025년 최저임금)
+
+\`\`\`
+주휴수당 = (20 ÷ 40) × 8 × 10,030원
+         = 0.5 × 8 × 10,030원
+         = 40,120원/주
+\`\`\`
+
+월 4주 기준: **40,120 × 4 = 160,480원**
+
+## 주 40시간 이상 근무자 (정규직)
+
+풀타임 근무자는 하루치 임금이 주휴수당입니다.
+
+> 월급제 근로자의 경우 월급에 이미 주휴수당이 포함되어 있어 별도 지급하지 않습니다.
+
+---
+
+> ⚠️ 주휴수당 미지급은 **임금체불**에 해당하며, 고용노동부에 신고 가능합니다.`
+    }
+  ];
+
+  /* -------- 포스트 렌더링 -------- */
+  function renderPosts(posts) {
+    const grid = document.getElementById('postsGrid');
+    if (!posts || posts.length === 0) {
+      grid.innerHTML = '<div class="posts-error">포스팅을 불러올 수 없습니다. 구글 시트 ID와 공개 설정을 확인해주세요.</div>';
+      return;
+    }
+    grid.innerHTML = posts.map((p, i) => {
+      const tags = (p.tags || '').split(',').filter(Boolean).map(t =>
+        `<span class="post-tag">${t.trim()}</span>`
+      ).join('');
+      const dateStr = p.date ? String(p.date).substring(0, 10) : '';
+      return `
+        <article class="post-card" data-idx="${i}" role="button" tabindex="0" aria-label="${p.title} 읽기">
+          <div class="post-card-top">
+            <span class="post-emoji">${p.emoji || '📄'}</span>
+            <span class="post-category">${p.category || ''}</span>
+            <span class="post-date">${dateStr}</span>
+          </div>
+          <h3 class="post-title">${p.title || ''}</h3>
+          <p class="post-summary">${p.summary || ''}</p>
+          ${tags ? `<div class="post-tags">${tags}</div>` : ''}
+          <div class="post-card-footer">
+            <button class="read-more">자세히 읽기 →</button>
+          </div>
+        </article>`;
+    }).join('');
+
+    // 카드 클릭 이벤트
+    grid.querySelectorAll('.post-card').forEach(card => {
+      const open = () => openModal(posts[+card.dataset.idx]);
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
+    });
+  }
+
+  /* -------- 모달 열기 -------- */
+  function openModal(post) {
+    const tags = (post.tags || '').split(',').filter(Boolean).map(t =>
+      `<span class="modal-tag">${t.trim()}</span>`
+    ).join('');
+    const dateStr = post.date ? String(post.date).substring(0, 10) : '';
+
+    document.getElementById('modalMeta').innerHTML =
+      `<span class="modal-emoji">${post.emoji || '📄'}</span>
+       <span class="modal-category">${post.category || ''}</span>
+       <span class="modal-date">${dateStr}</span>`;
+    document.getElementById('modalTitleEl').textContent = post.title || '';
+    document.getElementById('modalSummary').textContent = post.summary || '';
+    document.getElementById('modalTags').innerHTML = tags;
+    document.getElementById('modalContent').innerHTML =
+      typeof marked !== 'undefined'
+        ? marked.parse(post.content || '')
+        : (post.content || '').replace(/\n/g, '<br>');
+
+    const overlay = document.getElementById('postModal');
+    overlay.classList.add('open');
+    overlay.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }
+
+  /* -------- 모달 닫기 -------- */
+  function closeModal() {
+    document.getElementById('postModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('postModal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* -------- Google Sheets gviz JSON 파싱 -------- */
+  function parseGvizJson(text) {
+    // gviz 응답은 /*O_o*/\ngoogle.visualization.Query.setResponse({...}); 형식
+    const jsonStr = text.replace(/^[^{]*/, '').replace(/\);?\s*$/, '');
+    const data = JSON.parse(jsonStr);
+    const cols = data.table.cols.map(c => c.label.toLowerCase().trim());
+    return data.table.rows
+      .filter(r => r && r.c && r.c.some(c => c && c.v))
+      .map(r => {
+        const obj = {};
+        r.c.forEach((cell, i) => { obj[cols[i]] = cell ? (cell.f || cell.v || '') : ''; });
+        return obj;
+      });
+  }
+
+  /* -------- 초기화 -------- */
+  function init() {
+    const status = document.getElementById('sheetStatus');
+    const hint   = document.getElementById('sheetHint');
+
+    if (!SHEET_ID || SHEET_ID.trim() === '') {
+      // SHEET_ID 미입력 → 샘플 데이터 표시
+      status.textContent = '※ 샘플 포스팅 표시 중 (SHEET_ID를 설정하면 실제 데이터 연동)';
+      hint.style.display = 'block';
+      renderPosts(SAMPLE_POSTS);
+      return;
+    }
+
+    // Google Sheets gviz JSON 엔드포인트
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    status.textContent = '데이터 불러오는 중…';
+
+    fetch(url)
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.text();
+      })
+      .then(text => {
+        const posts = parseGvizJson(text);
+        status.textContent = `총 ${posts.length}개 포스팅`;
+        renderPosts(posts);
+      })
+      .catch(err => {
+        console.warn('Sheets fetch 실패:', err);
+        status.textContent = '연동 실패 — 샘플 데이터 표시 중';
+        hint.style.display = 'block';
+        renderPosts(SAMPLE_POSTS);
+      });
+  }
+
+  init();
 })();
 </script>
 

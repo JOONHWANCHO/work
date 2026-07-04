@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문의 | 직장인 노무 계산기</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+:root{
+  --paper:#ECEFE3;--paper-deep:#E2E6D4;--surface:#FFFFFF;
+  --ink:#20283D;--ink-soft:#5B6478;--ink-faint:#8A93A3;
+  --line:#C7CCB6;--line-soft:#D9DCCB;
+  --stamp:#B23A2D;--stamp-deep:#8F2C22;--gold:#93711C;--gold-bg:#F4ECD6;
+  --font-serif:'Noto Serif KR',serif;
+  --font-body:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);background-image:linear-gradient(var(--line-soft) 1px,transparent 1px);background-size:100% 42px;color:var(--ink);font-family:var(--font-body);line-height:1.7;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:800px;margin:0 auto;padding:0 20px;}
+header.site{background:var(--ink);color:var(--paper);border-bottom:6px double var(--stamp);}
+.site-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;max-width:1080px;margin:0 auto;gap:16px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{width:42px;height:42px;border-radius:50%;border:2px solid var(--stamp);color:var(--stamp);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-weight:900;font-size:13px;transform:rotate(-8deg);flex-shrink:0;}
+.brand-text h1{font-family:var(--font-serif);font-weight:700;font-size:19px;margin:0;}
+.brand-text p{margin:2px 0 0;font-size:12px;color:#AEB6C7;}
+.back-link{font-size:13px;color:#AEB6C7;text-decoration:none;}
+.back-link:hover{color:var(--paper);}
+main{padding:48px 0 80px;}
+.page-header{margin-bottom:40px;padding-bottom:20px;border-bottom:2px solid var(--ink);}
+.page-eyebrow{font-size:11.5px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;margin:0 0 6px;}
+.page-title{font-family:var(--font-serif);font-weight:900;font-size:clamp(24px,4vw,36px);margin:0 0 8px;}
+.page-subtitle{font-size:15px;color:var(--ink-soft);margin:0;}
+.two-col-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+@media(max-width:700px){.two-col-layout{grid-template-columns:1fr;}}
+.doc-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:28px 32px;margin-bottom:24px;}
+@media(max-width:600px){.doc-card{padding:20px 16px;}}
+.doc-card h2{font-family:var(--font-serif);font-size:17px;margin:0 0 18px;padding-bottom:10px;border-bottom:1px solid var(--line);}
+/* 문의 폼 */
+.form-field{margin-bottom:16px;}
+.form-field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink);}
+.form-field input,.form-field select,.form-field textarea{
+  width:100%;padding:11px 13px;
+  border:1.5px solid var(--line);border-radius:6px;
+  font-family:var(--font-body);font-size:14px;color:var(--ink);
+  background:#FCFDF9;transition:border-color .15s;resize:vertical;
+}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--ink);outline:none;}
+.form-field textarea{min-height:130px;line-height:1.6;}
+.form-field .hint{font-size:11.5px;color:var(--ink-faint);margin-top:4px;}
+.submit-btn{
+  width:100%;background:var(--stamp);color:#fff;border:none;border-radius:6px;
+  padding:13px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:background .15s,transform .08s;font-family:var(--font-body);
+}
+.submit-btn:hover{background:var(--stamp-deep);}
+.submit-btn:active{transform:scale(.98);}
+.success-msg{
+  display:none;background:var(--gold-bg);border:1px solid #E1D3A0;
+  border-radius:8px;padding:16px 18px;text-align:center;
+  font-size:14px;color:#6B5618;margin-top:14px;
+}
+/* FAQ */
+.faq-item{border-bottom:1px solid var(--line-soft);padding:16px 0;}
+.faq-item:last-child{border-bottom:none;padding-bottom:0;}
+.faq-q{
+  font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  background:none;border:none;width:100%;text-align:left;padding:0;
+  font-family:var(--font-body);
+}
+.faq-q .icon{font-size:18px;color:var(--ink-faint);transition:transform .2s;flex-shrink:0;}
+.faq-a{font-size:13.5px;color:var(--ink-soft);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .2s;}
+.faq-item.open .faq-q .icon{transform:rotate(45deg);}
+.faq-item.open .faq-a{max-height:300px;padding-top:10px;}
+/* 안내 카드 */
+.notice-card{background:var(--gold-bg);border:1px solid #E1D3A0;border-radius:10px;padding:20px 24px;margin-bottom:24px;}
+.notice-card p{font-size:14px;color:#6B5618;margin:0;line-height:1.7;}
+.notice-card p+p{margin-top:10px;}
+/* 푸터 */
+footer.site{background:var(--ink);color:#AEB6C7;padding:24px 0;font-size:12px;}
+.footer-inner{max-width:1080px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center;}
+.footer-legal-links{display:flex;gap:16px;}
+.footer-legal-links a{color:#636C7E;text-decoration:none;}
+.footer-legal-links a:hover{color:var(--paper);}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="site-bar">
+    <div class="brand">
+      <div class="brand-mark">勞務</div>
+      <div class="brand-text">
+        <h1>직장인 노무 계산기</h1>
+        <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
+      </div>
+    </div>
+    <a href="index.html" class="back-link">← 계산기로 돌아가기</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="page-header">
+      <p class="page-eyebrow">CONTACT</p>
+      <h1 class="page-title">문의하기</h1>
+      <p class="page-subtitle">계산기 오류 제보, 데이터 수정 요청, 포스팅 제안 등 무엇이든 남겨주세요.</p>
+    </div>
+
+    <div class="notice-card">
+      <p>📌 본 서비스는 <strong>정보 제공 목적의 무료 도구</strong>이며, 개인별 세금 상담·법률 자문은 제공하지 않습니다. 정확한 세무 상담은 공인 세무사에게, 노무 상담은 공인 노무사 또는 고용노동부 상담센터(☎ 1350)에 문의해주세요.</p>
+    </div>
+
+    <div class="two-col-layout">
+      <!-- 문의 폼 -->
+      <div class="doc-card">
+        <h2>📬 문의 양식</h2>
+        <div id="contactForm">
+          <div class="form-field">
+            <label for="contactType">문의 유형</label>
+            <select id="contactType">
+              <option value="">선택해주세요</option>
+              <option value="bug">계산 오류 / 버그 제보</option>
+              <option value="data">데이터·요율 수정 요청</option>
+              <option value="post">포스팅 제안 / 오류 수정</option>
+              <option value="ads">광고 관련 문의</option>
+              <option value="privacy">개인정보 관련 문의</option>
+              <option value="other">기타</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="contactEmail">답변 받을 이메일 (선택)</label>
+            <input type="email" id="contactEmail" placeholder="example@email.com">
+            <p class="hint">답변을 원하시는 경우 이메일을 입력해주세요.</p>
+          </div>
+          <div class="form-field">
+            <label for="contactMsg">문의 내용 <span style="color:var(--stamp)">*</span></label>
+            <textarea id="contactMsg" placeholder="어떤 페이지(연봉 계산기, 퇴직금 계산기 등)의 어떤 내용인지 구체적으로 알려주시면 빠르게 확인합니다."></textarea>
+          </div>
+          <button class="submit-btn" onclick="submitContact()">문의 보내기</button>
+          <div class="success-msg" id="successMsg">
+            ✅ 문의가 접수되었습니다. 이메일을 남겨주셨다면 검토 후 답변 드리겠습니다. 감사합니다!
+          </div>
+          <p style="font-size:12px;color:var(--ink-faint);margin-top:12px;">
+            ※ 본 폼은 데모 버전입니다. 실제 배포 시 <a href="https://formspree.io" target="_blank" rel="noopener" style="color:var(--stamp)">Formspree</a> 또는 <a href="https://docs.google.com/forms" target="_blank" rel="noopener" style="color:var(--stamp)">Google Forms</a>를 연결해주세요.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div>
+        <div class="doc-card">
+          <h2>💬 자주 묻는 질문</h2>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              계산 결과가 급여명세서와 다릅니다. <span class="icon">+</span>
+            </button>
+            <div class="faq-a">본 계산기는 표준 공식 기반의 추정치입니다. 회사마다 비과세 항목 처리 방식, 원천징수 기준이 다를 수 있으며, 특히 소득세는 국세청 간이세액표를 회사가 어떻게 적용하느냐에 따라 차이가 납니다. 정확한 금액은 급여 담당부서에 문의해주세요.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              4대보험 요율이 달라진 것 같아요. <span class="icon">+</span>
+            </button>
+            <div class="faq-a">4대보험 요율은 매년 변경되며, 주로 1월과 7월에 조정됩니다. 본 서비스는 최신 요율을 반영하려 노력하지만 변경 시 즉시 업데이트되지 않을 수 있습니다. 최신 요율은 국민연금공단(nps.or.kr), 국민건강보험공단(nhis.or.kr)에서 확인해주세요.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              Google Sheets 포스팅 연동이 안 됩니다. <span class="icon">+</span>
+            </button>
+            <div class="faq-a">① 구글 시트가 "웹에 게시"로 공개되어 있는지 확인하세요 (파일 → 공유 → 웹에 게시). ② index.html 하단 스크립트의 SHEET_ID 값이 올바른지 확인하세요. ③ 시트 첫 행 헤더가 id, category, emoji, title, summary, tags, date, content 순서인지 확인하세요.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              계산기 소스코드를 사용해도 되나요? <span class="icon">+</span>
+            </button>
+            <div class="faq-a">개인 학습 및 비상업적 용도의 참고는 가능하지만, 그대로 복제하여 상업적으로 사용하거나 재배포하는 것은 허용되지 않습니다. 상업적 이용은 문의 양식을 통해 사전에 협의해주세요.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              모바일에서 화면이 깨져 보입니다. <span class="icon">+</span>
+            </button>
+            <div class="faq-a">어떤 기기와 브라우저인지, 어떤 화면이 깨지는지 문의 양식으로 알려주시면 확인 후 수정하겠습니다. 스크린샷이 있다면 내용에 설명으로 첨부해주세요.</div>
+          </div>
+        </div>
+
+        <div class="doc-card">
+          <h2>📞 빠른 노무 상담</h2>
+          <p style="font-size:14px;color:var(--ink-soft);margin:0;">본 서비스는 개인 세무·노무 상담을 제공하지 않습니다. 공식 기관을 이용해주세요.</p>
+          <ul style="margin-top:12px;font-size:13.5px;color:var(--ink-soft);padding-left:18px;line-height:2;">
+            <li><strong>고용노동부 상담센터</strong> ☎ 1350</li>
+            <li><strong>국세청 세금상담</strong> ☎ 126</li>
+            <li><strong>국민연금 상담</strong> ☎ 1355</li>
+            <li><strong>건강보험 상담</strong> ☎ 1577-1000</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="footer-inner">
+    <span>© 2026 직장인 노무 계산기. All rights reserved.</span>
+    <div class="footer-legal-links">
+      <a href="privacy.html">개인정보처리방침</a>
+      <a href="terms.html">이용약관</a>
+      <a href="contact.html">문의</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+function submitContact(){
+  const msg=document.getElementById('contactMsg').value.trim();
+  const type=document.getElementById('contactType').value;
+  if(!type){alert('문의 유형을 선택해주세요.');return;}
+  if(!msg){alert('문의 내용을 입력해주세요.');return;}
+  // 실제 배포 시 Formspree / Google Forms API 연결
+  document.getElementById('successMsg').style.display='block';
+  document.getElementById('contactType').value='';
+  document.getElementById('contactEmail').value='';
+  document.getElementById('contactMsg').value='';
+}
+</script>
+</body>
+</html>
