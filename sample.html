@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업형 데이터 암복호화 관리 시스템</title>
+    <!-- CryptoJS 라이브러리 (AES-256-CBC) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --text-color: #1f2937;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+        h2 { margin-top: 0; font-size: 1.3rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; box-sizing: border-box; font-size: 0.95rem;
+        }
+        .form-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button {
+            width: 100%; padding: 12px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s;
+        }
+        button:hover { background-color: #4338ca; }
+        .refresh-btn { background-color: #10b981; margin-bottom: 15px; }
+        .refresh-btn:hover { background-color: #059669; }
+        
+        /* 리스트 스타일 */
+        .data-item {
+            border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 15px; background: #fafafa;
+        }
+        .data-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .badge { background: #e0e7ff; color: #4338ca; padding: 2px 8px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .crypto-box {
+            background: #f3f4f6; padding: 8px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; word-break: break-all; margin-top: 5px; color: #ef4444; border-left: 3px solid #ef4444;
+        }
+        .plain-box {
+            background: #ecfdf5; padding: 8px; border-radius: 4px; font-size: 0.9rem; word-break: break-all; margin-top: 5px; color: #065f46; border-left: 3px solid #10b981;
+        }
+        .system-key-box {
+            background: #fffbeb; border: 1px solid #fef3c7; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🔐 대시보드 (암복호화 데이터 관리)</h1>
+        <p>구글 시트 연동 전 시뮬레이션이 가능한 단일 뷰 페이지입니다.</p>
+    </header>
+
+    <!-- 사내 비밀키 설정 (보안상 운영시는 숨김/자동화 처리) -->
+    <div class="system-key-box">
+        <label style="font-weight: bold; font-size: 0.9rem;">🔑 사내 마스터 키 (AES-256):</label>
+        <input type="password" id="masterKey" value="my_company_secret_key_2026" style="padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; width: 250px;">
+        <span style="font-size: 0.8rem; color: #6b7280;">* 키가 일치해야만 복호화가 풀립니다.</span>
+    </div>
+
+    <div class="grid">
+        <!-- 1. 데이터 입력 (암호화하여 넣기) -->
+        <div class="card">
+            <h2>📥 데이터 입력 & 암호화 저장</h2>
+            <form id="dataForm">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>카테고리</label>
+                        <input type="text" id="category" value="4대보험" required>
+                    </div>
+                    <div class="form-group">
+                        <label>이모지</label>
+                        <input type="text" id="emoji" value="🏥" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>제목(Title)</label>
+                    <input type="text" id="title" value="4대보험료는 어떻게 계산되나요?" required>
+                </div>
+                <div class="form-group">
+                    <label>요약 (Summary - 암호화 대상)</label>
+                    <textarea id="summary" rows="2" required>국민연금·건강보험 등 요율과 계산 방식을 쉽게 정리했습니다.</textarea>
+                </div>
+                <div class="form-group">
+                    <label>본문 내용 (Content - 암호화 대상)</label>
+                    <textarea id="content" rows="5" required>## 4대보험이란?&#10;4대보험은 국민연금, 건강보험, 장기요양보험, 고용보험을 뜻합니다.</textarea>
+                </div>
+                <button type="submit">🔒 암호화 후 구글 시트(DB)로 전송</button>
+            </form>
+        </div>
+
+        <!-- 2. 데이터 조회 (가져와서 복호화해 보여주기) -->
+        <div class="card">
+            <h2>📤 구글 시트(DB) 데이터 조회 & 복호화</h2>
+            <button class="refresh-btn" onclick="loadAndRenderData()">🔄 실시간 데이터 동기화 및 복호화</button>
+            
+            <div id="dataContainer">
+                <!-- 복호화된 카드가 들어갈 자리 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/**
+ * 1. 암복호화 헬퍼 객체 (AES-256-CBC)
+ */
+const CryptoHelper = {
+    getKey: function() {
+        const keyText = document.getElementById('masterKey').value;
+        return CryptoJS.enc.Utf8.parse(keyText.padEnd(32, '0').slice(0, 32));
+    },
+    encrypt: function(plainText) {
+        if (!plainText) return "";
+        const iv = CryptoJS.lib.WordArray.random(16);
+        const key = this.getKey();
+        
+        const encrypted = CryptoJS.AES.encrypt(plainText, key, {
+            iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7
+        });
+        const combined = iv.concat(encrypted.ciphertext);
+        return CryptoJS.enc.Base64.stringify(combined);
+    },
+    decrypt: function(cipherText) {
+        if (!cipherText) return "";
+        try {
+            const key = this.getKey();
+            const ciphertextWithIv = CryptoJS.enc.Base64.parse(cipherText);
+            
+            const iv = CryptoJS.lib.WordArray.create(ciphertextWithIv.words.slice(0, 4));
+            const ciphertext = CryptoJS.lib.WordArray.create(ciphertextWithIv.words.slice(4));
+            
+            const decrypted = CryptoJS.AES.decrypt({ ciphertext: ciphertext }, key, {
+                iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7
+            });
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        } catch (e) {
+            return "[⚠️ 복호화 실패: 키 불일치 또는 데이터 오염]";
+        }
+    }
+};
+
+/**
+ * 2. 가상의 구글 시트 데이터 저장소 (DB 역할)
+ * 실제 환경에서는 fetch(GOOGLE_SCRIPT_URL)를 통해 주고받습니다.
+ */
+let VirtualGoogleSheet = [
+    {
+        id: "s1", category: "소득세", emoji: "💰", title: "근로소득세 계산 흐름",
+        // 미리 암호화되어 시트에 들어가 있는 형태의 샘플
+        summary: "U2FsdGVkX19DZE5hNTA1MOKb3r67wUuXv7bNTRDqMv4=", 
+        content: "U2FsdGVkX19DZE5hNTA1MOKb3r67wUuXv7bNTRDqMv4=...[샘플]"
+    }
+];
+
+/**
+ * 3. [이벤트] 폼 서밋 시 데이터 암호화 후 시트(DB)에 저장
+ */
+document.getElementById('dataForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const plainSummary = document.getElementById('summary').value;
+    const plainContent = document.getElementById('content').value;
+
+    // 🔒 데이터 연동 직전 민감 항목만 암호화 스위칭
+    const encryptedSummary = CryptoHelper.encrypt(plainSummary);
+    const encryptedContent = CryptoHelper.encrypt(plainContent);
+
+    const newRow = {
+        id: 's' + (VirtualGoogleSheet.length + 1),
+        category: document.getElementById('category').value,
+        emoji: document.getElementById('emoji').value,
+        title: document.getElementById('title').value,
+        summary: encryptedSummary,  // 암호문 저장
+        content: encryptedContent   // 암호문 저장
+    };
+
+    /* 
+       [실제 기업 아키텍처 적용 단계]
+       fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: JSON.stringify(newRow) })
+    */
+    VirtualGoogleSheet.push(newRow); 
+    alert("데이터가 안전하게 암호화되어 구글 시트 저장소로 전송되었습니다!");
+    
+    // UI 갱신
+    loadAndRenderData();
+});
+
+/**
+ * 4. [기능] 시트에서 데이터를 가져와 복호화 후 렌더링
+ */
+function loadAndRenderData() {
+    const container = document.getElementById('dataContainer');
+    container.innerHTML = "";
+
+    if(VirtualGoogleSheet.length === 0) {
+        container.innerHTML = "<p style='color:#6b7280; text-align:center;'>저장된 데이터가 없습니다.</p>";
+        return;
+    }
+
+    /* 
+       [실제 기업 아키텍처 적용 단계]
+       const res = await fetch(GOOGLE_SCRIPT_URL); const data = await res.json();
+    */
+    const dataFromSheet = VirtualGoogleSheet; 
+
+    dataFromSheet.forEach(row => {
+        // 🔓 조회 즉시 프론트단에서 복호화
+        const decryptedSummary = CryptoHelper.decrypt(row.summary);
+        const decryptedContent = CryptoHelper.decrypt(row.content);
+
+        const itemHtml = `
+            <div class="data-item">
+                <div class="data-header">
+                    <span style="font-size: 1.1rem; font-weight: bold;">${row.emoji} ${row.title}</span>
+                    <span class="badge">${row.category}</span>
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <span style="font-size:0.85rem; font-weight:bold; color:#4b5563;">💾 구글시트 실제 저장상태 (암호문):</span>
+                    <div class="crypto-box">${row.summary.substring(0, 60)}...</div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <span style="font-size:0.85rem; font-weight:bold; color:#047857;">🔓 브라우저 복호화 결과 (평문):</span>
+                    <div class="plain-box">
+                        <strong>요약:</strong> ${decryptedSummary}<br>
+                        <strong>본문:</strong> ${decryptedContent}
+                    </div>
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', itemHtml);
+    });
+}
+
+// 최초 페이지 로드시 자동으로 조회 실행
+loadAndRenderData();
+</script>
+
+</body>
+</html>
