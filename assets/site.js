@@ -8,7 +8,7 @@ window.SITE = (function(){
 
   // ⚠️ admin.html에서 안내하는 Google Apps Script 배포 후 발급받는 웹앱 URL을
   //    아래 WEB_APP_URL 한 곳에만 넣으면 전체 사이트(계산기 페이지 + 관리자 페이지)에 반영됩니다.
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwXpIy7yr56y__54oLOlyEjnPPL_ZFZiVydbAoVN64aFRDp8gTHm1e1w_8lCqchgc3p/exec";
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxyXCLxustkIVkh2e4k2RiAglh4seTFzQJStbjK5Jy0d_wzDk7ZIwbzBCakOJ5SQRs/exec";
   const SHEET_ID   = "1jMKkYQcUZP8DPeMv1dZbM8PIe3HxoInTvmiD3lEVsj4";
   const SHEET_NAME = "시트1";
 
