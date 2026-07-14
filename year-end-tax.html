@@ -6,6 +6,29 @@
 <title>연말정산 미리보기 계산기 | 모두의 계산기 — 환급·추납 예상액 자동계산</title>
 <meta name="description" content="연봉과 주요 공제항목을 입력하면 연말정산 예상 결정세액과 환급·추납 금액을 미리 계산합니다. 2025년 귀속 기준, 직장인을 위한 무료 연말정산 미리보기.">
 <meta name="keywords" content="연말정산 미리보기, 연말정산 계산기, 환급액 계산, 연말정산 공제, 소득공제 계산기, 세액공제">
+<link rel="canonical" href="https://paycal.kr/year-end-tax.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2320283D'/%3E%3Ctext x='50' y='62' font-size='40' text-anchor='middle' fill='%23B23A2D'%3E%E5%8B%9E%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="모두의 계산기">
+<meta property="og:title" content="연말정산 미리보기 계산기 | 모두의 계산기">
+<meta property="og:description" content="연봉과 공제항목을 입력하면 연말정산 예상 환급·추납액을 미리 계산합니다.">
+<meta property="og:url" content="https://paycal.kr/year-end-tax.html">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#20283D">
+<!-- ============================================================
+     GOOGLE ANALYTICS 4 (GA4) 자리
+     실제 배포 시 아래 주석을 해제하고 G-XXXXXXXXXX 를
+     본인의 GA4 측정 ID로 교체하세요.
+
+     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+     <script>
+       window.dataLayer = window.dataLayer || [];
+       function gtag(){dataLayer.push(arguments);}
+       gtag('js', new Date());
+       gtag('config', 'G-XXXXXXXXXX');
+     </script>
+     ============================================================ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -33,6 +56,8 @@ header.site{background:var(--ink);color:var(--paper);border-bottom:6px double va
 .brand-text h1{font-family:var(--font-serif);font-weight:700;font-size:19px;margin:0;letter-spacing:.01em;}
 .brand-text p{margin:2px 0 0;font-size:12px;color:#AEB6C7;letter-spacing:.04em;}
 nav.tools{display:flex;gap:8px;flex-wrap:wrap;}
+@media(max-width:760px){ nav.tools{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; } nav.tools::-webkit-scrollbar{ display:none; } nav.tools .tab{ flex-shrink:0; } }
+
 nav.tools .tab{font-size:13px;padding:7px 12px;border-radius:3px;border:1px solid rgba(255,255,255,.18);color:#C7CDDB;text-decoration:none;}
 nav.tools .tab.active{background:var(--stamp);border-color:var(--stamp);color:#fff;font-weight:600;}
 nav.tools .tab:hover:not(.active){background:rgba(255,255,255,.08);}
@@ -139,11 +164,14 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
       </div>
     </div>
-    <nav class="tools">
-      <a href="index.html" class="tab">연봉 실수령액</a>
+    <nav class="tools" aria-label="계산기 메뉴">
+      <a href="index.html" class="tab">홈</a>
+      <a href="salary.html" class="tab">연봉 실수령액</a>
       <a href="retirement.html" class="tab">퇴직금 계산기</a>
       <a href="annual-leave.html" class="tab">연차수당 계산기</a>
       <a href="year-end-tax.html" class="tab active">연말정산 미리보기</a>
+      <a href="unemployment.html" class="tab">실업급여 계산기</a>
+      <a href="minimum-wage.html" class="tab">최저임금 계산기</a>
     </nav>
   </div>
 </header>
@@ -339,10 +367,12 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
       <div class="footer-col">
         <h4>모두의 계산기</h4>
         <ul>
-          <li><a href="index.html">연봉 실수령액 계산기</a></li>
+          <li><a href="salary.html">연봉 실수령액 계산기</a></li>
           <li><a href="retirement.html">퇴직금 계산기</a></li>
           <li><a href="annual-leave.html">연차수당 계산기</a></li>
           <li><a href="year-end-tax.html">연말정산 미리보기</a></li>
+          <li><a href="unemployment.html">실업급여 계산기</a></li>
+          <li><a href="minimum-wage.html">최저임금 계산기</a></li>
         </ul>
       </div>
       <div class="footer-col">

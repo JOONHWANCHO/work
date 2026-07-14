@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">게시글 상세 | 모두의 계산기</title>
+<meta id="metaDesc" name="description" content="직장인을 위한 노무·급여 지식을 알기 쉽게 정리했습니다.">
+<link rel="canonical" id="canonicalLink" href="https://paycal.kr/content.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2320283D'/%3E%3Ctext x='50' y='62' font-size='40' text-anchor='middle' fill='%23B23A2D'%3E%E5%8B%9E%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="모두의 계산기">
+<meta id="ogTitle" property="og:title" content="모두의 계산기">
+<meta id="ogDesc" property="og:description" content="직장인을 위한 노무·급여 지식">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#20283D">
+<meta name="robots" content="noindex">
+<!-- 검색엔진에는 크롤러가 크롤링할 수 있게 배포 시 위 robots 태그는 제거하세요 -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="assets/site.js"></script>
+
+<style>
+  :root{
+    --paper:#ECEFE3; --paper-deep:#E2E6D4; --surface:#FFFFFF;
+    --ink:#20283D; --ink-soft:#5B6478; --ink-faint:#8A93A3;
+    --line:#C7CCB6; --line-soft:#D9DCCB;
+    --stamp:#B23A2D; --stamp-deep:#8F2C22;
+    --gold:#93711C; --gold-bg:#F4ECD6; --focus:#20283D;
+    --font-serif:'Noto Serif KR',serif;
+    --font-body:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paper);
+    background-image:linear-gradient(var(--line-soft) 1px, transparent 1px);
+    background-size:100% 42px;
+    color:var(--ink); font-family:var(--font-body); line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; }
+  button{ font-family:inherit; }
+  :focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 20px; }
+
+  header.site{ background:var(--ink); color:var(--paper); border-bottom:6px double var(--stamp); }
+  .site-bar{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px; max-width:1080px; margin:0 auto; gap:16px; flex-wrap:wrap; }
+  .brand{ display:flex; align-items:center; gap:12px; text-decoration:none; }
+  .brand-mark{ width:42px; height:42px; border-radius:50%; border:2px solid var(--stamp); color:var(--stamp); display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-weight:900; font-size:13px; transform:rotate(-8deg); flex-shrink:0; }
+  .brand-text h1{ font-family:var(--font-serif); font-weight:700; font-size:19px; margin:0; letter-spacing:.01em; }
+  .brand-text p{ margin:2px 0 0; font-size:12px; color:#AEB6C7; letter-spacing:.04em; }
+  nav.tools{ display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; }
+  nav.tools::-webkit-scrollbar{ display:none; }
+  nav.tools .tab{ flex-shrink:0; font-size:13px; padding:7px 12px; border-radius:3px; border:1px solid rgba(255,255,255,.18); color:#C7CDDB; text-decoration:none; }
+  nav.tools .tab.active{ background:var(--stamp); border-color:var(--stamp); color:#fff; font-weight:600; }
+  nav.tools .tab:hover:not(.active){ background:rgba(255,255,255,.08); }
+
+  main.wrap{ padding-top:32px; padding-bottom:64px; }
+
+  .breadcrumb{ font-size:12.5px; color:var(--ink-faint); margin-bottom:22px; font-family:var(--font-mono); }
+  .breadcrumb a{ color:var(--ink-soft); text-decoration:none; }
+  .breadcrumb a:hover{ text-decoration:underline; }
+
+  .content-layout{ display:grid; grid-template-columns:1fr 300px; gap:36px; align-items:start; }
+  @media(max-width:860px){ .content-layout{ grid-template-columns:1fr; } }
+
+  .article-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:36px 40px; }
+  @media(max-width:600px){ .article-card{ padding:26px 20px; } }
+
+  .article-meta{ display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .article-emoji{ font-size:28px; }
+  .article-category{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; color:var(--stamp); background:#FBF0EE; padding:3px 8px; border-radius:3px; font-weight:600; }
+  .article-date{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); }
+  .article-views{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); margin-left:auto; }
+  .article-title{ font-family:var(--font-serif); font-weight:900; font-size:clamp(22px,3.4vw,32px); margin:0 0 10px; line-height:1.32; color:var(--ink); }
+  .article-summary{ font-size:15px; color:var(--ink-soft); margin:0 0 22px; line-height:1.7; }
+  .article-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:26px; }
+  .article-tag{ font-size:12px; color:var(--ink-faint); background:var(--paper-deep); padding:3px 9px; border-radius:4px; border:1px solid var(--line); }
+  .article-divider{ border:none; border-top:2px solid var(--ink); margin:0 0 28px; }
+
+  .post-content{ font-size:15.5px; color:var(--ink-soft); line-height:1.85; }
+  .post-content h1,.post-content h2,.post-content h3{ font-family:var(--font-serif); color:var(--ink); margin:28px 0 10px; }
+  .post-content h2{ font-size:21px; padding-bottom:8px; border-bottom:1px solid var(--line); }
+  .post-content h3{ font-size:17px; }
+  .post-content p{ margin:0 0 14px; }
+  .post-content ul,.post-content ol{ padding-left:20px; margin:0 0 14px; }
+  .post-content li{ margin-bottom:4px; }
+  .post-content table{ width:100%; border-collapse:collapse; font-size:13.5px; margin:16px 0; }
+  .post-content table th{ background:var(--paper-deep); padding:8px 12px; border-bottom:2px solid var(--ink); text-align:left; font-weight:600; color:var(--ink); }
+  .post-content table td{ padding:8px 12px; border-bottom:1px solid var(--line-soft); font-family:var(--font-mono); }
+  .post-content code{ background:var(--paper-deep); padding:2px 5px; border-radius:3px; font-family:var(--font-mono); font-size:13px; }
+  .post-content pre{ background:var(--ink); color:var(--paper); padding:16px; border-radius:8px; overflow-x:auto; margin:16px 0; }
+  .post-content pre code{ background:none; color:inherit; }
+  .post-content blockquote{ border-left:3px solid var(--gold); padding:10px 16px; margin:16px 0; background:var(--gold-bg); color:#6B5618; border-radius:0 6px 6px 0; }
+  .post-content strong{ color:var(--ink); font-weight:700; }
+  .post-content a{ color:var(--stamp); text-decoration:underline; }
+  .post-content hr{ border:none; border-top:1px solid var(--line); margin:24px 0; }
+
+  .article-footer-nav{ display:flex; justify-content:space-between; align-items:center; margin-top:36px; padding-top:20px; border-top:1px solid var(--line); }
+  .back-home{ font-size:13px; font-weight:600; color:var(--stamp); text-decoration:none; }
+  .back-home:hover{ text-decoration:underline; }
+  .calc-cta{ font-size:13px; font-weight:600; color:var(--surface); background:var(--ink); padding:9px 16px; border-radius:6px; text-decoration:none; }
+
+  /* ---------- 사이드바 ---------- */
+  .sidebar-box{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px; margin-bottom:20px; }
+  .sidebar-box h4{ font-family:var(--font-serif); font-size:15px; margin:0 0 14px; padding-bottom:10px; border-bottom:1px solid var(--line); }
+  .side-item{ display:flex; gap:10px; align-items:flex-start; padding:9px 0; border-bottom:1px solid var(--line-soft); text-decoration:none; color:inherit; }
+  .side-item:last-child{ border-bottom:none; }
+  .side-rank{ font-family:var(--font-serif); font-weight:900; font-size:14px; color:var(--gold); width:16px; flex-shrink:0; }
+  .side-title{ font-size:13px; line-height:1.5; font-weight:600; }
+  .side-views{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); margin-top:2px; }
+  .side-cta{ display:block; text-align:center; background:var(--stamp); color:#fff; font-weight:700; font-size:13.5px; padding:12px; border-radius:8px; text-decoration:none; margin-top:4px; }
+  .side-cta:hover{ background:var(--stamp-deep); }
+
+  .loading-msg,.error-msg{ text-align:center; padding:60px 20px; color:var(--ink-faint); font-size:14px; }
+  .error-msg a{ color:var(--stamp); font-weight:600; text-decoration:underline; }
+
+  /* ---------- 푸터 ---------- */
+  footer.site{ background:var(--ink); color:#AEB6C7; margin-top:60px; }
+  .footer-inner{ max-width:1080px; margin:0 auto; padding:44px 20px 28px; }
+  .footer-top{ display:grid; grid-template-columns:2fr 1fr 1.4fr; gap:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,.12); }
+  @media(max-width:700px){ .footer-top{ grid-template-columns:1fr; } }
+  .footer-col h4{ color:#fff; font-size:13px; margin:0 0 12px; font-family:var(--font-mono); letter-spacing:.06em; }
+  .footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .footer-col a{ color:#AEB6C7; text-decoration:none; font-size:13px; }
+  .footer-col a:hover{ color:#fff; text-decoration:underline; }
+  .footer-col p{ font-size:12.5px; line-height:1.7; color:#8891A3; margin:0; }
+  .footer-legal{ padding-top:20px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12px; color:#7A8296; }
+  .footer-legal-links{ display:flex; gap:14px; }
+  .footer-legal-links a{ color:#AEB6C7; text-decoration:none; }
+  .footer-legal-links a:hover{ text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="site-bar">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">勞務</div>
+      <div class="brand-text">
+        <h1>모두의 계산기</h1>
+        <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
+      </div>
+    </a>
+    <nav class="tools" aria-label="계산기 메뉴">
+      <a href="index.html" class="tab">홈</a>
+      <a href="salary.html" class="tab">연봉 실수령액</a>
+      <a href="retirement.html" class="tab">퇴직금 계산기</a>
+      <a href="annual-leave.html" class="tab">연차수당 계산기</a>
+      <a href="year-end-tax.html" class="tab">연말정산 미리보기</a>
+      <a href="unemployment.html" class="tab">실업급여 계산기</a>
+      <a href="minimum-wage.html" class="tab">최저임금 계산기</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="breadcrumb">
+    <a href="index.html">홈</a> › <span id="breadcrumbCat">게시글</span>
+  </div>
+
+  <div id="pageBody">
+    <div class="loading-msg">게시글을 불러오는 중…</div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-col">
+        <h4>모두의 계산기</h4>
+        <ul>
+          <li><a href="salary.html">연봉 실수령액 계산기</a></li>
+          <li><a href="retirement.html">퇴직금 계산기</a></li>
+          <li><a href="annual-leave.html">연차수당 계산기</a></li>
+          <li><a href="year-end-tax.html">연말정산 미리보기</a></li>
+          <li><a href="unemployment.html">실업급여 계산기</a></li>
+          <li><a href="minimum-wage.html">최저임금 계산기</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>참고 기관</h4>
+        <ul>
+          <li><a href="https://www.nps.or.kr" target="_blank" rel="noopener">국민연금공단</a></li>
+          <li><a href="https://www.nhis.or.kr" target="_blank" rel="noopener">국민건강보험공단</a></li>
+          <li><a href="https://www.ei.go.kr" target="_blank" rel="noopener">고용보험 (고용노동부)</a></li>
+          <li><a href="https://www.hometax.go.kr" target="_blank" rel="noopener">국세청 홈택스</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>안내</h4>
+        <p>본 사이트의 계산 결과는 정보 제공 목적의 추정치이며 법적 효력이 없습니다. 4대보험 요율은 매년 변경될 수 있으므로 반드시 공식 기관에서 확인하세요.</p>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>© 2026 모두의 계산기. All rights reserved.</span>
+      <div class="footer-legal-links">
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="terms.html">이용약관</a>
+        <a href="contact.html">문의</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  const SHEET_ID   = (window.SITE && SITE.SHEET_ID) || '';
+  const SHEET_NAME = (window.SITE && SITE.SHEET_NAME) || '시트1';
+  const FIELD_NAMES = ['id','category','emoji','title','summary','tags','date','content','views'];
+
+  function getViews(p){ return Number(String(p.views||'0').replace(/[^0-9]/g,'')) || 0; }
+  function formatViews(n){ return n >= 10000 ? (n/10000).toFixed(1).replace(/\.0$/,'') + '만' : n.toLocaleString('ko-KR'); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function cellValue(cell, colName){
+    if (!cell || cell.v == null) return '';
+    if (colName === 'date') {
+      if (cell.f) return cell.f;
+      if (typeof cell.v === 'string' && cell.v.startsWith('Date(')) {
+        const m = cell.v.match(/Date\((\d+),(\d+),(\d+)\)/);
+        if (m) return `${m[1]}-${String(+m[2]+1).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
+      }
+      return String(cell.v);
+    }
+    return String(cell.v);
+  }
+
+  function parseGvizJson(text){
+    const start = text.indexOf('(');
+    const end = text.lastIndexOf(')');
+    if (start === -1 || end === -1) throw new Error('gviz 응답 형식 오류');
+    const data = JSON.parse(text.slice(start + 1, end));
+    const table = data.table;
+    if (!table) throw new Error('table 필드 없음');
+    const rawLabels = (table.cols || []).map(c => (c.label || '').toLowerCase().trim());
+    const hasRealLabels = FIELD_NAMES.some(f => rawLabels.includes(f));
+    const cols = hasRealLabels ? rawLabels : FIELD_NAMES;
+    let rows = table.rows || [];
+    if ((table.parsedNumHeaders === 0 || table.parsedNumHeaders == null) && !hasRealLabels) rows = rows.slice(1);
+    return rows.filter(r => r && r.c && r.c.some(c => c && c.v != null)).map(r => {
+      const obj = {};
+      cols.forEach((col, i) => {
+        const cell = (r.c && r.c[i] !== undefined) ? r.c[i] : null;
+        obj[col] = cellValue(cell, col);
+      });
+      return obj;
+    });
+  }
+
+  /* -------- 샘플 데이터 (SHEET_ID 미설정 시 폴백) -------- */
+  const SAMPLE_POSTS = [
+    { id:1, category:'4대보험', emoji:'🏥', title:'4대보험료는 어떻게 계산되나요?', summary:'국민연금·건강보험·장기요양보험·고용보험 4가지 보험료의 요율과 계산 방식을 정리했습니다.', tags:'4대보험,보험료,국민연금', date:'2025-07-01', views:15230,
+      content:'## 4대보험이란?\n\n4대보험은 국민연금, 건강보험, 장기요양보험, 고용보험을 통칭합니다. 자세한 내용은 홈에서 실제 시트를 연동해 확인해보세요.' },
+  ];
+
+  function getParam(name){
+    return new URLSearchParams(window.location.search).get(name);
+  }
+
+  function renderSidebar(all, current){
+    const ranking = [...all].sort((a,b) => getViews(b) - getViews(a)).slice(0, 5);
+    const related = all.filter(p => p.category === current.category && String(p.id) !== String(current.id)).slice(0, 4);
+
+    let html = '';
+    if (related.length){
+      html += `<div class="sidebar-box"><h4>같은 카테고리 글</h4>` +
+        related.map(p => `<a class="side-item" href="content.html?id=${encodeURIComponent(p.id)}">
+            <span class="side-rank">·</span>
+            <span><span class="side-title">${esc(p.title)}</span><br><span class="side-views">👁 ${formatViews(getViews(p))}</span></span>
+          </a>`).join('') + `</div>`;
+    }
+    html += `<div class="sidebar-box"><h4>인기글 TOP 5</h4>` +
+      ranking.map((p,i) => `<a class="side-item" href="content.html?id=${encodeURIComponent(p.id)}">
+          <span class="side-rank">${i+1}</span>
+          <span><span class="side-title">${esc(p.title)}</span><br><span class="side-views">👁 ${formatViews(getViews(p))}</span></span>
+        </a>`).join('') + `</div>`;
+    html += `<a class="side-cta" href="index.html#calculators">🧮 계산기 바로가기</a>`;
+    document.getElementById('sidebarBox').innerHTML = html;
+  }
+
+  function renderArticle(post, all){
+    document.getElementById('breadcrumbCat').textContent = post.category || '게시글';
+    document.getElementById('pageTitle').textContent = `${post.title} | 모두의 계산기`;
+    document.getElementById('metaDesc').setAttribute('content', post.summary || '');
+    document.getElementById('ogTitle').setAttribute('content', post.title || '');
+    document.getElementById('ogDesc').setAttribute('content', post.summary || '');
+    document.getElementById('canonicalLink').setAttribute('href', `https://paycal.kr/content.html?id=${encodeURIComponent(post.id)}`);
+
+    const tags = (post.tags || '').split(',').filter(Boolean).map(t => `<span class="article-tag">${esc(t.trim())}</span>`).join('');
+    const dateStr = post.date ? String(post.date).substring(0, 10) : '';
+    const rawContent = (post.content || '').trim();
+    const renderedContent = rawContent
+      ? (typeof marked !== 'undefined' ? marked.parse(rawContent) : rawContent.replace(/\n/g, '<br>'))
+      : '<p style="color:var(--ink-faint);">본문 내용이 없습니다.</p>';
+
+    document.getElementById('pageBody').innerHTML = `
+      <div class="content-layout">
+        <article class="article-card">
+          <div class="article-meta">
+            <span class="article-emoji">${post.emoji || '📄'}</span>
+            <span class="article-category">${esc(post.category || '')}</span>
+            <span class="article-date">${dateStr}</span>
+            <span class="article-views">👁 ${formatViews(getViews(post))}</span>
+          </div>
+          <h1 class="article-title">${esc(post.title || '')}</h1>
+          <p class="article-summary">${esc(post.summary || '')}</p>
+          ${tags ? `<div class="article-tags">${tags}</div>` : ''}
+          <hr class="article-divider">
+          <div class="post-content">${renderedContent}</div>
+          <div class="article-footer-nav">
+            <a class="back-home" href="index.html">← 홈으로 돌아가기</a>
+            <a class="calc-cta" href="salary.html">계산기 사용해보기 →</a>
+          </div>
+        </article>
+        <aside id="sidebarBox"></aside>
+      </div>
+    `;
+
+    renderSidebar(all, post);
+
+    if (window.SITE && post.id) SITE.trackView(post.id);
+  }
+
+  function renderError(msg){
+    document.getElementById('pageBody').innerHTML =
+      `<div class="error-msg">${esc(msg)}<br><br><a href="index.html">← 홈으로 돌아가기</a></div>`;
+  }
+
+  function init(){
+    const id = getParam('id');
+    if (!id) { renderError('잘못된 접근입니다. 게시글 ID가 없습니다.'); return; }
+
+    if (!SHEET_ID) {
+      const post = SAMPLE_POSTS.find(p => String(p.id) === String(id)) || SAMPLE_POSTS[0];
+      renderArticle(post, SAMPLE_POSTS);
+      return;
+    }
+
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    fetch(url)
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
+      .then(text => {
+        const posts = parseGvizJson(text);
+        const post = posts.find(p => String(p.id) === String(id));
+        if (!post) { renderError('해당 게시글을 찾을 수 없습니다. 삭제되었거나 잘못된 링크일 수 있습니다.'); return; }
+        renderArticle(post, posts);
+      })
+      .catch(err => {
+        console.warn('[Sheets] 연동 실패:', err.message);
+        const post = SAMPLE_POSTS.find(p => String(p.id) === String(id)) || SAMPLE_POSTS[0];
+        renderArticle(post, SAMPLE_POSTS);
+      });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

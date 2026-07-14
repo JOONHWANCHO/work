@@ -1,264 +1,152 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>콘텐츠 데이터 관리 매니저</title>
-    <!-- 프리텐다드 폰트 적용 (토스 스타일) -->
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <style>
-        :root {
-            --toss-blue: #3182f6;
-            --toss-blue-hover: #1b64da;
-            --toss-gray-100: #f2f4f6;
-            --toss-gray-200: #e5e8eb;
-            --toss-gray-600: #4e5968;
-            --toss-gray-800: #191f28;
-            --toss-danger: #f04452;
-            --toss-success: #25b263;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>관리자 · 콘텐츠 데이터 관리 센터</title>
+<!-- 프리텐다드 폰트 적용 (토스 스타일) -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+    :root {
+        --toss-blue: #3182f6;
+        --toss-blue-hover: #1b64da;
+        --toss-gray-50: #f9fafb;
+        --toss-gray-100: #f2f4f6;
+        --toss-gray-200: #e5e8eb;
+        --toss-gray-600: #4e5968;
+        --toss-gray-800: #191f28;
+        --toss-danger: #f04452;
+        --toss-danger-hover: #d9313f;
+        --toss-success: #25b263;
+        --toss-gold: #b8860b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
+    body { background-color: var(--toss-gray-50); color: var(--toss-gray-800); padding: 40px 20px 80px; }
+    .container { width: 100%; max-width: 1180px; margin: 0 auto; }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-        }
+    header { margin-bottom: 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    header h1 { font-size: 26px; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.5px; }
+    header p { color: var(--toss-gray-600); font-size: 14px; }
+    header a.back-link { font-size: 13px; color: var(--toss-blue); text-decoration:none; font-weight:600; }
 
-        body {
-            background-color: #f9fafb;
-            color: var(--toss-gray-800);
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center;
-        }
+    /* 통계 대시보드 */
+    .stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+    @media(max-width:800px){ .stat-grid{ grid-template-columns:repeat(2,1fr); } }
+    .stat-card { background:#fff; border-radius:18px; padding:22px 22px; box-shadow:0 8px 24px rgba(0,0,0,.02),0 1px 2px rgba(0,0,0,.02); }
+    .stat-card .stat-label { font-size:13px; color:var(--toss-gray-600); font-weight:600; margin-bottom:8px; }
+    .stat-card .stat-value { font-size:26px; font-weight:800; letter-spacing:-0.5px; }
+    .stat-card .stat-sub { font-size:12px; color:var(--toss-gray-600); margin-top:4px; }
 
-        .container {
-            width: 100%;
-            max-width: 1100px;
-        }
+    .card { background: #ffffff; border-radius: 24px; padding: 32px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.02); margin-bottom: 24px; }
+    .card-title { font-size: 18px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; justify-content:space-between; gap: 8px; flex-wrap:wrap; }
+    .card-title .sub-label{ font-size:12px; font-weight:500; color:var(--toss-gray-600); }
 
-        /* 헤더 스타일 */
-        header {
-            margin-bottom: 32px;
-        }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .full-width { grid-column: span 2; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label { font-size: 14px; font-weight: 600; color: var(--toss-gray-600); }
 
-        header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
+    input[type="text"], input[type="number"], input[type="date"], select, textarea {
+        width: 100%; padding: 14px 16px; border: 1px solid var(--toss-gray-200); border-radius: 12px;
+        font-size: 15px; background-color: #fff; color: var(--toss-gray-800); outline: none; transition: all 0.2s ease;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--toss-blue); box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.12); }
+    textarea { height: 180px; resize: vertical; line-height: 1.6; font-family: 'Pretendard', monospace; }
 
-        header p {
-            color: var(--toss-gray-600);
-            font-size: 15px;
-        }
+    .btn-group { margin-top: 12px; display: flex; justify-content: flex-end; gap: 12px; }
+    .btn { padding: 14px 24px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s ease; }
+    .btn-primary { background-color: var(--toss-blue); color: #fff; }
+    .btn-primary:hover { background-color: var(--toss-blue-hover); }
+    .btn-secondary { background-color: var(--toss-gray-100); color: var(--toss-gray-600); }
+    .btn-secondary:hover { background-color: var(--toss-gray-200); }
+    .btn-danger { background-color: #fdecee; color: var(--toss-danger); }
+    .btn-danger:hover { background-color: var(--toss-danger); color:#fff; }
+    .btn-small { padding: 8px 14px; font-size: 13px; border-radius: 8px; }
 
-        /* 카드 공통 스타일 */
-        .card {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.02);
-            margin-bottom: 24px;
-        }
+    .table-wrapper { overflow-x: auto; margin-top: 4px; border: 1px solid var(--toss-gray-100); border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    th { background-color: var(--toss-gray-100); color: var(--toss-gray-600); padding: 14px 16px; font-weight: 600; white-space: nowrap; }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--toss-gray-100); color: var(--toss-gray-800); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    tr.row-editing { background: #f1f7fe; }
+    .empty-row { text-align: center; color: var(--toss-gray-600); padding: 40px 0; }
+    .view-badge{ font-weight:700; color: var(--toss-gold); }
+    .row-actions{ display:flex; gap:6px; }
 
-        .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .status-bar { padding: 14px 16px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; display: none; font-weight: 500; }
+    .status-success { display: block; background-color: rgba(37, 178, 99, 0.1); color: var(--toss-success); }
+    .status-error { display: block; background-color: rgba(240, 68, 82, 0.1); color: var(--toss-danger); }
+    .status-info { display: block; background-color: rgba(49, 130, 246, 0.1); color: var(--toss-blue); }
 
-        /* 폼 레이아웃 */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
+    .guide-box { background-color: #f1f7fe; border-radius: 14px; padding: 20px; margin-top: 12px; font-size: 13px; color: #3f51b5; line-height: 1.6; }
+    .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 10px; font-family: monospace; overflow-x: auto; margin-top: 10px; font-size: 12.5px; white-space:pre; }
+    details summary{ cursor:pointer; font-weight:700; padding: 6px 0; }
 
-        .full-width {
-            grid-column: span 2;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--toss-gray-600);
-        }
-
-        /* 인풋 스타일 */
-        input[type="text"],
-        input[type="date"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--toss-gray-200);
-            border-radius: 12px;
-            font-size: 15px;
-            background-color: #fff;
-            color: var(--toss-gray-800);
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--toss-blue);
-            box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.12);
-        }
-
-        textarea {
-            height: 180px;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-        /* 버튼 스타일 */
-        .btn-group {
-            margin-top: 12px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: background 0.2s ease;
-        }
-
-        .btn-primary {
-            background-color: var(--toss-blue);
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--toss-blue-hover);
-        }
-
-        .btn-secondary {
-            background-color: var(--toss-gray-100);
-            color: var(--toss-gray-600);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--toss-gray-200);
-        }
-
-        /* 테이블 미리보기 영역 */
-        .table-wrapper {
-            overflow-x: auto;
-            margin-top: 16px;
-            border: 1px solid var(--toss-gray-100);
-            border-radius: 14px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        th {
-            background-color: var(--toss-gray-100);
-            color: var(--toss-gray-600);
-            padding: 14px 16px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--toss-gray-100);
-            color: var(--toss-gray-800);
-            max-width: 250px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .empty-row {
-            text-align: center;
-            color: var(--toss-gray-600);
-            padding: 40px 0;
-        }
-
-        /* 상태 알림 바 */
-        .status-bar {
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-            font-weight: 500;
-        }
-        .status-success {
-            display: block;
-            background-color: rgba(37, 178, 99, 0.1);
-            color: var(--toss-success);
-        }
-
-        /* 가이드 탭 */
-        .guide-box {
-            background-color: #f1f7fe;
-            border-radius: 14px;
-            padding: 20px;
-            margin-top: 12px;
-            font-size: 13px;
-            color: #3f51b5;
-            line-height: 1.6;
-        }
-        .code-block {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 16px;
-            border-radius: 10px;
-            font-family: monospace;
-            overflow-x: auto;
-            margin-top: 10px;
-        }
-    </style>
+    .bar-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:13px; }
+    .bar-row .bar-label{ width:100px; flex-shrink:0; color:var(--toss-gray-600); }
+    .bar-row .bar-track{ flex:1; background:var(--toss-gray-100); border-radius:6px; height:10px; overflow:hidden; }
+    .bar-row .bar-fill{ height:100%; background:var(--toss-blue); border-radius:6px; }
+    .bar-row .bar-num{ width:60px; text-align:right; flex-shrink:0; font-weight:700; }
+</style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>데이터 업로드 센터</h1>
-        <p>구글 시트(work.xlsx 대시보드) 구조에 맞춰 정제된 콘텐츠 데이터를 편리하게 등록하세요.</p>
+        <div>
+            <h1>🛠️ 콘텐츠 관리 센터</h1>
+            <p>구글 시트와 실시간 연동되는 글 등록 · 수정 · 삭제 · 조회수 대시보드</p>
+        </div>
+        <a class="back-link" href="index.html">← 사이트로 돌아가기</a>
     </header>
 
-    <!-- 성공 알림창 -->
+    <!-- 성공/에러 알림창 -->
     <div id="statusBar" class="status-bar"></div>
+
+    <!-- 통계 대시보드 -->
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-label">전체 게시글</div>
+            <div class="stat-value" id="statTotalPosts">–</div>
+            <div class="stat-sub" id="statCategoryCount">카테고리 –개</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">총 누적 조회수</div>
+            <div class="stat-value" id="statTotalViews">–</div>
+            <div class="stat-sub">모든 글 합산</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">평균 조회수</div>
+            <div class="stat-value" id="statAvgViews">–</div>
+            <div class="stat-sub">게시글 1건당</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">최고 인기글</div>
+            <div class="stat-value" id="statTopPost" style="font-size:16px;line-height:1.4;">–</div>
+            <div class="stat-sub" id="statTopPostViews">조회수 –</div>
+        </div>
+    </div>
+
+    <!-- 카테고리별 조회수 분포 -->
+    <div class="card">
+        <div class="card-title">📊 카테고리별 조회수 분포</div>
+        <div id="categoryBars"><p style="color:var(--toss-gray-600);font-size:13px;">데이터를 불러오는 중…</p></div>
+    </div>
 
     <!-- 데이터 입력 카드 -->
     <div class="card">
-        <div class="card-title">📝 신규 데이터 입력</div>
+        <div class="card-title">
+            <span id="formTitle">📝 신규 게시글 등록</span>
+            <span class="sub-label" id="editingBadge"></span>
+        </div>
         <form id="dataForm">
             <div class="form-grid">
                 <div class="form-group">
                     <label for="id">콘텐츠 고유 ID</label>
-                    <input type="text" id="id" placeholder="예: s5" required>
+                    <input type="text" id="id" placeholder="예: 7" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="category">카테고리</label>
                     <select id="category" required>
@@ -266,6 +154,11 @@
                         <option value="4대보험">4대보험</option>
                         <option value="소득세">소득세</option>
                         <option value="퇴직금">퇴직금</option>
+                        <option value="연차">연차</option>
+                        <option value="연말정산">연말정산</option>
+                        <option value="실업급여">실업급여</option>
+                        <option value="최저임금">최저임금</option>
+                        <option value="노무상식">노무상식</option>
                         <option value="재테크">재테크</option>
                         <option value="기타">기타</option>
                     </select>
@@ -296,6 +189,11 @@
                     <input type="text" id="tags" placeholder="예: 재테크,CMA,투자소득">
                 </div>
 
+                <div class="form-group">
+                    <label for="views">조회수 (신규 등록 시 0 권장)</label>
+                    <input type="number" id="views" min="0" value="0">
+                </div>
+
                 <div class="form-group full-width">
                     <label for="content">본문 내용 (Markdown 작성 가능)</label>
                     <textarea id="content" placeholder="## 제목&#10;&#10;여기에 마크다운 문법이나 텍스트를 입력하세요."></textarea>
@@ -303,33 +201,29 @@
             </div>
 
             <div class="btn-group">
+                <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()">수정 취소</button>
                 <button type="button" class="btn btn-secondary" onclick="resetForm()">초기화</button>
-                <button type="submit" class="btn btn-primary">시트 전송 및 추가</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">시트에 등록하기</button>
             </div>
         </form>
     </div>
 
-    <!-- 로컬 대시보드 미리보기 -->
+    <!-- 게시글 목록 (구글 시트 실시간 연동) -->
     <div class="card">
-        <div class="card-title">👁‍🗨 임시 등록 데이터 확인 (미리보기)</div>
+        <div class="card-title">
+            📚 전체 게시글 목록
+            <span class="sub-label" id="listStatus">불러오는 중…</span>
+        </div>
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>카테고리</th>
-                        <th>이모지</th>
-                        <th>제목</th>
-                        <th>요약</th>
-                        <th>태그</th>
-                        <th>날짜</th>
-                        <th>본문 길이</th>
+                        <th>ID</th><th>카테고리</th><th></th><th>제목</th>
+                        <th>조회수</th><th>날짜</th><th style="text-align:right;">관리</th>
                     </tr>
                 </thead>
-                <tbody id="previewTableBody">
-                    <tr>
-                        <td colspan="8" class="empty-row">추가된 임시 데이터가 없습니다.</td>
-                    </tr>
+                <tbody id="listTableBody">
+                    <tr><td colspan="7" class="empty-row">불러오는 중…</td></tr>
                 </tbody>
             </table>
         </div>
@@ -337,129 +231,320 @@
 
     <!-- 구글 시트 백엔드 연동 가이드 -->
     <div class="card">
-        <div class="card-title">💡 실시간 구글 시트 연동 방법 안내</div>
-        <p>실제 구글 시트와 웹서버 없이 직결하려면 <strong>Google Apps Script (Web App)</strong>를 활용하시면 됩니다.</p>
+        <div class="card-title">💡 Google Apps Script 백엔드 설정 가이드</div>
+        <p style="font-size:14px;color:var(--toss-gray-600);">글 등록·수정·삭제·조회수 자동 증가가 모두 동작하려면, 구글 시트에 아래 스크립트를 배포해야 합니다. 기존에 <strong>생성(Create)</strong>만 지원하던 스크립트를 사용 중이라면, 아래 코드로 <strong>교체 배포</strong>해주세요.</p>
+        <details open>
+        <summary>전체 Apps Script 코드 보기 (doGet + doPost)</summary>
         <div class="guide-box">
             <strong>[세팅 방법]</strong><br>
-            1. 연동하고자 하는 구글 스프레드시트 열기 -> 상단 메뉴 <strong>[확장 프로그램] -> [Apps Script]</strong> 클릭<br>
-            2. 아래의 코드를 붙여넣고 저장한 뒤, 우측 상단 <strong>[배포] -> [새 배포]</strong> (유형: 웹 앱, 액세스 권한: 모든 사용자)로 배포 후 URL을 획득하세요.
-            <div class="code-block">
+            1. 연동할 구글 스프레드시트 열기 → 상단 메뉴 <strong>[확장 프로그램] → [Apps Script]</strong><br>
+            2. 기존 코드를 지우고 아래 코드를 붙여넣기<br>
+            3. 시트 1행(헤더)을 <code>id, category, emoji, title, summary, tags, date, content, views</code> 순서로 맞추기<br>
+            4. 우측 상단 <strong>[배포] → [새 배포]</strong> (유형: 웹 앱, 실행: 나, 액세스 권한: 모든 사용자) 후 URL 발급<br>
+            5. 발급받은 URL을 <code>assets/site.js</code> 파일의 <code>WEB_APP_URL</code> 값에 붙여넣기 (index.html, admin.html 전체에 자동 반영)
+            <div class="code-block" id="gasCode">function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var rows = data.slice(1).map(function(row) {
+    var obj = {};
+    headers.forEach(function(h, i) { obj[h] = row[i]; });
+    return obj;
+  });
+  return ContentService.createTextOutput(JSON.stringify({ result: "success", posts: rows }))
+                       .setMimeType(ContentService.MimeType.JSON);
+}
+
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
   var params = JSON.parse(e.postData.contents);
-  
-  // 데이터 구조에 맞춰 추가 [id, category, emoji, title, summary, tags, date, content]
-  sheet.appendRow([
-    params.id, 
-    params.category, 
-    params.emoji, 
-    params.title, 
-    params.summary, 
-    params.tags, 
-    params.date, 
-    params.content
-  ]);
-  
-  return ContentService.createTextOutput(JSON.stringify({"result":"success"}))
+  var action = params.action || "create";
+
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var idCol = headers.indexOf("id");
+
+  function findRowIndexById(id) {
+    for (var i = 1; i < data.length; i++) {
+      if (String(data[i][idCol]) === String(id)) return i + 1; // 시트 행번호(1-base)
+    }
+    return -1;
+  }
+
+  if (action === "create") {
+    sheet.appendRow([
+      params.id, params.category, params.emoji, params.title,
+      params.summary, params.tags, params.date, params.content,
+      params.views || 0
+    ]);
+  } else if (action === "update") {
+    var rowNum = findRowIndexById(params.id);
+    if (rowNum === -1) {
+      return ContentService.createTextOutput(JSON.stringify({ result: "error", message: "ID를 찾을 수 없습니다." }))
+                           .setMimeType(ContentService.MimeType.JSON);
+    }
+    var newRow = [
+      params.id, params.category, params.emoji, params.title,
+      params.summary, params.tags, params.date, params.content,
+      params.views != null ? params.views : data[rowNum - 1][headers.indexOf("views")]
+    ];
+    sheet.getRange(rowNum, 1, 1, newRow.length).setValues([newRow]);
+  } else if (action === "delete") {
+    var rowNum = findRowIndexById(params.id);
+    if (rowNum === -1) {
+      return ContentService.createTextOutput(JSON.stringify({ result: "error", message: "ID를 찾을 수 없습니다." }))
+                           .setMimeType(ContentService.MimeType.JSON);
+    }
+    sheet.deleteRow(rowNum);
+  } else if (action === "incrementView") {
+    var rowNum = findRowIndexById(params.id);
+    if (rowNum !== -1) {
+      var viewsCol = headers.indexOf("views") + 1;
+      var current = Number(sheet.getRange(rowNum, viewsCol).getValue()) || 0;
+      sheet.getRange(rowNum, viewsCol).setValue(current + 1);
+    }
+  }
+
+  return ContentService.createTextOutput(JSON.stringify({ result: "success" }))
                        .setMimeType(ContentService.MimeType.JSON);
-}
-            </div>
+}</div>
         </div>
+        </details>
     </div>
 </div>
 
+<script src="assets/site.js"></script>
 <script>
-    // 오늘 날짜 기본 세팅
+    const WEB_APP_URL = (window.SITE && SITE.WEB_APP_URL) || "";
+    const SHEET_ID    = (window.SITE && SITE.SHEET_ID) || "";
+    const SHEET_NAME  = (window.SITE && SITE.SHEET_NAME) || "시트1";
+
     document.getElementById('date').value = new Date().toISOString().substring(0, 10);
 
     const dataForm = document.getElementById('dataForm');
-    const previewTableBody = document.getElementById('previewTableBody');
     const statusBar = document.getElementById('statusBar');
+    let POSTS = [];       // 시트에서 불러온 전체 게시글
+    let editingId = null; // 현재 수정 중인 게시글 id (없으면 신규 등록 모드)
 
-    // 임시 저장 데이터 배열
-    let localDataList = [];
+    function showStatus(msg, type) {
+        statusBar.textContent = msg;
+        statusBar.className = "status-bar status-" + (type || "success");
+        clearTimeout(showStatus._t);
+        showStatus._t = setTimeout(() => { statusBar.style.display = 'none'; }, 4500);
+    }
 
-    dataForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+    function won(n){ return Math.round(n).toLocaleString('ko-KR'); }
 
-        // 폼 데이터 수집
-        const rowData = {
-            id: document.getElementById('id').value,
+    /* ---------------- 시트 목록 불러오기 (gviz, 읽기 전용) ---------------- */
+    function loadPosts() {
+        document.getElementById('listStatus').textContent = '불러오는 중…';
+        if (!SHEET_ID) {
+            document.getElementById('listStatus').textContent = 'SHEET_ID 미설정';
+            renderList([]);
+            renderStats([]);
+            return;
+        }
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(SHEET_NAME)}`;
+        fetch(url)
+            .then(r => r.text())
+            .then(text => {
+                const start = text.indexOf('(');
+                const end = text.lastIndexOf(')');
+                const data = JSON.parse(text.slice(start + 1, end));
+                const table = data.table;
+                const FIELD_NAMES = ['id','category','emoji','title','summary','tags','date','content','views'];
+                const rawLabels = (table.cols || []).map(c => (c.label || '').toLowerCase().trim());
+                const hasRealLabels = FIELD_NAMES.some(f => rawLabels.includes(f));
+                const cols = hasRealLabels ? rawLabels : FIELD_NAMES;
+                let rows = table.rows || [];
+                if ((table.parsedNumHeaders === 0 || table.parsedNumHeaders == null) && !hasRealLabels) rows = rows.slice(1);
+                POSTS = rows.filter(r => r && r.c && r.c.some(c => c && c.v != null)).map(r => {
+                    const obj = {};
+                    cols.forEach((col, i) => {
+                        const cell = (r.c && r.c[i] !== undefined) ? r.c[i] : null;
+                        obj[col] = (cell && cell.v != null) ? String(cell.v) : '';
+                    });
+                    return obj;
+                });
+                document.getElementById('listStatus').textContent = `총 ${POSTS.length}개`;
+                renderList(POSTS);
+                renderStats(POSTS);
+            })
+            .catch(err => {
+                document.getElementById('listStatus').textContent = '불러오기 실패';
+                showStatus('게시글 목록을 불러오지 못했습니다: ' + err.message, 'error');
+                renderList([]);
+                renderStats([]);
+            });
+    }
+
+    function renderList(posts) {
+        const body = document.getElementById('listTableBody');
+        if (!posts.length) {
+            body.innerHTML = `<tr><td colspan="7" class="empty-row">등록된 게시글이 없습니다.</td></tr>`;
+            return;
+        }
+        const sorted = [...posts].sort((a,b) => (Number(b.views)||0) - (Number(a.views)||0));
+        body.innerHTML = sorted.map(p => `
+            <tr data-id="${p.id}">
+                <td><strong>${p.id}</strong></td>
+                <td>${p.category || ''}</td>
+                <td>${p.emoji || ''}</td>
+                <td title="${p.title || ''}">${p.title || ''}</td>
+                <td class="view-badge">${won(Number(p.views)||0)}</td>
+                <td>${(p.date||'').substring(0,10)}</td>
+                <td>
+                    <div class="row-actions">
+                        <button class="btn btn-secondary btn-small" onclick="startEdit('${p.id}')">수정</button>
+                        <button class="btn btn-danger btn-small" onclick="deletePost('${p.id}')">삭제</button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function renderStats(posts) {
+        const total = posts.length;
+        const views = posts.map(p => Number(p.views)||0);
+        const totalViews = views.reduce((a,b)=>a+b, 0);
+        const avgViews = total ? Math.round(totalViews/total) : 0;
+        const cats = Array.from(new Set(posts.map(p=>p.category).filter(Boolean)));
+
+        document.getElementById('statTotalPosts').textContent = total.toLocaleString('ko-KR') + '개';
+        document.getElementById('statCategoryCount').textContent = `카테고리 ${cats.length}개`;
+        document.getElementById('statTotalViews').textContent = won(totalViews);
+        document.getElementById('statAvgViews').textContent = won(avgViews);
+
+        if (total) {
+            const top = [...posts].sort((a,b)=>(Number(b.views)||0)-(Number(a.views)||0))[0];
+            document.getElementById('statTopPost').textContent = top.title || '-';
+            document.getElementById('statTopPostViews').textContent = `조회수 ${won(Number(top.views)||0)}`;
+        } else {
+            document.getElementById('statTopPost').textContent = '-';
+            document.getElementById('statTopPostViews').textContent = '조회수 -';
+        }
+
+        // 카테고리별 조회수 막대그래프
+        const catViews = {};
+        posts.forEach(p => { catViews[p.category || '기타'] = (catViews[p.category || '기타']||0) + (Number(p.views)||0); });
+        const maxV = Math.max(1, ...Object.values(catViews));
+        const barsHtml = Object.entries(catViews).sort((a,b)=>b[1]-a[1]).map(([cat,v]) => `
+            <div class="bar-row">
+                <span class="bar-label">${cat}</span>
+                <span class="bar-track"><span class="bar-fill" style="width:${(v/maxV*100).toFixed(1)}%"></span></span>
+                <span class="bar-num">${won(v)}</span>
+            </div>
+        `).join('');
+        document.getElementById('categoryBars').innerHTML = barsHtml || '<p style="color:var(--toss-gray-600);font-size:13px;">데이터가 없습니다.</p>';
+    }
+
+    /* ---------------- 등록 / 수정 폼 제출 ---------------- */
+    function collectForm() {
+        return {
+            id: document.getElementById('id').value.trim(),
             category: document.getElementById('category').value,
             emoji: document.getElementById('emoji').value || '📝',
             title: document.getElementById('title').value,
             summary: document.getElementById('summary').value,
             tags: document.getElementById('tags').value,
             date: document.getElementById('date').value,
-            content: document.getElementById('content').value
+            content: document.getElementById('content').value,
+            views: parseInt(document.getElementById('views').value || '0', 10)
         };
-
-        // 1. [로컬 미리보기 반영]
-        localDataList.push(rowData);
-        updatePreviewTable();
-
-        // 2. [구글 시트 Apps Script 연동 전송 로직 예시]
-        // 실제 API 배포 후 아래 주석을 풀고 WEB_APP_URL에 주소를 넣으면 실시간 등록이 작동합니다.
-        
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwXpIy7yr56y__54oLOlyEjnPPL_ZFZiVydbAoVN64aFRDp8gTHm1e1w_8lCqchgc3p/exec";
-        fetch(WEB_APP_URL, {
-            method: "POST",
-            body: JSON.stringify(rowData)
-        })
-        .then(res => res.json())
-        .then(data => console.log("구글 시트 저장 성공:", data))
-        .catch(err => console.error("네트워크 에러:", err));
-        
-
-        // 성공 안내 발생
-        showStatus(`[${rowData.id}] "${rowData.title}" 데이터가 성공적으로 등록되었습니다!`);
-        
-        // 데이터 ID 자동 증분 편의기능을 위해 일부분만 초기화
-        document.getElementById('title').value = '';
-        document.getElementById('summary').value = '';
-        document.getElementById('tags').value = '';
-        document.getElementById('content').value = '';
-        document.getElementById('id').value = 's' + (localDataList.length + 5); // 예시 id 자동 세팅
-    });
-
-    function updatePreviewTable() {
-        if (localDataList.length === 0) {
-            previewTableBody.innerHTML = `<tr><td colspan="8" class="empty-row">추가된 임시 데이터가 없습니다.</td></tr>`;
-            return;
-        }
-
-        let html = '';
-        // 최신 데이터가 위로 오도록 역순 출력
-        for (let i = localDataList.length - 1; i >= 0; i--) {
-            const item = localDataList[i];
-            html += `
-                <tr>
-                    <td><strong>${item.id}</strong></td>
-                    <td>${item.category}</td>
-                    <td>${item.emoji}</td>
-                    <td title="${item.title}">${item.title}</td>
-                    <td title="${item.summary}">${item.summary}</td>
-                    <td>${item.tags}</td>
-                    <td>${item.date}</td>
-                    <td>${item.content ? item.content.length + '자' : '0자'}</td>
-                </tr>
-            `;
-        }
-        previewTableBody.innerHTML = html;
     }
 
-    function showStatus(msg) {
-        statusBar.textContent = msg;
-        statusBar.className = "status-bar status-success";
-        setTimeout(() => {
-            statusBar.style.display = 'none';
-        }, 4000);
+    function callGAS(payload) {
+        if (!WEB_APP_URL) {
+            return Promise.reject(new Error('WEB_APP_URL이 설정되지 않았습니다. assets/site.js를 확인하세요.'));
+        }
+        return fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) })
+            .then(res => res.json());
+    }
+
+    dataForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const rowData = collectForm();
+        if (!rowData.id || !rowData.title || !rowData.category) {
+            showStatus('ID, 카테고리, 제목은 필수 입력값입니다.', 'error');
+            return;
+        }
+        const action = editingId ? 'update' : 'create';
+        const payload = Object.assign({ action }, rowData);
+
+        callGAS(payload)
+            .then(res => {
+                if (res && res.result === 'error') throw new Error(res.message || '처리 실패');
+                showStatus(editingId
+                    ? `[${rowData.id}] "${rowData.title}" 게시글이 수정되었습니다.`
+                    : `[${rowData.id}] "${rowData.title}" 게시글이 등록되었습니다.`, 'success');
+                cancelEdit();
+                loadPosts();
+            })
+            .catch(err => {
+                showStatus('전송 실패: ' + err.message + ' (Apps Script 배포 및 WEB_APP_URL 설정을 확인하세요)', 'error');
+            });
+    });
+
+    function startEdit(id) {
+        const post = POSTS.find(p => String(p.id) === String(id));
+        if (!post) return;
+        editingId = id;
+        document.getElementById('id').value = post.id;
+        document.getElementById('id').readOnly = true;
+        document.getElementById('category').value = post.category || '';
+        document.getElementById('emoji').value = post.emoji || '';
+        document.getElementById('date').value = (post.date||'').substring(0,10) || new Date().toISOString().substring(0,10);
+        document.getElementById('title').value = post.title || '';
+        document.getElementById('summary').value = post.summary || '';
+        document.getElementById('tags').value = post.tags || '';
+        document.getElementById('content').value = post.content || '';
+        document.getElementById('views').value = Number(post.views)||0;
+
+        document.getElementById('formTitle').textContent = '✏️ 게시글 수정';
+        document.getElementById('editingBadge').textContent = `ID: ${post.id} 수정 중`;
+        document.getElementById('submitBtn').textContent = '수정 내용 저장';
+        document.getElementById('cancelEditBtn').style.display = 'inline-block';
+        window.scrollTo({ top: dataForm.offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function cancelEdit() {
+        editingId = null;
+        document.getElementById('id').readOnly = false;
+        document.getElementById('formTitle').textContent = '📝 신규 게시글 등록';
+        document.getElementById('editingBadge').textContent = '';
+        document.getElementById('submitBtn').textContent = '시트에 등록하기';
+        document.getElementById('cancelEditBtn').style.display = 'none';
+        resetForm();
+    }
+
+    function deletePost(id) {
+        const post = POSTS.find(p => String(p.id) === String(id));
+        if (!post) return;
+        if (!confirm(`[${id}] "${post.title}" 게시글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`)) return;
+
+        callGAS({ action: 'delete', id })
+            .then(res => {
+                if (res && res.result === 'error') throw new Error(res.message || '삭제 실패');
+                showStatus(`[${id}] 게시글이 삭제되었습니다.`, 'success');
+                if (editingId === id) cancelEdit();
+                loadPosts();
+            })
+            .catch(err => showStatus('삭제 실패: ' + err.message, 'error'));
     }
 
     function resetForm() {
         dataForm.reset();
         document.getElementById('date').value = new Date().toISOString().substring(0, 10);
+        document.getElementById('views').value = 0;
     }
+
+    // 전역 노출 (인라인 onclick에서 호출)
+    window.startEdit = startEdit;
+    window.deletePost = deletePost;
+    window.cancelEdit = cancelEdit;
+    window.resetForm = resetForm;
+
+    loadPosts();
 </script>
 </body>
 </html>

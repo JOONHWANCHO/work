@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>연차수당 계산기 | 모두의 계산기 — 연차 발생일수·미사용연차수당 자동계산</title>
-<meta name="description" content="입사일 기준으로 연차 발생 개수와 미사용 연차수당을 자동으로 계산합니다. 근로기준법 기준, 직장인을 위한 무료 연차 계산기.">
-<meta name="keywords" content="연차수당 계산기, 연차 계산기, 연차 발생 개수, 미사용 연차수당, 연차 공식, 입사일 연차">
-<link rel="canonical" href="https://paycal.kr/annual-leave.html">
+<title>실업급여(구직급여) 계산기 | 모두의 계산기 — 상한액·하한액·소정급여일수 자동계산</title>
+<meta name="description" content="평균임금·나이·고용보험 가입기간을 입력하면 2026년 기준 실업급여(구직급여) 예상 수급액과 소정급여일수를 자동으로 계산합니다. 무료 실업급여 계산기.">
+<meta name="keywords" content="실업급여 계산기, 구직급여 계산기, 실업급여 조건, 실업급여 금액, 소정급여일수, 구직급여 상한액, 구직급여 하한액">
+<link rel="canonical" href="https://paycal.kr/unemployment.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2320283D'/%3E%3Ctext x='50' y='62' font-size='40' text-anchor='middle' fill='%23B23A2D'%3E%E5%8B%9E%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="모두의 계산기">
-<meta property="og:title" content="연차수당 계산기 | 모두의 계산기">
-<meta property="og:description" content="입사일 기준으로 연차 발생 개수와 미사용 연차수당을 자동으로 계산합니다.">
-<meta property="og:url" content="https://paycal.kr/annual-leave.html">
+<meta property="og:title" content="실업급여(구직급여) 계산기 | 모두의 계산기">
+<meta property="og:description" content="평균임금·나이·가입기간을 입력하면 실업급여 예상 수급액과 지급일수를 자동으로 계산합니다.">
+<meta property="og:url" content="https://paycal.kr/unemployment.html">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#20283D">
@@ -35,16 +35,16 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
 :root{
-  --paper:#ECEFE3;--paper-deep:#E2E6D4;--surface:#FFFFFF;
-  --ink:#20283D;--ink-soft:#5B6478;--ink-faint:#8A93A3;
-  --line:#C7CCB6;--line-soft:#D9DCCB;
-  --stamp:#B23A2D;--stamp-deep:#8F2C22;
-  --gold:#93711C;--gold-bg:#F4ECD6;
+  --paper:#ECEFE3; --paper-deep:#E2E6D4; --surface:#FFFFFF;
+  --ink:#20283D; --ink-soft:#5B6478; --ink-faint:#8A93A3;
+  --line:#C7CCB6; --line-soft:#D9DCCB;
+  --stamp:#B23A2D; --stamp-deep:#8F2C22;
+  --gold:#93711C; --gold-bg:#F4ECD6;
   --font-serif:'Noto Serif KR',serif;
   --font-body:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
   --font-mono:'IBM Plex Mono',monospace;
 }
-*{box-sizing:border-box;}html{scroll-behavior:smooth;}
+*{box-sizing:border-box;} html{scroll-behavior:smooth;}
 body{margin:0;background:var(--paper);background-image:linear-gradient(var(--line-soft) 1px,transparent 1px);background-size:100% 42px;color:var(--ink);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
 header.site{background:var(--ink);color:var(--paper);border-bottom:6px double var(--stamp);}
@@ -56,10 +56,10 @@ header.site{background:var(--ink);color:var(--paper);border-bottom:6px double va
 nav.tools{display:flex;gap:8px;flex-wrap:wrap;}
 @media(max-width:760px){ nav.tools{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; } nav.tools::-webkit-scrollbar{ display:none; } nav.tools .tab{ flex-shrink:0; } }
 
-nav.tools .tab{font-size:13px;padding:7px 12px;border-radius:3px;border:1px solid rgba(255,255,255,.18);color:#C7CDDB;text-decoration:none;}
+nav.tools .tab{font-size:13px;padding:7px 12px;border-radius:3px;border:1px solid rgba(255,255,255,.18);color:#C7CDDB;text-decoration:none;cursor:pointer;}
 nav.tools .tab.active{background:var(--stamp);border-color:var(--stamp);color:#fff;font-weight:600;}
 nav.tools .tab:hover:not(.active){background:rgba(255,255,255,.08);}
-.ad-slot{border:1px dashed var(--ink-faint);background:rgba(255,255,255,.5);color:var(--ink-faint);display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.05em;border-radius:4px;margin:28px auto;}
+.ad-slot{border:1px dashed var(--ink-faint);background:rgba(255,255,255,.5);color:var(--ink-faint);display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.05em;border-radius:4px;margin:28px auto;overflow:hidden;}
 .ad-slot span{padding:4px 10px;}
 .ad-slot.leaderboard{max-width:1080px;min-height:90px;}
 .ad-slot.rectangle{max-width:336px;min-height:280px;}
@@ -82,8 +82,9 @@ main{padding:32px 0 64px;}
 .input-unit input[type="date"]{font-family:var(--font-body);font-size:14px;font-weight:500;}
 .input-unit input:focus,.input-unit select:focus{border-color:var(--ink);}
 .input-unit .unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--ink-faint);pointer-events:none;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:520px){.two-col{grid-template-columns:1fr;}}
+@media(max-width:600px){.three-col{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}}
 .stamp-btn{width:100%;margin-top:6px;background:var(--stamp);color:#fff;border:none;border-radius:6px;padding:14px;font-size:15.5px;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:transform .08s,background .15s;}
 .stamp-btn:hover{background:var(--stamp-deep);}
 .stamp-btn:active{transform:scale(.98);}
@@ -91,18 +92,17 @@ main{padding:32px 0 64px;}
 .result-card .doc-label{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;margin:0 0 4px;}
 .result-card h3{font-family:var(--font-serif);font-size:16px;margin:0 0 4px;}
 .result-card .sub{font-size:12.5px;color:var(--ink-faint);margin:0 0 18px;}
-.net-amount{background:var(--gold-bg);border:1px solid #E1D3A0;border-radius:8px;padding:18px 20px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;}
+.net-amount{background:var(--gold-bg);border:1px solid #E1D3A0;border-radius:8px;padding:18px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;}
 .net-amount .label{font-size:13px;color:var(--ink-soft);font-weight:600;}
 .net-amount .value{font-family:var(--font-mono);font-weight:700;font-size:clamp(22px,3.4vw,30px);color:var(--gold);}
 .net-amount .value small{font-size:13px;font-weight:500;color:var(--ink-soft);}
 table.ledger{width:100%;border-collapse:collapse;font-size:13.5px;}
 table.ledger th{text-align:left;font-weight:600;color:var(--ink-soft);padding:9px 4px;border-bottom:1px solid var(--ink);font-size:12px;}
 table.ledger td{padding:9px 4px;border-bottom:1px solid var(--line-soft);font-family:var(--font-mono);}
-table.ledger td.lbl{font-family:var(--font-body);font-size:13px;}
 table.ledger td.amt{text-align:right;}
 table.ledger tr.total td{border-top:2px solid var(--ink);border-bottom:none;font-weight:700;padding-top:12px;}
+table.ledger tr.deduct-total td{font-weight:700;color:var(--stamp-deep);}
 table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var(--gold);}
-.year-row td{font-size:12.5px;color:var(--ink-soft);}
 .stamp-mark{position:absolute;top:22px;right:22px;width:78px;height:78px;border-radius:50%;border:2.5px solid var(--stamp);color:var(--stamp);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-family:var(--font-serif);font-weight:900;font-size:12px;line-height:1.25;transform:rotate(-12deg) scale(0);opacity:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .25s;pointer-events:none;}
 .stamp-mark.show{transform:rotate(-12deg) scale(1);opacity:.92;}
 .placeholder-msg{color:var(--ink-faint);font-size:13.5px;padding:30px 4px;text-align:center;border:1px dashed var(--line);border-radius:8px;}
@@ -147,6 +147,7 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
   .footer-legal-links{ display:flex; gap:16px; flex-wrap:wrap; }
   .footer-legal-links a{ color:#636C7E; text-decoration:none; }
   .footer-legal-links a:hover{ color:var(--paper); }
+.badge-service{display:inline-block;background:var(--paper-deep);border:1px solid var(--line);border-radius:4px;font-size:11px;color:var(--ink-faint);padding:2px 7px;margin-left:6px;vertical-align:middle;}
 </style>
 </head>
 <body>
@@ -163,9 +164,9 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
       <a href="index.html" class="tab">홈</a>
       <a href="salary.html" class="tab">연봉 실수령액</a>
       <a href="retirement.html" class="tab">퇴직금 계산기</a>
-      <a href="annual-leave.html" class="tab active">연차수당 계산기</a>
+      <a href="annual-leave.html" class="tab">연차수당 계산기</a>
       <a href="year-end-tax.html" class="tab">연말정산 미리보기</a>
-      <a href="unemployment.html" class="tab">실업급여 계산기</a>
+      <a href="unemployment.html" class="tab active">실업급여 계산기</a>
       <a href="minimum-wage.html" class="tab">최저임금 계산기</a>
     </nav>
   </div>
@@ -177,92 +178,106 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
 
 <main class="wrap">
   <section class="tool-head">
-    <p class="eyebrow">ANNUAL LEAVE · 연차발생 · 미사용수당</p>
-    <h2>연차수당 계산기</h2>
-    <p>입사일을 입력하면 연도별 연차 발생 개수를 자동으로 계산하고, 1일 통상임금과 미사용 연차일수로 수당도 함께 계산합니다. 근로기준법 제60조 기준입니다.</p>
+    <p class="eyebrow">UNEMPLOYMENT · 구직급여 · 소정급여일수</p>
+    <h2>실업급여(구직급여) 계산기</h2>
+    <p>퇴직 전 3개월 평균임금과 나이, 고용보험 가입기간을 입력하면 1일 구직급여액과 총 예상 수급액을 계산합니다. 2026년 1월 1일 이후 이직자 기준 상한액·하한액을 반영했습니다.</p>
   </section>
 
   <div class="calc-grid">
+    <!-- 입력 카드 -->
     <div class="card">
-      <h3>입사일 &amp; 통상임금 입력</h3>
+      <h3>퇴직 정보 입력</h3>
+
+      <div class="field">
+        <label for="avgWage3M">퇴직 전 3개월 총 임금</label>
+        <div class="input-unit">
+          <input type="text" inputmode="numeric" id="avgWage3M" placeholder="예: 900" value="900">
+          <span class="unit">만원</span>
+        </div>
+        <p class="hint">퇴직 전 3개월간 받은 세전 임금 합계 (상여금 제외 기본급+수당)</p>
+      </div>
+
+      <div class="field">
+        <label for="calDays">해당 기간 총 일수</label>
+        <div class="input-unit">
+          <input type="text" inputmode="numeric" id="calDays" placeholder="예: 91" value="91">
+          <span class="unit">일</span>
+        </div>
+        <p class="hint">보통 89~92일. 급여명세서 기준 3개월 달력일수를 입력하세요.</p>
+      </div>
 
       <div class="two-col">
         <div class="field">
-          <label for="joinDate">입사일</label>
+          <label for="age">퇴직 당시 만 나이</label>
           <div class="input-unit">
-            <input type="date" id="joinDate">
+            <input type="text" inputmode="numeric" id="age" placeholder="예: 35" value="35">
+            <span class="unit">세</span>
           </div>
         </div>
         <div class="field">
-          <label for="baseDate">기준일 (오늘)</label>
+          <label for="isDisabled">장애인 여부</label>
           <div class="input-unit">
-            <input type="date" id="baseDate">
+            <select id="isDisabled">
+              <option value="0" selected>해당 없음</option>
+              <option value="1">장애인</option>
+            </select>
           </div>
-          <p class="hint">연차 발생을 확인할 날짜</p>
         </div>
       </div>
 
       <div class="field">
-        <label for="monthlyBase">월 기본급</label>
+        <label for="insuredYears">고용보험 가입기간</label>
         <div class="input-unit">
-          <input type="text" inputmode="numeric" id="monthlyBase" placeholder="3,000">
-          <span class="unit">만원</span>
+          <select id="insuredYears">
+            <option value="0.5">1년 미만</option>
+            <option value="2" selected>1년 이상 ~ 3년 미만</option>
+            <option value="4">3년 이상 ~ 5년 미만</option>
+            <option value="7">5년 이상 ~ 10년 미만</option>
+            <option value="10">10년 이상</option>
+          </select>
         </div>
+        <p class="hint">여러 직장의 가입기간을 합산한 피보험기간 기준입니다.</p>
       </div>
 
-      <div class="field">
-        <label for="monthlyAllowance">고정 수당 합계 (월)</label>
-        <div class="input-unit">
-          <input type="text" inputmode="numeric" id="monthlyAllowance" placeholder="0">
-          <span class="unit">만원</span>
-        </div>
-        <p class="hint">직책수당·직무수당 등 매달 고정 지급되는 수당. 식대 등 비과세 수당은 제외합니다.</p>
-      </div>
-
-      <div class="field">
-        <label for="unusedDays">미사용 연차 일수</label>
-        <div class="input-unit">
-          <input type="text" inputmode="numeric" id="unusedDays" placeholder="0">
-          <span class="unit">일</span>
-        </div>
-        <p class="hint">수당 청구 가능한 잔여 연차 일수를 입력하세요.</p>
-      </div>
-
-      <button class="stamp-btn" id="calcBtn">연차수당 계산하기</button>
+      <button class="stamp-btn" id="calcBtn">실업급여 계산하기</button>
+      <p class="hint" style="margin-top:12px;">본 계산기는 수급자격 인정을 전제로 한 추정치이며, 실제 수급 여부와는 무관합니다.</p>
     </div>
 
+    <!-- 결과 카드 -->
     <div class="result-card">
       <div class="stamp-mark" id="stampMark">계산<br>완료</div>
-      <p class="doc-label">ANNUAL LEAVE STATEMENT</p>
-      <h3>연차 발생 현황</h3>
-      <p class="sub" id="resultSub">입사일과 임금 정보를 입력하고 계산하기를 눌러주세요.</p>
+      <p class="doc-label">UNEMPLOYMENT BENEFIT ESTIMATE</p>
+      <h3>구직급여 명세 (추정)</h3>
+      <p class="sub" id="resultSub">좌측 정보를 입력하고 계산하기를 눌러주세요.</p>
       <div id="resultBody">
-        <div class="placeholder-msg">입사일을 입력하고<br>[연차수당 계산하기]를 눌러주세요.</div>
+        <div class="placeholder-msg">퇴직 정보를 입력하고<br>[실업급여 계산하기]를 눌러주세요.</div>
       </div>
     </div>
   </div>
 
   <!-- <div class="ad-slot rectangle"><span>광고 영역 · AdSense Rectangle (336×280)</span></div> -->
 
+  <!-- 정보 섹션 -->
   <section class="info-section">
-    <h2>연차휴가, 어떻게 발생하나요?</h2>
-    <p class="updated">근로기준법 제60조 기준</p>
+    <h2>실업급여, 어떻게 계산되나요?</h2>
+    <p class="updated">2026년 1월 1일 이후 이직자 기준 · 고용보험법 제45~48조</p>
     <div class="prose">
       <div class="formula-box">
-        미사용 연차수당 = 1일 통상임금 × 미사용 연차일수<br>
-        1일 통상임금 = (월 기본급 + 고정수당) ÷ 209시간 × 8시간
+        구직급여 총액 = 1일 구직급여액 × 소정급여일수<br>
+        1일 구직급여액 = 기초일액(퇴직 전 3개월 평균임금) × 60%
       </div>
-      <h3>연차 발생 규칙 요약</h3>
+      <h3>상한액·하한액</h3>
+      <p>계산된 1일 구직급여액이 <strong>68,100원</strong>(기초일액 상한 113,500원 기준)을 넘으면 상한액만, <strong>66,048원</strong>(2026년 최저임금 10,320원의 80%×8시간)보다 낮으면 하한액만큼 보장됩니다.</p>
+      <h3>소정급여일수 (지급일수)</h3>
       <table>
-        <tr><th>재직 기간</th><th>연차 발생</th></tr>
-        <tr><td>입사 1년 미만</td><td>매월 만근 시 1일씩 발생 (최대 11일)</td></tr>
-        <tr><td>만 1년 이상</td><td>15일 (입사 1주년에 15일 발생)</td></tr>
-        <tr><td>3년 이상</td><td>16일 (이후 2년마다 1일씩 추가)</td></tr>
-        <tr><td>최대</td><td>25일 (21년 이상 근속 시 상한)</td></tr>
+        <tr><th>가입기간</th><th>50세 미만</th><th>50세 이상·장애인</th></tr>
+        <tr><td>1년 미만</td><td>120일</td><td>120일</td></tr>
+        <tr><td>1년 ~ 3년 미만</td><td>150일</td><td>180일</td></tr>
+        <tr><td>3년 ~ 5년 미만</td><td>180일</td><td>210일</td></tr>
+        <tr><td>5년 ~ 10년 미만</td><td>210일</td><td>240일</td></tr>
+        <tr><td>10년 이상</td><td>240일</td><td>270일</td></tr>
       </table>
-      <h3>연차수당이란?</h3>
-      <p>사용기간 내에 쓰지 못한 연차휴가에 대해 회사는 1일 통상임금을 지급할 의무가 있습니다. 연차는 발생일로부터 1년 이내에 사용하지 않으면 소멸하며, 회사가 사용촉진 의무를 이행한 경우에는 수당 지급 의무가 면제될 수 있습니다.</p>
-      <div class="disclaimer">⚠️ 상시 5인 미만 사업장의 경우 연차 규정이 적용되지 않습니다. 또한 입사 1년 미만 연차를 1년치 연차에서 차감하는 방식(구 규정)과 별도로 부여하는 방식(현행)을 구분해야 합니다. 이 계산기는 현행 근로기준법을 기준으로 합니다.</div>
+      <div class="disclaimer">⚠️ 실업급여(구직급여)는 비자발적 퇴직 등 수급자격 요건(고용보험 가입 180일 이상 등)을 충족해야 지급됩니다. 정확한 수급자격과 금액은 고용24(work24.go.kr) 또는 고용보험 홈페이지의 모의계산을 통해 확인하세요.</div>
     </div>
   </section>
 
@@ -311,7 +326,9 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
 <script>
 (function(){
   "use strict";
+
   function won(n){return Math.round(n).toLocaleString('ko-KR');}
+
   function attachCommaFormat(id){
     const el=document.getElementById(id);
     if(!el)return;
@@ -320,98 +337,73 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
       el.value=d===''?'':parseInt(d,10).toLocaleString('ko-KR');
     });
   }
-  ['monthlyBase','monthlyAllowance','unusedDays'].forEach(attachCommaFormat);
+  ['avgWage3M'].forEach(attachCommaFormat);
 
-  const today=new Date();
-  const fmt=(d)=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  document.getElementById('baseDate').value=fmt(today);
-  const join=new Date(today); join.setFullYear(today.getFullYear()-2);
-  document.getElementById('joinDate').value=fmt(join);
+  // 2026년 기준 구직급여 상/하한액 (1일)
+  const DAILY_CAP  = 68100;  // 상한액
+  const DAILY_FLOOR= 66048;  // 하한액 (2026년 최저임금 10,320원 × 80% × 8시간)
 
-  // 연도별 연차 계산 (근로기준법 제60조)
-  function calcAnnualLeave(joinDate, baseDate){
-    const rows=[];
-    const joinMs=joinDate.getTime();
-    const baseMs=baseDate.getTime();
-    const totalDays=Math.floor((baseMs-joinMs)/(86400000));
-    if(totalDays<0) return {rows,totalEarned:0};
+  // 소정급여일수 테이블 [1년미만,1~3년,3~5년,5~10년,10년이상]
+  const DAYS_TABLE = {
+    under50: [120,150,180,210,240],
+    over50 : [120,180,210,240,270]
+  };
 
-    // 1년 미만: 월 1일씩 최대 11일
-    let totalEarned=0;
-    for(let m=1;m<=11;m++){
-      const nextMonth=new Date(joinDate);
-      nextMonth.setMonth(nextMonth.getMonth()+m);
-      if(nextMonth>baseDate) break;
-      rows.push({label:`입사 ${m}개월`, days:1, note:'월 만근 시 1일'});
-      totalEarned+=1;
-    }
-
-    // 1년 이상: 15일 + 2년마다 1일 추가, 최대 25일
-    for(let yr=1;;yr++){
-      const anniversary=new Date(joinDate);
-      anniversary.setFullYear(anniversary.getFullYear()+yr);
-      if(anniversary>baseDate) break;
-      const extraYears=Math.max(0,Math.floor((yr-1)/2));
-      const days=Math.min(15+extraYears,25);
-      rows.push({label:`${yr}주년`, days, note:`근속 ${yr}년차 연차`});
-      totalEarned+=days;
-    }
-    return {rows,totalEarned};
+  function insuredBracketIndex(years){
+    if(years<1) return 0;
+    if(years<3) return 1;
+    if(years<5) return 2;
+    if(years<10)return 3;
+    return 4;
   }
 
   document.getElementById('calcBtn').addEventListener('click',function(){
-    const joinDate=new Date(document.getElementById('joinDate').value);
-    const baseDate=new Date(document.getElementById('baseDate').value);
-    if(isNaN(joinDate)||isNaN(baseDate)){alert('날짜를 올바르게 입력해주세요.');return;}
-    if(baseDate<joinDate){alert('기준일이 입사일보다 이전입니다.');return;}
+    const parseNum=(id)=>parseInt(document.getElementById(id).value.replace(/[^0-9]/g,'')||'0',10);
+    const wage3M = parseNum('avgWage3M')*10000;
+    const calDays = Math.max(parseInt(document.getElementById('calDays').value||'91',10), 1);
+    const age = parseInt(document.getElementById('age').value||'0',10);
+    const isDisabled = document.getElementById('isDisabled').value === '1';
+    const insuredYears = parseFloat(document.getElementById('insuredYears').value);
 
-    const parse=(id)=>parseInt(document.getElementById(id).value.replace(/[^0-9]/g,'')||'0',10)*10000;
-    const monthlyBase=parse('monthlyBase');
-    const monthlyAllowance=parse('monthlyAllowance');
-    const unusedDays=parseInt(document.getElementById('unusedDays').value.replace(/[^0-9]/g,'')||'0',10);
+    if(wage3M<=0){
+      alert('퇴직 전 3개월 총 임금을 입력해주세요.'); return;
+    }
 
-    // 1일 통상임금
-    const monthlyTotal=monthlyBase+monthlyAllowance;
-    const dailyWage=monthlyTotal/209*8;
-    const totalAllowance=dailyWage*unusedDays;
+    const baseWage = wage3M/calDays; // 기초일액(평균임금)
+    let dailyBenefit = baseWage*0.6;
+    let appliedRule = '평균임금의 60%';
+    if(dailyBenefit>DAILY_CAP){ dailyBenefit=DAILY_CAP; appliedRule='상한액 적용'; }
+    else if(dailyBenefit<DAILY_FLOOR){ dailyBenefit=DAILY_FLOOR; appliedRule='하한액 적용'; }
 
-    const workDays=Math.floor((baseDate-joinDate)/86400000);
-    const yrs=Math.floor(workDays/365);
-    const mos=Math.floor((workDays%365)/30);
+    const use50Table = age>=50 || isDisabled;
+    const idx = insuredBracketIndex(insuredYears);
+    const payDays = (use50Table?DAYS_TABLE.over50:DAYS_TABLE.under50)[idx];
 
-    const {rows,totalEarned}=calcAnnualLeave(joinDate,baseDate);
+    const totalBenefit = dailyBenefit*payDays;
+    const monthlyApprox = dailyBenefit*30;
 
-    // 현재 연도 연차만 따로 표시
-    const currentYearLeave=rows.length>0?rows[rows.length-1].days:0;
-
-    document.getElementById('resultSub').textContent=`입사 후 ${yrs}년 ${mos}개월 경과 기준 연차 현황`;
-
-    let tableRows='';
-    rows.forEach(r=>{
-      tableRows+=`<tr class="year-row"><td class="lbl">${r.label}</td><td class="amt">${r.days}일</td></tr>`;
-    });
+    document.getElementById('resultSub').textContent=`가입기간 구간 · ${use50Table?'50세 이상/장애인':'50세 미만'} 기준 예상 수급`;
 
     document.getElementById('resultBody').innerHTML=`
       <div class="net-amount">
-        <span class="label">미사용 연차수당 (추정)</span>
-        <span class="value">${won(totalAllowance)}<small> 원</small></span>
+        <span class="label">총 예상 수급액</span>
+        <span class="value">${won(totalBenefit)}<small> 원</small></span>
       </div>
       <table class="ledger">
-        <tr><th>항목</th><th style="text-align:right;">금액 / 일수</th></tr>
-        <tr><td class="lbl">1일 통상임금</td><td class="amt">${won(dailyWage)} 원</td></tr>
-        <tr><td class="lbl">미사용 연차</td><td class="amt">${unusedDays} 일</td></tr>
-        <tr class="highlight"><td class="lbl">미사용 연차수당</td><td class="amt">${won(totalAllowance)} 원</td></tr>
-      </table>
-      <div style="margin-top:18px;font-family:var(--font-serif);font-size:14px;font-weight:700;padding-bottom:8px;border-bottom:1px solid var(--ink);">연도별 연차 발생 내역</div>
-      <table class="ledger" style="margin-top:4px;">
-        <tr><th>시점</th><th style="text-align:right;">발생 연차</th></tr>
-        ${tableRows}
-        <tr class="total"><td class="lbl">누적 발생 연차</td><td class="amt">${totalEarned} 일</td></tr>
+        <tr><th>항목</th><th style="text-align:right;">금액</th></tr>
+        <tr><td>1일 평균임금(기초일액)</td><td class="amt">${won(baseWage)} 원</td></tr>
+        <tr><td>적용 기준</td><td class="amt">${appliedRule}</td></tr>
+        <tr class="highlight"><td>1일 구직급여액</td><td class="amt">${won(dailyBenefit)} 원</td></tr>
+        <tr><td>소정급여일수</td><td class="amt">${payDays} 일</td></tr>
+        <tr><td>월 환산 예상액(참고)</td><td class="amt">${won(monthlyApprox)} 원</td></tr>
+        <tr class="total"><td>총 예상 수급액</td><td class="amt">${won(totalBenefit)} 원</td></tr>
       </table>
     `;
 
     const stamp=document.getElementById('stampMark');
-    stamp.classList.remove('show'); void stamp.offsetWidth; stamp.classList.add('show');
+    stamp.classList.remove('show');
+    void stamp.offsetWidth;
+    stamp.classList.add('show');
   });
 
   document.getElementById('calcBtn').click();
