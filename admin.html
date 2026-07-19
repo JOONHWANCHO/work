@@ -88,17 +88,62 @@
     .bar-row .bar-track{ flex:1; background:var(--toss-gray-100); border-radius:6px; height:10px; overflow:hidden; }
     .bar-row .bar-fill{ height:100%; background:var(--toss-blue); border-radius:6px; }
     .bar-row .bar-num{ width:60px; text-align:right; flex-shrink:0; font-weight:700; }
+    /* 읽기 전용(자동 생성) 필드 표시 */
+    input[readonly] { background-color: var(--toss-gray-100); color: var(--toss-gray-600); cursor: not-allowed; }
+    .field-hint { font-size: 12px; color: var(--toss-gray-600); margin-top: 2px; }
+
+    /* 로그인 게이트 */
+    #loginGate {
+        min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .login-card {
+        width: 100%; max-width: 360px; background: #fff; border-radius: 24px; padding: 36px 32px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03); text-align: center;
+    }
+    .login-card .login-icon { font-size: 34px; margin-bottom: 10px; }
+    .login-card h2 { font-size: 20px; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.3px; }
+    .login-card p { font-size: 13.5px; color: var(--toss-gray-600); margin-bottom: 22px; line-height: 1.5; }
+    .login-card input[type="password"] {
+        width: 100%; padding: 14px 16px; border: 1px solid var(--toss-gray-200); border-radius: 12px;
+        font-size: 15px; outline: none; text-align: center; letter-spacing: 2px;
+    }
+    .login-card input[type="password"]:focus { border-color: var(--toss-blue); box-shadow: 0 0 0 3px rgba(49,130,246,.12); }
+    .login-card .btn-primary { width: 100%; margin-top: 14px; padding: 14px; }
+    .login-card .login-error {
+        margin-top: 12px; font-size: 13px; color: var(--toss-danger); min-height: 18px;
+    }
+    .login-card .back-link { display: inline-block; margin-top: 18px; font-size: 12.5px; color: var(--toss-gray-600); text-decoration: none; }
+    .login-card .back-link:hover { color: var(--toss-blue); }
+    #adminApp { display: none; }
 </style>
 </head>
 <body>
 
+<div id="loginGate">
+    <div class="login-card">
+        <div class="login-icon">🔒</div>
+        <h2>관리자 로그인</h2>
+        <p>비밀번호를 입력하면 콘텐츠 관리 센터에 접속할 수 있습니다.</p>
+        <form id="loginForm">
+            <input type="password" id="loginPassword" placeholder="비밀번호" autocomplete="current-password" autofocus required>
+            <button type="submit" class="btn btn-primary">로그인</button>
+            <p class="login-error" id="loginError"></p>
+        </form>
+        <a class="back-link" href="index.html">← 사이트로 돌아가기</a>
+    </div>
+</div>
+
+<div id="adminApp">
 <div class="container">
     <header>
         <div>
             <h1>🛠️ 콘텐츠 관리 센터</h1>
             <p>구글 시트와 실시간 연동되는 글 등록 · 수정 · 삭제 · 조회수 대시보드</p>
         </div>
-        <a class="back-link" href="index.html">← 사이트로 돌아가기</a>
+        <div style="display:flex; align-items:center; gap:14px;">
+            <a class="back-link" href="index.html">← 사이트로 돌아가기</a>
+            <a class="back-link" href="#" id="logoutLink" style="color:var(--toss-danger);">로그아웃</a>
+        </div>
     </header>
 
     <!-- 성공/에러 알림창 -->
@@ -242,7 +287,8 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label for="id">콘텐츠 고유 ID</label>
-                    <input type="text" id="id" placeholder="예: 7" required>
+                    <input type="text" id="id" placeholder="자동 생성됩니다" required readonly>
+                    <p class="field-hint" id="idHint">기존 게시글 목록을 불러오는 중…</p>
                 </div>
 
                 <div class="form-group">
@@ -481,6 +527,7 @@ function doPost(e) {
         </p>
     </div>
 </div>
+</div>
 
 <script>window.SITE_NO_TRACK = true; /* 관리자 본인의 접속은 방문자 통계에서 제외합니다 */</script>
 <script src="assets/site.js"></script>
@@ -488,6 +535,57 @@ function doPost(e) {
     const WEB_APP_URL = (window.SITE && SITE.WEB_APP_URL) || "";
     const SHEET_ID    = (window.SITE && SITE.SHEET_ID) || "";
     const SHEET_NAME  = (window.SITE && SITE.SHEET_NAME) || "시트1";
+
+    /* ---------------- 로그인 게이트 ---------------- */
+    let adminInitialized = false;
+
+    function showApp() {
+        document.getElementById('loginGate').style.display = 'none';
+        document.getElementById('adminApp').style.display = 'block';
+        if (!adminInitialized) {
+            adminInitialized = true;
+            initAdmin();
+        }
+    }
+
+    function showLogin(message) {
+        document.getElementById('adminApp').style.display = 'none';
+        document.getElementById('loginGate').style.display = 'flex';
+        document.getElementById('loginError').textContent = message || '';
+        const pwField = document.getElementById('loginPassword');
+        pwField.value = '';
+        pwField.focus();
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const entered = document.getElementById('loginPassword').value;
+        const expectedHash = (window.SITE && SITE.ADMIN_PASSWORD_HASH) || '';
+        if (!expectedHash) {
+            document.getElementById('loginError').textContent = 'ADMIN_PASSWORD_HASH가 설정되지 않았습니다. assets/site.js를 확인하세요.';
+            return;
+        }
+        if (!(window.crypto && window.crypto.subtle)) {
+            document.getElementById('loginError').textContent = '이 브라우저/연결(HTTPS 아님)에서는 로그인 기능을 사용할 수 없습니다.';
+            return;
+        }
+        SITE.sha256Hex(entered).then(function (hash) {
+            if (hash === expectedHash) {
+                try { sessionStorage.setItem('pc_admin_auth', '1'); } catch (e) {}
+                showApp();
+            } else {
+                document.getElementById('loginError').textContent = '비밀번호가 올바르지 않습니다.';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+            }
+        });
+    });
+
+    document.getElementById('logoutLink').addEventListener('click', function (e) {
+        e.preventDefault();
+        try { sessionStorage.removeItem('pc_admin_auth'); } catch (err) {}
+        showLogin('로그아웃되었습니다.');
+    });
 
     document.getElementById('date').value = new Date().toISOString().substring(0, 10);
 
@@ -539,12 +637,14 @@ function doPost(e) {
                 document.getElementById('listStatus').textContent = `총 ${POSTS.length}개`;
                 renderList(POSTS);
                 renderStats(POSTS);
+                syncIdField();
             })
             .catch(err => {
                 document.getElementById('listStatus').textContent = '불러오기 실패';
                 showStatus('게시글 목록을 불러오지 못했습니다: ' + err.message, 'error');
                 renderList([]);
                 renderStats([]);
+                document.getElementById('idHint').textContent = '게시글 목록을 불러오지 못해 다음 ID를 계산할 수 없습니다. 새로고침 후 다시 시도하세요.';
             });
     }
 
@@ -609,6 +709,29 @@ function doPost(e) {
     }
 
     /* ---------------- 등록 / 수정 폼 제출 ---------------- */
+    // 기존 게시글 중 숫자형 ID의 최댓값 + 1을 다음 ID로 사용합니다.
+    // (ID가 하나도 숫자가 아니면 1부터 시작합니다.)
+    function computeNextId() {
+        const nums = POSTS
+            .map(p => parseInt(p.id, 10))
+            .filter(n => Number.isFinite(n));
+        return (nums.length ? Math.max(...nums) : 0) + 1;
+    }
+
+    // 신규 등록 모드일 때만 ID 필드를 다음 번호로 자동 채웁니다. (수정 모드에서는 손대지 않음)
+    function syncIdField() {
+        const idField = document.getElementById('id');
+        const hint = document.getElementById('idHint');
+        if (editingId) {
+            idField.value = editingId;
+            hint.textContent = '수정 중인 게시글의 ID는 변경할 수 없습니다.';
+        } else {
+            const next = computeNextId();
+            idField.value = String(next);
+            hint.textContent = `기존 게시글 중 가장 큰 ID(${next - 1 >= 0 ? next - 1 : '없음'}) 다음 번호가 자동으로 부여됩니다.`;
+        }
+    }
+
     function collectForm() {
         return {
             id: document.getElementById('id').value.trim(),
@@ -659,8 +782,7 @@ function doPost(e) {
         const post = POSTS.find(p => String(p.id) === String(id));
         if (!post) return;
         editingId = id;
-        document.getElementById('id').value = post.id;
-        document.getElementById('id').readOnly = true;
+        syncIdField();
         document.getElementById('category').value = post.category || '';
         document.getElementById('emoji').value = post.emoji || '';
         document.getElementById('date').value = (post.date||'').substring(0,10) || new Date().toISOString().substring(0,10);
@@ -679,7 +801,6 @@ function doPost(e) {
 
     function cancelEdit() {
         editingId = null;
-        document.getElementById('id').readOnly = false;
         document.getElementById('formTitle').textContent = '📝 신규 게시글 등록';
         document.getElementById('editingBadge').textContent = '';
         document.getElementById('submitBtn').textContent = '시트에 등록하기';
@@ -706,6 +827,7 @@ function doPost(e) {
         dataForm.reset();
         document.getElementById('date').value = new Date().toISOString().substring(0, 10);
         document.getElementById('views').value = 0;
+        syncIdField();
     }
 
     // 전역 노출 (인라인 onclick에서 호출)
@@ -713,8 +835,6 @@ function doPost(e) {
     window.deletePost = deletePost;
     window.cancelEdit = cancelEdit;
     window.resetForm = resetForm;
-
-    loadPosts();
 
     /* ================================================================
        트래픽 & 수익 분석 대시보드
@@ -874,7 +994,16 @@ function doPost(e) {
     }
     window.loadAnalytics = loadAnalytics;
 
-    loadAnalytics();
+    /* ---------------- 로그인 성공 후 최초 1회 실행 ---------------- */
+    function initAdmin() {
+        loadPosts();
+        loadAnalytics();
+    }
+
+    // 이미 이 세션에서 로그인한 상태라면 로그인 화면을 건너뜁니다 (탭을 닫으면 다시 로그인 필요).
+    let alreadyAuthed = false;
+    try { alreadyAuthed = sessionStorage.getItem('pc_admin_auth') === '1'; } catch (e) {}
+    if (alreadyAuthed) { showApp(); } else { showLogin(); }
 </script>
 </body>
 </html>

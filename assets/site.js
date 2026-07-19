@@ -14,6 +14,24 @@ window.SITE = (function () {
   const SHEET_NAME         = "시트1";     // 게시글 탭 이름
   const ANALYTICS_SHEET    = "분석로그";  // 방문자/행동 로그가 쌓이는 탭 이름 (Apps Script가 자동 생성)
 
+  // ⚠️ admin.html 접속 시 요구하는 비밀번호의 SHA-256 해시값입니다. 평문 비밀번호는 저장하지 않습니다.
+  //    기본값의 평문 비밀번호는 "paycal-admin-2026" 입니다 — 반드시 아래 방법으로 새 값으로 교체하세요.
+  //    교체 방법: 브라우저 개발자도구 콘솔에서 아래 코드를 실행해 새 해시를 발급받은 뒤 이 값을 교체하면 됩니다.
+  //      crypto.subtle.digest('SHA-256', new TextEncoder().encode('원하는비밀번호'))
+  //        .then(b => console.log([...new Uint8Array(b)].map(x => x.toString(16).padStart(2,'0')).join('')));
+  //    ※ 이 방식은 정적 사이트(빌드 서버 없음) 환경에서 사용하는 간단한 접근 차단 장치이며,
+  //      제3자가 admin.html의 소스 코드와 해시값을 그대로 가져가 오프라인으로 무차별 대입(brute-force)
+  //      공격을 시도하는 것까지 막지는 못합니다. 실제 운영 데이터가 쌓이면 Cloudflare Access 등
+  //      서버 단 인증을 추가로 적용하는 것을 권장합니다. (README "관리자 페이지 보안" 섹션 참고)
+  const ADMIN_PASSWORD_HASH = "4fbd1535e7f25d6a20a3024ced6e3d77ebcd7bbca02e9811213e8e97dbd0c1ef";
+
+  // 문자열의 SHA-256 해시(16진수)를 계산합니다. HTTPS(또는 localhost) 환경에서만 동작합니다
+  // (Web Crypto API는 보안 컨텍스트에서만 제공됩니다).
+  async function sha256Hex(text){
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
   /* ---------------------------------------------------------
      공용 유틸
      --------------------------------------------------------- */
@@ -296,6 +314,7 @@ window.SITE = (function () {
 
   return {
     WEB_APP_URL, SHEET_ID, SHEET_NAME, ANALYTICS_SHEET,
+    ADMIN_PASSWORD_HASH, sha256Hex,
     trackView, alreadyViewed,
     trackEvent: function(name, data){ sendLog(Object.assign({ event_type: name }, data || {})); },
     trackOutboundClick
