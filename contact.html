@@ -11,7 +11,7 @@
 <style>
 :root{
   --paper:#ECEFE3;--paper-deep:#E2E6D4;--surface:#FFFFFF;
-  --ink:#20283D;--ink-soft:#5B6478;--ink-faint:#8A93A3;
+  --ink:#20283D;--ink-soft:#5B6478;--ink-faint:#616B80;
   --line:#C7CCB6;--line-soft:#D9DCCB;
   --stamp:#B23A2D;--stamp-deep:#8F2C22;--gold:#93711C;--gold-bg:#F4ECD6;
   --font-serif:'Noto Serif KR',serif;
@@ -25,7 +25,7 @@ header.site{background:var(--ink);color:var(--paper);border-bottom:6px double va
 .site-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;max-width:1080px;margin:0 auto;gap:16px;flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:12px;}
 .brand-mark{width:42px;height:42px;border-radius:50%;border:2px solid var(--stamp);color:var(--stamp);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-weight:900;font-size:13px;transform:rotate(-8deg);flex-shrink:0;}
-.brand-text h1{font-family:var(--font-serif);font-weight:700;font-size:19px;margin:0;}
+.brand-text .brand-name{font-family:var(--font-serif);font-weight:700;font-size:19px;margin:0;}
 .brand-text p{margin:2px 0 0;font-size:12px;color:#AEB6C7;}
 .back-link{font-size:13px;color:#AEB6C7;text-decoration:none;}
 .back-link:hover{color:var(--paper);}
@@ -91,13 +91,13 @@ footer.site{background:var(--ink);color:#AEB6C7;padding:24px 0;font-size:12px;}
 <body>
 <header class="site">
   <div class="site-bar">
-    <div class="brand">
+    <a href="index.html" class="brand" style="text-decoration:none;">
       <div class="brand-mark">勞務</div>
       <div class="brand-text">
-        <h1>모두의 계산기</h1>
+        <p class="brand-name">모두의 계산기</p>
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
       </div>
-    </div>
+    </a>
     <a href="index.html" class="back-link">← 홈으로 돌아가기</a>
   </div>
 </header>

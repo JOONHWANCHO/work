@@ -14,7 +14,11 @@
 <meta property="og:description" content="연봉·퇴직금·실업급여·최저임금까지, 직장인을 위한 계산기와 꿀TIP 뉴스를 한 곳에서.">
 <meta property="og:url" content="https://paycal.kr/">
 <meta property="og:locale" content="ko_KR">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://paycal.kr/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://paycal.kr/assets/og-image.png">
 <meta name="theme-color" content="#20283D">
 <!-- ============================================================
      GOOGLE ANALYTICS 4 (GA4) 자리
@@ -51,7 +55,7 @@
     --surface:    #FFFFFF;
     --ink:        #20283D;
     --ink-soft:   #5B6478;
-    --ink-faint:  #8A93A3;
+    --ink-faint:  #616B80;
     --line:       #C7CCB6;
     --line-soft:  #D9DCCB;
     --stamp:      #B23A2D;
@@ -84,7 +88,7 @@
   .site-bar{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px; max-width:1080px; margin:0 auto; gap:16px; flex-wrap:wrap; }
   .brand{ display:flex; align-items:center; gap:12px; text-decoration:none; }
   .brand-mark{ width:42px; height:42px; border-radius:50%; border:2px solid var(--stamp); color:var(--stamp); display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-weight:900; font-size:13px; transform:rotate(-8deg); flex-shrink:0; }
-  .brand-text h1{ font-family:var(--font-serif); font-weight:700; font-size:19px; margin:0; letter-spacing:.01em; }
+  .brand-text .brand-name{ font-family:var(--font-serif); font-weight:700; font-size:19px; margin:0; letter-spacing:.01em; }
   .brand-text p{ margin:2px 0 0; font-size:12px; color:#AEB6C7; letter-spacing:.04em; }
   nav.tools{ display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; }
   nav.tools::-webkit-scrollbar{ display:none; }
@@ -110,7 +114,7 @@
   }
   .hero-copy{ position:relative; max-width:560px; }
   .hero-copy .eyebrow{ color:#E7A99C; }
-  .hero-copy h2{ font-family:var(--font-serif); font-weight:900; font-size:clamp(22px,3.6vw,32px); margin:0 0 12px; line-height:1.35; }
+  .hero-copy h1{ font-family:var(--font-serif); font-weight:900; font-size:clamp(22px,3.6vw,32px); margin:0 0 12px; line-height:1.35; }
   .hero-copy p{ font-size:14.5px; color:#C7CDDB; margin:0 0 22px; line-height:1.7; }
   .hero-cta{ display:inline-flex; align-items:center; gap:6px; background:var(--stamp); color:#fff; font-weight:700; font-size:14px; padding:12px 22px; border-radius:8px; text-decoration:none; }
   .hero-cta:hover{ background:#c74436; }
@@ -214,6 +218,70 @@
   .footer-legal-links a{ color:#AEB6C7; text-decoration:none; }
   .footer-legal-links a:hover{ text-decoration:underline; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "모두의 계산기",
+  "alternateName": "PayCal",
+  "url": "https://paycal.kr/",
+  "inLanguage": "ko-KR",
+  "description": "연봉 실수령액, 퇴직금, 연차수당, 연말정산, 실업급여, 최저임금까지 직장인을 위한 무료 계산기 모음."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "모두의 계산기",
+  "url": "https://paycal.kr/",
+  "logo": "https://paycal.kr/assets/og-image.png"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "연봉 실수령액 계산기",
+      "url": "https://paycal.kr/salary.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "퇴직금 계산기",
+      "url": "https://paycal.kr/retirement.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "연차수당 계산기",
+      "url": "https://paycal.kr/annual-leave.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "연말정산 미리보기",
+      "url": "https://paycal.kr/year-end-tax.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "실업급여(구직급여) 계산기",
+      "url": "https://paycal.kr/unemployment.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "최저임금 계산기",
+      "url": "https://paycal.kr/minimum-wage.html"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -222,7 +290,7 @@
     <a href="index.html" class="brand">
       <div class="brand-mark">勞務</div>
       <div class="brand-text">
-        <h1>모두의 계산기</h1>
+        <p class="brand-name">모두의 계산기</p>
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
       </div>
     </a>
@@ -248,7 +316,7 @@
   <section class="hero-banner">
     <div class="hero-copy">
       <p class="eyebrow">2026년 최신 기준 반영</p>
-      <h2>내 월급, 정확히 얼마 받을까?<br>직장인 필수 계산기 6종</h2>
+      <h1>내 월급, 정확히 얼마 받을까?<br>직장인 필수 계산기 6종</h1>
       <p>연봉 실수령액부터 퇴직금, 실업급여, 최저임금까지 — 4대보험·세금까지 반영한 정확한 계산 결과를 지금 바로 확인하세요.</p>
       <a class="hero-cta" href="salary.html">지금 계산해보기 →</a>
     </div>

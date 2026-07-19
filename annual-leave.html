@@ -14,7 +14,11 @@
 <meta property="og:description" content="입사일 기준으로 연차 발생 개수와 미사용 연차수당을 자동으로 계산합니다.">
 <meta property="og:url" content="https://paycal.kr/annual-leave.html">
 <meta property="og:locale" content="ko_KR">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://paycal.kr/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://paycal.kr/assets/og-image.png">
 <meta name="theme-color" content="#20283D">
 <!-- ============================================================
      GOOGLE ANALYTICS 4 (GA4) 자리
@@ -38,7 +42,7 @@
 <style>
 :root{
   --paper:#ECEFE3;--paper-deep:#E2E6D4;--surface:#FFFFFF;
-  --ink:#20283D;--ink-soft:#5B6478;--ink-faint:#8A93A3;
+  --ink:#20283D;--ink-soft:#5B6478;--ink-faint:#616B80;
   --line:#C7CCB6;--line-soft:#D9DCCB;
   --stamp:#B23A2D;--stamp-deep:#8F2C22;
   --gold:#93711C;--gold-bg:#F4ECD6;
@@ -53,7 +57,7 @@ header.site{background:var(--ink);color:var(--paper);border-bottom:6px double va
 .site-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;max-width:1080px;margin:0 auto;gap:16px;flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:12px;}
 .brand-mark{width:42px;height:42px;border-radius:50%;border:2px solid var(--stamp);color:var(--stamp);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-weight:900;font-size:13px;transform:rotate(-8deg);flex-shrink:0;}
-.brand-text h1{font-family:var(--font-serif);font-weight:700;font-size:19px;margin:0;letter-spacing:.01em;}
+.brand-text .brand-name{font-family:var(--font-serif);font-weight:700;font-size:19px;margin:0;letter-spacing:.01em;}
 .brand-text p{margin:2px 0 0;font-size:12px;color:#AEB6C7;letter-spacing:.04em;}
 nav.tools{display:flex;gap:8px;flex-wrap:wrap;}
 @media(max-width:760px){ nav.tools{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; } nav.tools::-webkit-scrollbar{ display:none; } nav.tools .tab{ flex-shrink:0; } }
@@ -69,7 +73,7 @@ nav.tools .tab:hover:not(.active){background:rgba(255,255,255,.08);}
 main{padding:32px 0 64px;}
 .tool-head{padding:8px 0 18px;}
 .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin:0 0 8px;}
-.tool-head h2{font-family:var(--font-serif);font-weight:900;font-size:clamp(26px,4vw,38px);margin:0 0 10px;line-height:1.25;}
+.tool-head h1{font-family:var(--font-serif);font-weight:900;font-size:clamp(26px,4vw,38px);margin:0 0 10px;line-height:1.25;}
 .tool-head p{color:var(--ink-soft);margin:0;max-width:640px;font-size:15px;}
 .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:24px;}
 @media(max-width:840px){.calc-grid{grid-template-columns:1fr;}}
@@ -138,9 +142,9 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
     margin:0 0 10px; letter-spacing:.02em;
   }
   .footer-col ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
-  .footer-col ul li a{ color:#8A93A3; text-decoration:none; transition:color .12s; }
+  .footer-col ul li a{ color:#616B80; text-decoration:none; transition:color .12s; }
   .footer-col ul li a:hover{ color:var(--paper); }
-  .footer-col p{ color:#8A93A3; line-height:1.6; margin:0; }
+  .footer-col p{ color:#616B80; line-height:1.6; margin:0; }
   .footer-legal{
     margin-top:20px; display:flex; align-items:center;
     justify-content:space-between; flex-wrap:wrap; gap:10px;
@@ -149,18 +153,72 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
   .footer-legal-links{ display:flex; gap:16px; flex-wrap:wrap; }
   .footer-legal-links a{ color:#636C7E; text-decoration:none; }
   .footer-legal-links a:hover{ color:var(--paper); }
+
+  .breadcrumb{ font-size:12.5px; color:var(--ink-faint); margin:22px 0 4px; font-family:var(--font-mono); }
+  .breadcrumb a{ color:var(--ink-soft); text-decoration:none; }
+  .breadcrumb a:hover{ text-decoration:underline; }
+  .updated-badge{
+    display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+    font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft);
+    background:var(--gold-bg); border:1px solid #E1D3A0; border-radius:999px;
+    padding:5px 12px 5px 10px;
+  }
+  .updated-badge .dot{ width:7px; height:7px; border-radius:50%; background:#3F8F5F; flex-shrink:0; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "연차수당 계산기",
+  "url": "https://paycal.kr/annual-leave.html",
+  "description": "입사일과 근속연수를 입력하면 근로기준법 제60조 기준 연차 발생일수와 미사용 연차수당을 계산합니다.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any (웹 브라우저)",
+  "inLanguage": "ko-KR",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "KRW"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "모두의 계산기",
+    "url": "https://paycal.kr/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "홈",
+      "item": "https://paycal.kr/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "연차수당 계산기",
+      "item": "https://paycal.kr/annual-leave.html"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <header class="site">
   <div class="site-bar">
-    <div class="brand">
+    <a href="index.html" class="brand" style="text-decoration:none;">
       <div class="brand-mark">勞務</div>
       <div class="brand-text">
-        <h1>모두의 계산기</h1>
+        <p class="brand-name">모두의 계산기</p>
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
       </div>
-    </div>
+    </a>
     <nav class="tools" aria-label="계산기 메뉴">
       <a href="index.html" class="tab">홈</a>
       <a href="salary.html" class="tab">연봉 실수령액</a>
@@ -178,10 +236,14 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
 </div> -->
 
 <main class="wrap">
+
+  <div class="breadcrumb"><a href="index.html">홈</a> › <a href="index.html#calculators">계산기</a> › 연차수당 계산기</div>
+
   <section class="tool-head">
     <p class="eyebrow">ANNUAL LEAVE · 연차발생 · 미사용수당</p>
-    <h2>연차수당 계산기</h2>
+    <h1>연차수당 계산기</h1>
     <p>입사일을 입력하면 연도별 연차 발생 개수를 자동으로 계산하고, 1일 통상임금과 미사용 연차일수로 수당도 함께 계산합니다. 근로기준법 제60조 기준입니다.</p>
+    <p class="updated-badge"><span class="dot"></span>2026년 7월 업데이트 · 근로기준법 제60조 기준</p>
   </section>
 
   <div class="calc-grid">

@@ -6,15 +6,19 @@
 <title>연봉 실수령액 계산기 | 모두의 계산기 — 4대보험·소득세 자동계산</title>
 <meta name="description" content="연봉을 입력하면 국민연금·건강보험·장기요양보험·고용보험과 소득세를 반영한 월 실수령액을 바로 계산합니다. 2025년 4대보험 요율 기준, 직장인을 위한 무료 노무 계산기.">
 <meta name="keywords" content="연봉 실수령액 계산기, 4대보험 요율, 소득세 계산기, 실수령액, 연봉계산기, 월급 실수령액">
-<link rel="canonical" href="https://paycal.kr/">
+<link rel="canonical" href="https://paycal.kr/salary.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2320283D'/%3E%3Ctext x='50' y='62' font-size='40' text-anchor='middle' fill='%23B23A2D'%3E%E5%8B%9E%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="모두의 계산기">
 <meta property="og:title" content="연봉 실수령액 계산기 | 모두의 계산기">
 <meta property="og:description" content="연봉을 입력하면 4대보험과 소득세를 반영한 월 실수령액을 바로 계산합니다.">
-<meta property="og:url" content="https://paycal.kr/">
+<meta property="og:url" content="https://paycal.kr/salary.html">
 <meta property="og:locale" content="ko_KR">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://paycal.kr/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://paycal.kr/assets/og-image.png">
 <meta name="theme-color" content="#20283D">
 <!-- ============================================================
      GOOGLE ANALYTICS 4 (GA4) 자리
@@ -57,7 +61,7 @@
     --surface:    #FFFFFF;   /* 카드/입력 표면 */
     --ink:        #20283D;   /* 본문 잉크(짙은 네이비) */
     --ink-soft:   #5B6478;   /* 보조 텍스트 */
-    --ink-faint:  #8A93A3;
+    --ink-faint:  #616B80;
     --line:       #C7CCB6;   /* 장부 괘선 */
     --line-soft:  #D9DCCB;
     --stamp:      #B23A2D;   /* 도장 레드 — 시그니처 컬러 */
@@ -111,7 +115,7 @@
     transform:rotate(-8deg);
     flex-shrink:0;
   }
-  .brand-text h1{
+  .brand-text .brand-name{
     font-family:var(--font-serif); font-weight:700;
     font-size:19px; margin:0; letter-spacing:.01em;
   }
@@ -156,7 +160,7 @@
     font-family:var(--font-mono); font-size:12px; letter-spacing:.12em;
     color:var(--gold); text-transform:uppercase; margin:0 0 8px;
   }
-  .tool-head h2{
+  .tool-head h1{
     font-family:var(--font-serif); font-weight:900;
     font-size:clamp(26px,4vw,38px); margin:0 0 10px; line-height:1.25;
   }
@@ -481,9 +485,9 @@
     margin:0 0 10px; letter-spacing:.02em;
   }
   .footer-col ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
-  .footer-col ul li a{ color:#8A93A3; text-decoration:none; transition:color .12s; }
+  .footer-col ul li a{ color:#616B80; text-decoration:none; transition:color .12s; }
   .footer-col ul li a:hover{ color:var(--paper); }
-  .footer-col p{ color:#8A93A3; line-height:1.6; margin:0; }
+  .footer-col p{ color:#616B80; line-height:1.6; margin:0; }
   .footer-legal{
     margin-top:20px; display:flex; align-items:center;
     justify-content:space-between; flex-wrap:wrap; gap:10px;
@@ -492,19 +496,73 @@
   .footer-legal-links{ display:flex; gap:16px; flex-wrap:wrap; }
   .footer-legal-links a{ color:#636C7E; text-decoration:none; }
   .footer-legal-links a:hover{ color:var(--paper); }
+
+  .breadcrumb{ font-size:12.5px; color:var(--ink-faint); margin:22px 0 4px; font-family:var(--font-mono); }
+  .breadcrumb a{ color:var(--ink-soft); text-decoration:none; }
+  .breadcrumb a:hover{ text-decoration:underline; }
+  .updated-badge{
+    display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+    font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft);
+    background:var(--gold-bg); border:1px solid #E1D3A0; border-radius:999px;
+    padding:5px 12px 5px 10px;
+  }
+  .updated-badge .dot{ width:7px; height:7px; border-radius:50%; background:#3F8F5F; flex-shrink:0; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "연봉 실수령액 계산기",
+  "url": "https://paycal.kr/salary.html",
+  "description": "연봉을 입력하면 국민연금·건강보험·장기요양보험·고용보험과 소득세, 지방소득세를 반영한 월 실수령액을 계산합니다.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any (웹 브라우저)",
+  "inLanguage": "ko-KR",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "KRW"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "모두의 계산기",
+    "url": "https://paycal.kr/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "홈",
+      "item": "https://paycal.kr/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "연봉 실수령액 계산기",
+      "item": "https://paycal.kr/salary.html"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
 <header class="site">
   <div class="site-bar">
-    <div class="brand">
+    <a href="index.html" class="brand" style="text-decoration:none;">
       <div class="brand-mark">勞務</div>
       <div class="brand-text">
-        <h1>모두의 계산기</h1>
+        <p class="brand-name">모두의 계산기</p>
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
       </div>
-    </div>
+    </a>
     <nav class="tools" aria-label="계산기 메뉴">
       <a href="index.html" class="tab">홈</a>
       <a href="salary.html" class="tab active">연봉 실수령액</a>
@@ -535,10 +593,14 @@
 
 <main class="wrap">
 
+  <div class="breadcrumb"><a href="index.html">홈</a> › <a href="index.html#calculators">계산기</a> › 연봉 실수령액 계산기</div>
+
+
   <section class="tool-head" id="calculator">
     <p class="eyebrow">SALARY · 4대보험 · 소득세</p>
-    <h2>연봉 실수령액 계산기</h2>
+    <h1>연봉 실수령액 계산기</h1>
     <p>연봉을 입력하면 국민연금·건강보험·장기요양보험·고용보험과 소득세, 지방소득세를 자동으로 계산해 월 실수령액을 보여드립니다. 2025년 7월 기준 4대보험 요율을 적용했습니다.</p>
+    <p class="updated-badge"><span class="dot"></span>정보 최종 확인일 2026-07 · 4대보험 요율은 매년 변경되니 아래 최신 고시를 확인하세요</p>
   </section>
 
   <div class="calc-grid">

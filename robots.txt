@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
+Disallow: /sample.html
 
 Sitemap: https://paycal.kr/sitemap.xml
