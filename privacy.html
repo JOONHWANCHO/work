@@ -5,28 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>개인정보처리방침 | 모두의 계산기</title>
 <meta name="robots" content="noindex">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="assets/theme.css">
 <style>
-:root{
-  --paper:#ECEFE3;--paper-deep:#E2E6D4;--surface:#FFFFFF;
-  --ink:#20283D;--ink-soft:#5B6478;--ink-faint:#616B80;
-  --line:#C7CCB6;--line-soft:#D9DCCB;
-  --stamp:#B23A2D;--stamp-deep:#8F2C22;--gold:#93711C;--gold-bg:#F4ECD6;
-  --font-serif:'Noto Serif KR',serif;
-  --font-body:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
-}
+/* DESIGN TOKENS — assets/theme.css 참조 (2026-07 민트 틸 개편) */
 *{box-sizing:border-box;}
 body{margin:0;background:var(--paper);background-image:linear-gradient(var(--line-soft) 1px,transparent 1px);background-size:100% 42px;color:var(--ink);font-family:var(--font-body);line-height:1.7;-webkit-font-smoothing:antialiased;}
 .wrap{max-width:800px;margin:0 auto;padding:0 20px;}
-header.site{background:var(--ink);color:var(--paper);border-bottom:6px double var(--stamp);}
+header.site{background:var(--surface);color:var(--ink);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;}
 .site-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;max-width:1080px;margin:0 auto;gap:16px;flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
 .brand-mark{width:42px;height:42px;border-radius:50%;border:2px solid var(--stamp);color:var(--stamp);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-weight:900;font-size:13px;transform:rotate(-8deg);flex-shrink:0;}
 .brand-text .brand-name{font-family:var(--font-serif);font-weight:700;font-size:19px;margin:0;letter-spacing:.01em;color:var(--paper);}
-.brand-text p{margin:2px 0 0;font-size:12px;color:#AEB6C7;letter-spacing:.04em;}
-.back-link{font-size:13px;color:#AEB6C7;text-decoration:none;}
+.brand-text p{margin:2px 0 0;font-size:12px;color:var(--ink-faint);letter-spacing:.02em;}
+.back-link{font-size:13px;color:var(--mint-deep);font-weight:700;text-decoration:none;}
 .back-link:hover{color:var(--paper);}
 main{padding:48px 0 80px;}
 .page-header{margin-bottom:40px;padding-bottom:20px;border-bottom:2px solid var(--ink);}
@@ -42,11 +35,11 @@ main{padding:48px 0 80px;}
 .doc-card table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0;}
 .doc-card table th{text-align:left;padding:9px 12px;background:var(--paper-deep);border-bottom:2px solid var(--ink);font-weight:600;color:var(--ink);}
 .doc-card table td{padding:9px 12px;border-bottom:1px solid var(--line-soft);}
-.highlight-box{background:var(--gold-bg);border:1px solid #E1D3A0;border-radius:6px;padding:14px 16px;font-size:13.5px;color:#6B5618;margin-top:12px;}
+.highlight-box{background:var(--butter);border:1px solid var(--butter-deep);border-radius:6px;padding:14px 16px;font-size:13.5px;color:var(--butter-ink);margin-top:12px;}
 footer.site{background:var(--ink);color:#AEB6C7;padding:24px 0;font-size:12px;border-top:1px solid rgba(255,255,255,.1);}
 .footer-inner{max-width:1080px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center;}
 .footer-legal-links{display:flex;gap:16px;}
-.footer-legal-links a{color:#636C7E;text-decoration:none;}
+.footer-legal-links a{color:#AEB6C7;text-decoration:none;}
 .footer-legal-links a:hover{color:var(--paper);}
 </style>
 </head>
@@ -54,7 +47,7 @@ footer.site{background:var(--ink);color:#AEB6C7;padding:24px 0;font-size:12px;bo
 <header class="site">
   <div class="site-bar">
     <a href="index.html" class="brand" style="text-decoration:none;">
-      <div class="brand-mark">勞務</div>
+      <div class="brand-mark">💰</div>
       <div class="brand-text">
         <p class="brand-name">모두의 계산기</p>
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>

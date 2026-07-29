@@ -7,7 +7,7 @@
 <meta name="description" content="연봉과 주요 공제항목을 입력하면 연말정산 예상 결정세액과 환급·추납 금액을 미리 계산합니다. 2025년 귀속 기준, 직장인을 위한 무료 연말정산 미리보기.">
 <meta name="keywords" content="연말정산 미리보기, 연말정산 계산기, 환급액 계산, 연말정산 공제, 소득공제 계산기, 세액공제">
 <link rel="canonical" href="https://paycal.kr/year-end-tax.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2320283D'/%3E%3Ctext x='50' y='62' font-size='40' text-anchor='middle' fill='%23B23A2D'%3E%E5%8B%9E%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23059669'/%3E%3Ctext x='50' y='66' font-size='48' text-anchor='middle' fill='%23ffffff'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="모두의 계산기">
 <meta property="og:title" content="연말정산 미리보기 계산기 | 모두의 계산기">
@@ -19,7 +19,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://paycal.kr/assets/og-image.png">
-<meta name="theme-color" content="#20283D">
+<meta name="theme-color" content="#059669">
 <!-- ============================================================
      GOOGLE ANALYTICS 4 (GA4) 자리
      실제 배포 시 아래 주석을 해제하고 G-XXXXXXXXXX 를
@@ -33,40 +33,37 @@
        gtag('config', 'G-XXXXXXXXXX');
      </script>
      ============================================================ -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<!-- 공통 디자인 시스템 (2026-07 UI/UX 개편: 민트 틸 테마) -->
+<link rel="stylesheet" href="assets/theme.css">
 <!-- 공통 스크립트 — 조회수/방문자 트래킹 등 -->
 <script src="assets/site.js"></script>
+<!-- 공통 인터랙션(칩/토글/도넛/아코디언/카운트업/공유) -->
+<script src="assets/theme.js" defer></script>
+<!-- 결과 이미지 저장용 -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 <style>
+/* DESIGN TOKENS — assets/theme.css 에서 민트 틸 테마로 정의됩니다 (2026-07 개편) */
 :root{
-  --paper:#ECEFE3;--paper-deep:#E2E6D4;--surface:#FFFFFF;
-  --ink:#20283D;--ink-soft:#5B6478;--ink-faint:#616B80;
-  --line:#C7CCB6;--line-soft:#D9DCCB;
-  --stamp:#B23A2D;--stamp-deep:#8F2C22;
-  --gold:#93711C;--gold-bg:#F4ECD6;
-  --refund:#1A5C3A;--refund-bg:#E8F5EE;
-  --pay:#8F2C22;--pay-bg:#FBF0EE;
-  --font-serif:'Noto Serif KR',serif;
-  --font-body:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
-  --font-mono:'IBM Plex Mono',monospace;
+  --refund:#059669; --refund-bg:#ECFDF5;
+  --pay:#B91C1C; --pay-bg:#FEF2F2;
 }
 *{box-sizing:border-box;}html{scroll-behavior:smooth;}
 body{margin:0;background:var(--paper);background-image:linear-gradient(var(--line-soft) 1px,transparent 1px);background-size:100% 42px;color:var(--ink);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
-header.site{background:var(--ink);color:var(--paper);border-bottom:6px double var(--stamp);}
+header.site{background:var(--surface);color:var(--ink);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;}
 .site-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;max-width:1080px;margin:0 auto;gap:16px;flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:12px;}
-.brand-mark{width:42px;height:42px;border-radius:50%;border:2px solid var(--stamp);color:var(--stamp);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-weight:900;font-size:13px;transform:rotate(-8deg);flex-shrink:0;}
-.brand-text .brand-name{font-family:var(--font-serif);font-weight:700;font-size:19px;margin:0;letter-spacing:.01em;}
-.brand-text p{margin:2px 0 0;font-size:12px;color:#AEB6C7;letter-spacing:.04em;}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--mint),var(--mint-deep));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;flex-shrink:0;}
+.brand-text .brand-name{font-weight:800;color:var(--ink);font-size:18px;margin:0;letter-spacing:-.01em;}
+.brand-text p{margin:1px 0 0;font-size:11px;color:var(--ink-faint);letter-spacing:.02em;}
 nav.tools{display:flex;gap:8px;flex-wrap:wrap;}
 @media(max-width:760px){ nav.tools{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; } nav.tools::-webkit-scrollbar{ display:none; } nav.tools .tab{ flex-shrink:0; } }
 
-nav.tools .tab{font-size:13px;padding:7px 12px;border-radius:3px;border:1px solid rgba(255,255,255,.18);color:#C7CDDB;text-decoration:none;}
-nav.tools .tab.active{background:var(--stamp);border-color:var(--stamp);color:#fff;font-weight:600;}
-nav.tools .tab:hover:not(.active){background:rgba(255,255,255,.08);}
+nav.tools .tab{font-size:13px;font-weight:600;padding:8px 13px;border-radius:999px;border:1px solid transparent;color:var(--ink-soft);text-decoration:none;}
+nav.tools .tab.active{background:var(--mint-bg);border-color:var(--mint-soft);color:var(--mint-deep);font-weight:800;}
+nav.tools .tab:hover:not(.active){background:var(--paper-deep);}
 .ad-slot{border:1px dashed var(--ink-faint);background:rgba(255,255,255,.5);color:var(--ink-faint);display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.05em;border-radius:4px;margin:28px auto;}
 .ad-slot span{padding:4px 10px;}
 .ad-slot.leaderboard{max-width:1080px;min-height:90px;}
@@ -79,37 +76,37 @@ main{padding:32px 0 64px;}
 .tool-head p{color:var(--ink-soft);margin:0;max-width:640px;font-size:15px;}
 .main-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:24px;}
 @media(max-width:900px){.main-layout{grid-template-columns:1fr;}}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:26px;box-shadow:0 1px 0 var(--line);}
-.card h3{font-family:var(--font-serif);font-size:16px;margin:0 0 18px;padding-bottom:10px;border-bottom:1px solid var(--line);}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;}
+.card h3{font-size:16px;font-weight:800;margin:0 0 18px;}
 .section-label{font-size:11.5px;font-weight:700;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px dashed var(--line);}
 .section-label:first-child{margin-top:0;}
 .field{margin-bottom:14px;}
-.field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:5px;}
+.field label{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:8px;}
 .field .hint{font-size:11.5px;color:var(--ink-faint);margin-top:4px;}
 .input-unit{position:relative;}
-.input-unit input,.input-unit select{width:100%;padding:10px 52px 10px 12px;border:1.5px solid var(--line);border-radius:6px;font-family:var(--font-mono);font-size:14px;font-weight:600;color:var(--ink);background:#FCFDF9;transition:border-color .15s;}
-.input-unit select{padding-right:14px;font-family:var(--font-body);font-weight:500;font-size:13px;}
-.input-unit input:focus,.input-unit select:focus{border-color:var(--ink);}
-.input-unit .unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink-faint);pointer-events:none;}
+.input-unit input,.input-unit select{width:100%;padding:14px 54px 14px 16px;border:1.5px solid var(--line);border-radius:var(--radius-md);font-size:17px;font-weight:800;color:var(--ink);background:var(--paper-deep);transition:border-color .15s,background .15s;}
+.input-unit select{padding-right:14px;font-weight:600;font-size:14px;}
+.input-unit input:focus,.input-unit select:focus{border-color:var(--mint);background:var(--surface);}
+.input-unit .unit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--ink-faint);pointer-events:none;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:520px){.two-col{grid-template-columns:1fr;}}
-.stamp-btn{width:100%;margin-top:10px;background:var(--stamp);color:#fff;border:none;border-radius:6px;padding:14px;font-size:15.5px;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:transform .08s,background .15s;}
+.stamp-btn{width:100%;margin-top:10px;background:var(--mint);color:#fff;border:none;border-radius:999px;padding:16px;font-size:16px;font-weight:800;letter-spacing:-.01em;cursor:pointer;transition:transform .08s,background .15s,box-shadow .15s;box-shadow:0 10px 22px rgba(16,185,129,.28);}
 .stamp-btn:hover{background:var(--stamp-deep);}
 .stamp-btn:active{transform:scale(.98);}
-.result-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:26px;position:relative;overflow:hidden;}
-.result-card .doc-label{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;margin:0 0 4px;}
-.result-card h3{font-family:var(--font-serif);font-size:16px;margin:0 0 4px;}
+.result-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;position:relative;overflow:hidden;}
+.result-card .doc-label{font-size:11px;font-weight:800;color:var(--mint-deep);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;}
+.result-card h3{font-size:16px;font-weight:800;margin:0 0 4px;}
 .result-card .sub{font-size:12.5px;color:var(--ink-faint);margin:0 0 18px;}
-.refund-box{border-radius:8px;padding:18px 20px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;}
-.refund-box.refund{background:var(--refund-bg);border:1px solid #A8D5B8;}
-.refund-box.pay{background:var(--pay-bg);border:1px solid #E8B4AA;}
-.refund-box .label{font-size:13px;font-weight:600;}
+.refund-box{border-radius:var(--radius-md);padding:22px 20px;margin-bottom:18px;display:flex;flex-direction:column;gap:4px;}
+.refund-box.refund{background:linear-gradient(135deg,var(--mint-bg),var(--mint-soft));border:none;}
+.refund-box.pay{background:linear-gradient(135deg,var(--butter),var(--butter-deep));border:none;}
+.refund-box .label{font-size:13px;font-weight:700;}
 .refund-box.refund .label{color:var(--refund);}
-.refund-box.pay .label{color:var(--pay);}
-.refund-box .value{font-family:var(--font-mono);font-weight:700;font-size:clamp(22px,3.4vw,28px);}
+.refund-box.pay .label{color:var(--butter-ink);}
+.refund-box .value{font-weight:800;font-size:clamp(26px,4.2vw,34px);letter-spacing:-.02em;}
 .refund-box.refund .value{color:var(--refund);}
-.refund-box.pay .value{color:var(--pay);}
-.refund-box .value small{font-size:13px;font-weight:500;}
+.refund-box.pay .value{color:var(--butter-ink);}
+.refund-box .value small{font-size:14px;font-weight:600;opacity:.75;}
 table.ledger{width:100%;border-collapse:collapse;font-size:13px;}
 table.ledger th{text-align:left;font-weight:600;color:var(--ink-soft);padding:8px 4px;border-bottom:1px solid var(--ink);font-size:11.5px;}
 table.ledger td{padding:8px 4px;border-bottom:1px solid var(--line-soft);font-family:var(--font-mono);font-size:12.5px;}
@@ -118,16 +115,17 @@ table.ledger td.amt{text-align:right;}
 table.ledger tr.section-sep td{border-bottom:none;padding-top:12px;font-family:var(--font-body);font-size:11px;color:var(--ink-faint);font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
 table.ledger tr.total td{border-top:2px solid var(--ink);border-bottom:none;font-weight:700;padding-top:10px;}
 table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
-.stamp-mark{position:absolute;top:22px;right:22px;width:78px;height:78px;border-radius:50%;border:2.5px solid var(--stamp);color:var(--stamp);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-family:var(--font-serif);font-weight:900;font-size:12px;line-height:1.25;transform:rotate(-12deg) scale(0);opacity:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .25s;pointer-events:none;}
-.stamp-mark.show{transform:rotate(-12deg) scale(1);opacity:.92;}
-.placeholder-msg{color:var(--ink-faint);font-size:13.5px;padding:30px 4px;text-align:center;border:1px dashed var(--line);border-radius:8px;}
+.stamp-mark{position:absolute;top:20px;right:20px;width:52px;height:52px;border-radius:50%;background:var(--mint);color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-weight:900;font-size:20px;line-height:1;transform:scale(0);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .25s;pointer-events:none;box-shadow:0 8px 18px rgba(16,185,129,.35);}
+.stamp-mark.show{transform:scale(1);opacity:1;}
+.stamp-mark::before{content:"✓";}
+.placeholder-msg{color:var(--ink-faint);font-size:13.5px;padding:30px 4px;text-align:center;border:1px dashed var(--line);border-radius:var(--radius-md);}
 .info-section{margin-top:64px;}
 .info-section h2{font-family:var(--font-serif);font-size:24px;margin:0 0 6px;}
 .info-section .updated{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-faint);margin:0 0 24px;}
 .prose{font-size:14.5px;color:var(--ink-soft);max-width:760px;}
 .prose h3{font-family:var(--font-serif);color:var(--ink);font-size:17px;margin:26px 0 10px;}
 .prose p{margin:0 0 12px;}
-.disclaimer{margin-top:18px;padding:14px 16px;background:#FBF6E8;border-left:3px solid var(--gold);border-radius:0 6px 6px 0;font-size:12.5px;color:#6B5618;line-height:1.6;}
+.disclaimer{margin-top:18px;padding:14px 16px;background:var(--butter);border-left:3px solid var(--butter-deep);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:12.5px;color:var(--butter-ink);line-height:1.6;}
 
   /* ---------- 리뉴얼 푸터 ---------- */
   footer.site{
@@ -165,10 +163,10 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
   .updated-badge{
     display:inline-flex; align-items:center; gap:6px; margin-top:14px;
     font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft);
-    background:var(--gold-bg); border:1px solid #E1D3A0; border-radius:999px;
+    background:var(--mint-bg); border:1px solid var(--mint-soft); border-radius:999px;
     padding:5px 12px 5px 10px;
   }
-  .updated-badge .dot{ width:7px; height:7px; border-radius:50%; background:#3F8F5F; flex-shrink:0; }
+  .updated-badge .dot{ width:7px; height:7px; border-radius:50%; background:var(--mint); flex-shrink:0; }
 </style>
 <script type="application/ld+json">
 {
@@ -218,7 +216,7 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
 <header class="site">
   <div class="site-bar">
     <a href="index.html" class="brand" style="text-decoration:none;">
-      <div class="brand-mark">勞務</div>
+      <div class="brand-mark">💰</div>
       <div class="brand-text">
         <p class="brand-name">모두의 계산기</p>
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
@@ -245,15 +243,15 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
   <div class="breadcrumb"><a href="index.html">홈</a> › <a href="index.html#calculators">계산기</a> › 연말정산 미리보기</div>
 
   <section class="tool-head">
-    <p class="eyebrow">YEAR-END TAX SETTLEMENT · 2025년 귀속</p>
+    <p class="eyebrow">🎁 13월의 월급, 얼마나 돌려받을까요?</p>
     <h1>연말정산 미리보기</h1>
-    <p>총급여와 주요 공제항목을 입력하면 2025년 귀속 예상 결정세액과 환급·추납 금액을 미리 계산합니다. 신용카드·의료비·보험료·월세 등 핵심 공제를 반영합니다.</p>
+    <p>총급여와 주요 공제 항목만 알려주시면 2025년 귀속 예상 결정세액과 환급·추납 금액을 미리 계산해드려요.</p>
     <p class="updated-badge"><span class="dot"></span>2026년 7월 업데이트 · 국세청 연말정산 기준</p>
   </section>
 
-  <div class="main-layout">
+  <div class="main-layout app-shell">
     <!-- 입력 영역 -->
-    <div class="card">
+    <div class="card press-card">
       <h3>소득 &amp; 공제 정보 입력</h3>
 
       <div class="section-label">기본 정보</div>
@@ -263,6 +261,10 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
           <div class="input-unit">
             <input type="text" inputmode="numeric" id="totalSalary" placeholder="5,000">
             <span class="unit">만원</span>
+          </div>
+          <div class="chip-row">
+            <button type="button" class="chip" onclick="PayCal.chipAdd('totalSalary',1000)">+1,000</button>
+            <button type="button" class="chip" onclick="PayCal.chipAdd('totalSalary',100)">+100</button>
           </div>
         </div>
         <div class="field">
@@ -333,6 +335,10 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
             <input type="text" inputmode="numeric" id="creditCard" placeholder="0">
             <span class="unit">만원</span>
           </div>
+          <div class="chip-row">
+            <button type="button" class="chip" onclick="PayCal.chipAdd('creditCard',100)">+100</button>
+            <button type="button" class="chip chip-clear" onclick="PayCal.chipAdd('creditCard',0)">초기화</button>
+          </div>
           <p class="hint">신용카드+체크카드+현금영수증 합계</p>
         </div>
       </div>
@@ -381,6 +387,10 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
             <input type="text" inputmode="numeric" id="monthlyRent" placeholder="0">
             <span class="unit">만원</span>
           </div>
+          <div class="chip-row">
+            <button type="button" class="chip" onclick="PayCal.chipAdd('monthlyRent',10)">+10</button>
+            <button type="button" class="chip chip-clear" onclick="PayCal.chipAdd('monthlyRent',0)">초기화</button>
+          </div>
           <p class="hint">총급여 8천만원 이하 무주택 세대주, 연 750만원 한도</p>
         </div>
         <div class="field">
@@ -388,6 +398,10 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
           <div class="input-unit">
             <input type="text" inputmode="numeric" id="pensionSavings" placeholder="0">
             <span class="unit">만원</span>
+          </div>
+          <div class="chip-row">
+            <button type="button" class="chip" onclick="PayCal.chipAdd('pensionSavings',100)">+100</button>
+            <button type="button" class="chip chip-clear" onclick="PayCal.chipAdd('pensionSavings',0)">초기화</button>
           </div>
           <p class="hint">합산 한도 900만원</p>
         </div>
@@ -397,14 +411,20 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
     </div>
 
     <!-- 결과 카드 -->
-    <div class="result-card">
-      <div class="stamp-mark" id="stampMark">정산<br>완료</div>
-      <p class="doc-label">YEAR-END TAX PREVIEW · 2025 귀속</p>
+    <div class="result-card press-card" id="resultCard">
+      <div class="stamp-mark" id="stampMark"></div>
+      <p class="doc-label">MY YEAR-END TAX · 2025 귀속</p>
       <h3>연말정산 예상 결과</h3>
-      <p class="sub" id="resultSub">좌측 정보를 입력하고 계산하기를 눌러주세요.</p>
+      <p class="sub" id="resultSub">위 정보를 입력하고 계산하기를 눌러주세요.</p>
       <div id="resultBody">
         <div class="placeholder-msg">소득과 공제 정보를 입력하고<br>[연말정산 예상액 계산하기]를 눌러주세요.</div>
       </div>
+    </div>
+
+    <!-- 결과 공유 바 -->
+    <div class="share-sticky">
+      <button type="button" class="share-btn share-save">📸 이미지로 저장</button>
+      <button type="button" class="share-btn kakao share-kakao">💬 공유하기</button>
     </div>
   </div>
 
@@ -598,11 +618,16 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
     document.getElementById('resultSub').textContent='2025년 귀속 연말정산 예상 결과입니다.';
 
     const diffBox=isRefund
-      ?`<div class="refund-box refund"><span class="label">예상 환급액 💰</span><span class="value">+${won(Math.abs(diff))}<small> 원</small></span></div>`
-      :`<div class="refund-box pay"><span class="label">예상 추납액 ⚠️</span><span class="value">-${won(Math.abs(diff))}<small> 원</small></span></div>`;
+      ?`<div class="refund-box refund"><span class="label">예상 환급액 💰</span><span class="value">+<span class="count-target">${won(Math.abs(diff))}</span><small> 원</small></span></div>`
+      :`<div class="refund-box pay"><span class="label">예상 추납액 ⚠️</span><span class="value">-<span class="count-target">${won(Math.abs(diff))}</span><small> 원</small></span></div>`;
 
-    document.getElementById('resultBody').innerHTML=`
+    const resultBodyEl = document.getElementById('resultBody');
+    resultBodyEl.innerHTML=`
       ${diffBox}
+      <div id="taxDonut"></div>
+      <div class="accordion">
+        <button type="button" class="accordion-toggle">소득·세액공제 상세 내역 <span class="arrow">▾</span></button>
+        <div class="accordion-body"><div class="accordion-body-inner">
       <table class="ledger">
         <tr><th>항목</th><th style="text-align:right;">금액</th></tr>
 
@@ -630,7 +655,19 @@ table.ledger tr.subtotal td{font-weight:600;color:var(--ink-soft);}
         <tr><td class="lbl">기납부세액</td><td class="amt">${won(paidTax)} 원</td></tr>
         <tr class="total"><td class="lbl">${isRefund?'환급액':'추납액'}</td><td class="amt" style="color:${isRefund?'var(--refund)':'var(--pay)'}">${isRefund?'+':'-'}${won(Math.abs(diff))} 원</td></tr>
       </table>
+        </div></div>
+      </div>
     `;
+
+    if(window.PayCal){
+      const effRate=Math.round((determinedTax/totalSalary)*1000)/10;
+      PayCal.renderDonut(document.getElementById('taxDonut'), [
+        { label:'실효세율(결정세액)', value:determinedTax, color:'#FBBF24' },
+        { label:'세후 소득', value:Math.max(totalSalary-determinedTax,0), color:'#10B981' }
+      ], effRate+'%', '실효세율');
+      PayCal.runAutoCountUp(resultBodyEl);
+      PayCal.initAccordions(resultBodyEl);
+    }
 
     const stamp=document.getElementById('stampMark');
     stamp.classList.remove('show'); void stamp.offsetWidth; stamp.classList.add('show');

@@ -6,7 +6,7 @@
 <title id="pageTitle">게시글 상세 | 모두의 계산기</title>
 <meta id="metaDesc" name="description" content="직장인을 위한 노무·급여 지식을 알기 쉽게 정리했습니다.">
 <link rel="canonical" id="canonicalLink" href="https://paycal.kr/content.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2320283D'/%3E%3Ctext x='50' y='62' font-size='40' text-anchor='middle' fill='%23B23A2D'%3E%E5%8B%9E%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23059669'/%3E%3Ctext x='50' y='66' font-size='48' text-anchor='middle' fill='%23ffffff'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="모두의 계산기">
 <meta id="ogTitle" property="og:title" content="모두의 계산기">
@@ -17,35 +17,23 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://paycal.kr/assets/og-image.png">
-<meta name="theme-color" content="#20283D">
+<meta name="theme-color" content="#059669">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <!-- ⚠️ 주의: 특정 게시글을 검색 노출에서 제외하고 싶다면 이 robots 태그를 "noindex, follow"로 바꾸세요.
      이전 버전은 항상 noindex였기 때문에 게시글이 구글에 절대 노출되지 않는 문제가 있었습니다. -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="assets/theme.css">
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 <script src="assets/site.js"></script>
 
 <style>
-  :root{
-    --paper:#ECEFE3; --paper-deep:#E2E6D4; --surface:#FFFFFF;
-    --ink:#20283D; --ink-soft:#5B6478; --ink-faint:#616B80;
-    --line:#C7CCB6; --line-soft:#D9DCCB;
-    --stamp:#B23A2D; --stamp-deep:#8F2C22;
-    --gold:#93711C; --gold-bg:#F4ECD6; --focus:#20283D;
-    --font-serif:'Noto Serif KR',serif;
-    --font-body:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
-    --font-mono:'IBM Plex Mono',monospace;
-  }
+  /* DESIGN TOKENS — assets/theme.css 참조 (2026-07 민트 틸 개편) */
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
   body{
     margin:0; background:var(--paper);
-    background-image:linear-gradient(var(--line-soft) 1px, transparent 1px);
-    background-size:100% 42px;
     color:var(--ink); font-family:var(--font-body); line-height:1.6;
     -webkit-font-smoothing:antialiased;
   }
@@ -55,17 +43,17 @@
   :focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
   .wrap{ max-width:1080px; margin:0 auto; padding:0 20px; }
 
-  header.site{ background:var(--ink); color:var(--paper); border-bottom:6px double var(--stamp); }
+  header.site{ background:var(--surface); color:var(--ink); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:30; }
   .site-bar{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px; max-width:1080px; margin:0 auto; gap:16px; flex-wrap:wrap; }
   .brand{ display:flex; align-items:center; gap:12px; text-decoration:none; }
-  .brand-mark{ width:42px; height:42px; border-radius:50%; border:2px solid var(--stamp); color:var(--stamp); display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-weight:900; font-size:13px; transform:rotate(-8deg); flex-shrink:0; }
-  .brand-text .brand-name{ font-family:var(--font-serif); font-weight:700; font-size:19px; margin:0; letter-spacing:.01em; }
-  .brand-text p{ margin:2px 0 0; font-size:12px; color:#AEB6C7; letter-spacing:.04em; }
+  .brand-mark{ width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg,var(--mint),var(--mint-deep)); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:17px; flex-shrink:0; }
+  .brand-text .brand-name{ font-weight:800; color:var(--ink); font-size:18px; margin:0; letter-spacing:-.01em; }
+  .brand-text p{ margin:1px 0 0; font-size:11px; color:var(--ink-faint); letter-spacing:.02em; }
   nav.tools{ display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; }
   nav.tools::-webkit-scrollbar{ display:none; }
-  nav.tools .tab{ flex-shrink:0; font-size:13px; padding:7px 12px; border-radius:3px; border:1px solid rgba(255,255,255,.18); color:#C7CDDB; text-decoration:none; }
-  nav.tools .tab.active{ background:var(--stamp); border-color:var(--stamp); color:#fff; font-weight:600; }
-  nav.tools .tab:hover:not(.active){ background:rgba(255,255,255,.08); }
+  nav.tools .tab{ flex-shrink:0; font-size:13px; font-weight:600; padding:8px 13px; border-radius:999px; border:1px solid transparent; color:var(--ink-soft); text-decoration:none; }
+  nav.tools .tab.active{ background:var(--mint-bg); border-color:var(--mint-soft); color:var(--mint-deep); font-weight:800; }
+  nav.tools .tab:hover:not(.active){ background:var(--paper-deep); }
 
   main.wrap{ padding-top:32px; padding-bottom:64px; }
 
@@ -81,7 +69,7 @@
 
   .article-meta{ display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
   .article-emoji{ font-size:28px; }
-  .article-category{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; color:var(--stamp); background:#FBF0EE; padding:3px 8px; border-radius:3px; font-weight:600; }
+  .article-category{ font-size:11px; letter-spacing:.03em; color:var(--mint-deep); background:var(--mint-bg); padding:4px 10px; border-radius:999px; font-weight:800; }
   .article-date{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); }
   .article-views{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); margin-left:auto; }
   .article-title{ font-family:var(--font-serif); font-weight:900; font-size:clamp(22px,3.4vw,32px); margin:0 0 10px; line-height:1.32; color:var(--ink); }
@@ -103,7 +91,7 @@
   .post-content code{ background:var(--paper-deep); padding:2px 5px; border-radius:3px; font-family:var(--font-mono); font-size:13px; }
   .post-content pre{ background:var(--ink); color:var(--paper); padding:16px; border-radius:8px; overflow-x:auto; margin:16px 0; }
   .post-content pre code{ background:none; color:inherit; }
-  .post-content blockquote{ border-left:3px solid var(--gold); padding:10px 16px; margin:16px 0; background:var(--gold-bg); color:#6B5618; border-radius:0 6px 6px 0; }
+  .post-content blockquote{ border-left:3px solid var(--butter-deep); padding:10px 16px; margin:16px 0; background:var(--butter); color:var(--butter-ink); border-radius:0 6px 6px 0; }
   .post-content strong{ color:var(--ink); font-weight:700; }
   .post-content a{ color:var(--stamp); text-decoration:underline; }
   .post-content hr{ border:none; border-top:1px solid var(--line); margin:24px 0; }
@@ -148,7 +136,7 @@
 <header class="site">
   <div class="site-bar">
     <a href="index.html" class="brand">
-      <div class="brand-mark">勞務</div>
+      <div class="brand-mark">💰</div>
       <div class="brand-text">
         <p class="brand-name">모두의 계산기</p>
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>

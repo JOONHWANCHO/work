@@ -7,7 +7,7 @@
 <meta name="description" content="입사일·퇴사일·평균임금을 입력하면 퇴직금과 퇴직소득세를 자동으로 계산합니다. 근로자퇴직급여보장법 기준, 직장인을 위한 무료 퇴직금 계산기.">
 <meta name="keywords" content="퇴직금 계산기, 퇴직금 계산, 평균임금, 퇴직소득세, 퇴직금 공식, 이직 퇴직금">
 <link rel="canonical" href="https://paycal.kr/retirement.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2320283D'/%3E%3Ctext x='50' y='62' font-size='40' text-anchor='middle' fill='%23B23A2D'%3E%E5%8B%9E%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23059669'/%3E%3Ctext x='50' y='66' font-size='48' text-anchor='middle' fill='%23ffffff'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="모두의 계산기">
 <meta property="og:title" content="퇴직금 계산기 | 모두의 계산기">
@@ -19,7 +19,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://paycal.kr/assets/og-image.png">
-<meta name="theme-color" content="#20283D">
+<meta name="theme-color" content="#059669">
 <!-- ============================================================
      GOOGLE ANALYTICS 4 (GA4) 자리
      실제 배포 시 아래 주석을 해제하고 G-XXXXXXXXXX 를
@@ -33,38 +33,33 @@
        gtag('config', 'G-XXXXXXXXXX');
      </script>
      ============================================================ -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<!-- 공통 디자인 시스템 (2026-07 UI/UX 개편: 민트 틸 테마) -->
+<link rel="stylesheet" href="assets/theme.css">
 <!-- 공통 스크립트 — 조회수/방문자 트래킹 등 -->
 <script src="assets/site.js"></script>
+<!-- 공통 인터랙션(칩/토글/도넛/아코디언/카운트업/공유) -->
+<script src="assets/theme.js" defer></script>
+<!-- 결과 이미지 저장용 -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 <style>
-:root{
-  --paper:#ECEFE3; --paper-deep:#E2E6D4; --surface:#FFFFFF;
-  --ink:#20283D; --ink-soft:#5B6478; --ink-faint:#616B80;
-  --line:#C7CCB6; --line-soft:#D9DCCB;
-  --stamp:#B23A2D; --stamp-deep:#8F2C22;
-  --gold:#93711C; --gold-bg:#F4ECD6;
-  --font-serif:'Noto Serif KR',serif;
-  --font-body:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
-  --font-mono:'IBM Plex Mono',monospace;
-}
+/* DESIGN TOKENS — assets/theme.css 에서 민트 틸 테마로 정의됩니다 (2026-07 개편) */
 *{box-sizing:border-box;} html{scroll-behavior:smooth;}
 body{margin:0;background:var(--paper);background-image:linear-gradient(var(--line-soft) 1px,transparent 1px);background-size:100% 42px;color:var(--ink);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
-header.site{background:var(--ink);color:var(--paper);border-bottom:6px double var(--stamp);}
+header.site{background:var(--surface);color:var(--ink);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;}
 .site-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;max-width:1080px;margin:0 auto;gap:16px;flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:12px;}
-.brand-mark{width:42px;height:42px;border-radius:50%;border:2px solid var(--stamp);color:var(--stamp);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-weight:900;font-size:13px;transform:rotate(-8deg);flex-shrink:0;}
-.brand-text .brand-name{font-family:var(--font-serif);font-weight:700;font-size:19px;margin:0;letter-spacing:.01em;}
-.brand-text p{margin:2px 0 0;font-size:12px;color:#AEB6C7;letter-spacing:.04em;}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--mint),var(--mint-deep));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;flex-shrink:0;}
+.brand-text .brand-name{font-weight:800;color:var(--ink);font-size:18px;margin:0;letter-spacing:-.01em;}
+.brand-text p{margin:1px 0 0;font-size:11px;color:var(--ink-faint);letter-spacing:.02em;}
 nav.tools{display:flex;gap:8px;flex-wrap:wrap;}
 @media(max-width:760px){ nav.tools{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; } nav.tools::-webkit-scrollbar{ display:none; } nav.tools .tab{ flex-shrink:0; } }
 
-nav.tools .tab{font-size:13px;padding:7px 12px;border-radius:3px;border:1px solid rgba(255,255,255,.18);color:#C7CDDB;text-decoration:none;cursor:pointer;}
-nav.tools .tab.active{background:var(--stamp);border-color:var(--stamp);color:#fff;font-weight:600;}
-nav.tools .tab:hover:not(.active){background:rgba(255,255,255,.08);}
+nav.tools .tab{font-size:13px;font-weight:600;padding:8px 13px;border-radius:999px;border:1px solid transparent;color:var(--ink-soft);text-decoration:none;cursor:pointer;}
+nav.tools .tab.active{background:var(--mint-bg);border-color:var(--mint-soft);color:var(--mint-deep);font-weight:800;}
+nav.tools .tab:hover:not(.active){background:var(--paper-deep);}
 .ad-slot{border:1px dashed var(--ink-faint);background:rgba(255,255,255,.5);color:var(--ink-faint);display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.05em;border-radius:4px;margin:28px auto;overflow:hidden;}
 .ad-slot span{padding:4px 10px;}
 .ad-slot.leaderboard{max-width:1080px;min-height:90px;}
@@ -77,49 +72,50 @@ main{padding:32px 0 64px;}
 .tool-head p{color:var(--ink-soft);margin:0;max-width:640px;font-size:15px;}
 .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:24px;}
 @media(max-width:840px){.calc-grid{grid-template-columns:1fr;}}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:26px;box-shadow:0 1px 0 var(--line);}
-.card h3{font-family:var(--font-serif);font-size:16px;margin:0 0 18px;padding-bottom:10px;border-bottom:1px solid var(--line);}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;}
+.card h3{font-size:16px;font-weight:800;margin:0 0 18px;}
 .field{margin-bottom:18px;}
-.field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.field label{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:8px;}
 .field .hint{font-size:11.5px;color:var(--ink-faint);margin-top:5px;}
 .input-unit{position:relative;display:flex;align-items:stretch;}
-.input-unit input,.input-unit select{width:100%;padding:11px 52px 11px 12px;border:1.5px solid var(--line);border-radius:6px;font-family:var(--font-mono);font-size:15px;font-weight:600;color:var(--ink);background:#FCFDF9;transition:border-color .15s;}
-.input-unit select{padding-right:14px;font-family:var(--font-body);font-weight:500;}
-.input-unit input[type="date"]{font-family:var(--font-body);font-size:14px;font-weight:500;}
-.input-unit input:focus,.input-unit select:focus{border-color:var(--ink);}
-.input-unit .unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--ink-faint);pointer-events:none;}
+.input-unit input,.input-unit select{width:100%;padding:15px 54px 15px 16px;border:1.5px solid var(--line);border-radius:var(--radius-md);font-size:19px;font-weight:800;color:var(--ink);background:var(--paper-deep);transition:border-color .15s,background .15s;}
+.input-unit select{padding-right:14px;font-weight:600;font-size:14.5px;}
+.input-unit input[type="date"]{font-size:15px;font-weight:700;}
+.input-unit input:focus,.input-unit select:focus{border-color:var(--mint);background:var(--surface);}
+.input-unit .unit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13.5px;font-weight:700;color:var(--ink-faint);pointer-events:none;}
 .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:600px){.three-col{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}}
-.stamp-btn{width:100%;margin-top:6px;background:var(--stamp);color:#fff;border:none;border-radius:6px;padding:14px;font-size:15.5px;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:transform .08s,background .15s;}
+.stamp-btn{width:100%;margin-top:6px;background:var(--mint);color:#fff;border:none;border-radius:999px;padding:16px;font-size:16px;font-weight:800;letter-spacing:-.01em;cursor:pointer;transition:transform .08s,background .15s,box-shadow .15s;box-shadow:0 10px 22px rgba(16,185,129,.28);}
 .stamp-btn:hover{background:var(--stamp-deep);}
 .stamp-btn:active{transform:scale(.98);}
-.result-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:26px;position:relative;overflow:hidden;min-height:100%;}
-.result-card .doc-label{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;margin:0 0 4px;}
-.result-card h3{font-family:var(--font-serif);font-size:16px;margin:0 0 4px;}
+.result-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;position:relative;overflow:hidden;min-height:100%;}
+.result-card .doc-label{font-size:11px;font-weight:800;color:var(--mint-deep);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;}
+.result-card h3{font-size:16px;font-weight:800;margin:0 0 4px;}
 .result-card .sub{font-size:12.5px;color:var(--ink-faint);margin:0 0 18px;}
-.net-amount{background:var(--gold-bg);border:1px solid #E1D3A0;border-radius:8px;padding:18px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;}
-.net-amount .label{font-size:13px;color:var(--ink-soft);font-weight:600;}
-.net-amount .value{font-family:var(--font-mono);font-weight:700;font-size:clamp(22px,3.4vw,30px);color:var(--gold);}
-.net-amount .value small{font-size:13px;font-weight:500;color:var(--ink-soft);}
+.net-amount{background:linear-gradient(135deg,var(--butter),var(--butter-deep));border:none;border-radius:var(--radius-md);padding:22px 20px;margin-bottom:18px;display:flex;flex-direction:column;gap:4px;}
+.net-amount .label{font-size:13px;color:var(--butter-ink);font-weight:700;}
+.net-amount .value{font-weight:800;font-size:clamp(26px,4.2vw,34px);color:var(--butter-ink);letter-spacing:-.02em;}
+.net-amount .value small{font-size:14px;font-weight:600;color:var(--butter-ink);opacity:.75;}
 table.ledger{width:100%;border-collapse:collapse;font-size:13.5px;}
 table.ledger th{text-align:left;font-weight:600;color:var(--ink-soft);padding:9px 4px;border-bottom:1px solid var(--ink);font-size:12px;}
-table.ledger td{padding:9px 4px;border-bottom:1px solid var(--line-soft);font-family:var(--font-mono);}
+table.ledger td{padding:10px 4px;border-bottom:1px solid var(--line-soft);font-weight:600;}
 table.ledger td.amt{text-align:right;}
 table.ledger tr.total td{border-top:2px solid var(--ink);border-bottom:none;font-weight:700;padding-top:12px;}
 table.ledger tr.deduct-total td{font-weight:700;color:var(--stamp-deep);}
-table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var(--gold);}
-.stamp-mark{position:absolute;top:22px;right:22px;width:78px;height:78px;border-radius:50%;border:2.5px solid var(--stamp);color:var(--stamp);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-family:var(--font-serif);font-weight:900;font-size:12px;line-height:1.25;transform:rotate(-12deg) scale(0);opacity:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .25s;pointer-events:none;}
-.stamp-mark.show{transform:rotate(-12deg) scale(1);opacity:.92;}
-.placeholder-msg{color:var(--ink-faint);font-size:13.5px;padding:30px 4px;text-align:center;border:1px dashed var(--line);border-radius:8px;}
+table.ledger tr.highlight td{background:var(--mint-bg);font-weight:800;color:var(--mint-deep);}
+.stamp-mark{position:absolute;top:20px;right:20px;width:52px;height:52px;border-radius:50%;background:var(--mint);color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-weight:900;font-size:20px;line-height:1;transform:scale(0);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .25s;pointer-events:none;box-shadow:0 8px 18px rgba(16,185,129,.35);}
+.stamp-mark.show{transform:scale(1);opacity:1;}
+.stamp-mark::before{content:"✓";}
+.placeholder-msg{color:var(--ink-faint);font-size:13.5px;padding:30px 4px;text-align:center;border:1px dashed var(--line);border-radius:var(--radius-md);}
 .info-section{margin-top:64px;}
 .info-section h2{font-family:var(--font-serif);font-size:24px;margin:0 0 6px;}
 .info-section .updated{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-faint);margin:0 0 24px;}
 .prose{font-size:14.5px;color:var(--ink-soft);max-width:760px;}
 .prose h3{font-family:var(--font-serif);color:var(--ink);font-size:17px;margin:26px 0 10px;}
 .prose p{margin:0 0 12px;}
-.formula-box{background:var(--gold-bg);border:1px solid #E1D3A0;border-radius:8px;padding:16px 18px;margin:16px 0;font-family:var(--font-mono);font-size:14px;color:var(--ink);line-height:2;}
-.disclaimer{margin-top:18px;padding:14px 16px;background:#FBF6E8;border-left:3px solid var(--gold);border-radius:0 6px 6px 0;font-size:12.5px;color:#6B5618;line-height:1.6;}
+.formula-box{background:var(--butter);border:1px solid var(--butter-deep);border-radius:var(--radius-md);padding:16px 18px;margin:16px 0;font-size:14px;font-weight:700;color:var(--butter-ink);line-height:2;}
+.disclaimer{margin-top:18px;padding:14px 16px;background:var(--butter);border-left:3px solid var(--butter-deep);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:12.5px;color:var(--butter-ink);line-height:1.6;}
 
   /* ---------- 리뉴얼 푸터 ---------- */
   footer.site{
@@ -150,7 +146,7 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
   .footer-legal-links{ display:flex; gap:16px; flex-wrap:wrap; }
   .footer-legal-links a{ color:#636C7E; text-decoration:none; }
   .footer-legal-links a:hover{ color:var(--paper); }
-.badge-service{display:inline-block;background:var(--paper-deep);border:1px solid var(--line);border-radius:4px;font-size:11px;color:var(--ink-faint);padding:2px 7px;margin-left:6px;vertical-align:middle;}
+.badge-service{display:inline-block;background:var(--paper-deep);border:1px solid var(--line);border-radius:999px;font-size:11px;font-weight:700;color:var(--ink-faint);padding:2px 9px;margin-left:6px;vertical-align:middle;}
 
   .breadcrumb{ font-size:12.5px; color:var(--ink-faint); margin:22px 0 4px; font-family:var(--font-mono); }
   .breadcrumb a{ color:var(--ink-soft); text-decoration:none; }
@@ -158,10 +154,10 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
   .updated-badge{
     display:inline-flex; align-items:center; gap:6px; margin-top:14px;
     font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft);
-    background:var(--gold-bg); border:1px solid #E1D3A0; border-radius:999px;
+    background:var(--mint-bg); border:1px solid var(--mint-soft); border-radius:999px;
     padding:5px 12px 5px 10px;
   }
-  .updated-badge .dot{ width:7px; height:7px; border-radius:50%; background:#3F8F5F; flex-shrink:0; }
+  .updated-badge .dot{ width:7px; height:7px; border-radius:50%; background:var(--mint); flex-shrink:0; }
 </style>
 <script type="application/ld+json">
 {
@@ -211,7 +207,7 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
 <header class="site">
   <div class="site-bar">
     <a href="index.html" class="brand" style="text-decoration:none;">
-      <div class="brand-mark">勞務</div>
+      <div class="brand-mark">💰</div>
       <div class="brand-text">
         <p class="brand-name">모두의 계산기</p>
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
@@ -238,77 +234,94 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
   <div class="breadcrumb"><a href="index.html">홈</a> › <a href="index.html#calculators">계산기</a> › 퇴직금 계산기</div>
 
   <section class="tool-head">
-    <p class="eyebrow">RETIREMENT PAY · 평균임금 · 퇴직소득세</p>
+    <p class="eyebrow">📦 퇴사 전에 꼭 챙겨야 할 돈</p>
     <h1>퇴직금 계산기</h1>
-    <p>입사일·퇴사일과 최근 3개월 임금을 입력하면 법정 퇴직금과 퇴직소득세를 즉시 계산합니다. 근로자퇴직급여보장법 기준이며, 1년 미만 근속자는 퇴직금이 발생하지 않습니다.</p>
+    <p>입사일·퇴사일과 최근 3개월 임금만 알려주시면, 법정 퇴직금과 퇴직소득세를 바로 계산해드려요. 1년 미만 근속자는 퇴직금이 발생하지 않아요.</p>
     <p class="updated-badge"><span class="dot"></span>2026년 7월 업데이트 · 근로자퇴직급여보장법 기준</p>
   </section>
 
-  <div class="calc-grid">
+  <div class="calc-grid app-shell">
     <!-- 입력 카드 -->
-    <div class="card">
+    <div class="card press-card">
       <h3>재직 기간 &amp; 임금 정보</h3>
 
-      <div class="two-col">
-        <div class="field">
-          <label for="joinDate">입사일</label>
-          <div class="input-unit">
-            <input type="date" id="joinDate">
+      <div class="step-field">
+        <div class="step-question"><span class="step-badge">1</span>입사일과 퇴사일을 알려주세요</div>
+        <div class="two-col">
+          <div class="field">
+            <label for="joinDate">입사일</label>
+            <div class="input-unit">
+              <input type="date" id="joinDate">
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label for="leaveDate">퇴사일 (마지막 근무일)</label>
-          <div class="input-unit">
-            <input type="date" id="leaveDate">
+          <div class="field">
+            <label for="leaveDate">퇴사일 (마지막 근무일)</label>
+            <div class="input-unit">
+              <input type="date" id="leaveDate">
+            </div>
           </div>
         </div>
       </div>
 
-      <div style="margin-bottom:18px;padding:12px 14px;background:var(--paper-deep);border-radius:6px;font-size:13px;color:var(--ink-soft);">
-        📌 평균임금 = 퇴직 전 3개월간 임금 총액 ÷ 3개월 달력일수 (통상 92일)
+      <div class="step-field">
+        <div class="step-question"><span class="step-badge">2</span>최근 3개월 임금을 알려주세요</div>
+        <div style="margin-bottom:16px;padding:12px 14px;background:var(--mint-bg);border-radius:var(--radius-sm);font-size:12.5px;color:var(--mint-deep);font-weight:700;">
+          📌 평균임금 = 퇴직 전 3개월간 임금 총액 ÷ 3개월 달력일수 (통상 92일)
+        </div>
+        <div class="three-col">
+          <div class="field">
+            <label for="wage1">3개월 전 월 임금</label>
+            <div class="input-unit">
+              <input type="text" inputmode="numeric" id="wage1" placeholder="0">
+              <span class="unit">만원</span>
+            </div>
+            <p class="hint">기본급+수당 합계</p>
+          </div>
+          <div class="field">
+            <label for="wage2">2개월 전 월 임금</label>
+            <div class="input-unit">
+              <input type="text" inputmode="numeric" id="wage2" placeholder="0">
+              <span class="unit">만원</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="wage3">퇴직 전 월 임금</label>
+            <div class="input-unit">
+              <input type="text" inputmode="numeric" id="wage3" placeholder="0">
+              <span class="unit">만원</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="three-col">
+      <div class="step-field">
+        <div class="step-question"><span class="step-badge">3</span>상여금·연차수당이 있나요? (없으면 0)</div>
         <div class="field">
-          <label for="wage1">3개월 전 월 임금</label>
+          <label for="annualBonus">연간 상여금·성과급 합계</label>
           <div class="input-unit">
-            <input type="text" inputmode="numeric" id="wage1" placeholder="0">
+            <input type="text" inputmode="numeric" id="annualBonus" placeholder="0">
             <span class="unit">만원</span>
           </div>
-          <p class="hint">기본급+수당 합계</p>
+          <div class="chip-row">
+            <button type="button" class="chip" onclick="PayCal.chipAdd('annualBonus',100)">+100</button>
+            <button type="button" class="chip" onclick="PayCal.chipAdd('annualBonus',10)">+10</button>
+            <button type="button" class="chip chip-clear" onclick="PayCal.chipAdd('annualBonus',0)">초기화</button>
+          </div>
+          <p class="hint">연간 지급된 모든 상여금의 합계. 3/12을 평균임금에 가산합니다.</p>
         </div>
+
         <div class="field">
-          <label for="wage2">2개월 전 월 임금</label>
+          <label for="annualLeaveWage">연차미사용수당 연간합계</label>
           <div class="input-unit">
-            <input type="text" inputmode="numeric" id="wage2" placeholder="0">
+            <input type="text" inputmode="numeric" id="annualLeaveWage" placeholder="0">
             <span class="unit">만원</span>
           </div>
-        </div>
-        <div class="field">
-          <label for="wage3">퇴직 전 월 임금</label>
-          <div class="input-unit">
-            <input type="text" inputmode="numeric" id="wage3" placeholder="0">
-            <span class="unit">만원</span>
+          <div class="chip-row">
+            <button type="button" class="chip" onclick="PayCal.chipAdd('annualLeaveWage',10)">+10</button>
+            <button type="button" class="chip chip-clear" onclick="PayCal.chipAdd('annualLeaveWage',0)">초기화</button>
           </div>
+          <p class="hint">퇴직 전전년도 연차수당. 1/12을 평균임금에 가산합니다.</p>
         </div>
-      </div>
-
-      <div class="field">
-        <label for="annualBonus">연간 상여금·성과급 합계 (없으면 0)</label>
-        <div class="input-unit">
-          <input type="text" inputmode="numeric" id="annualBonus" placeholder="0">
-          <span class="unit">만원</span>
-        </div>
-        <p class="hint">연간 지급된 모든 상여금의 합계. 3/12을 평균임금에 가산합니다.</p>
-      </div>
-
-      <div class="field">
-        <label for="annualLeaveWage">연차미사용수당 연간합계 (없으면 0)</label>
-        <div class="input-unit">
-          <input type="text" inputmode="numeric" id="annualLeaveWage" placeholder="0">
-          <span class="unit">만원</span>
-        </div>
-        <p class="hint">퇴직 전전년도 연차수당. 1/12을 평균임금에 가산합니다.</p>
       </div>
 
       <button class="stamp-btn" id="calcBtn">퇴직금 계산하기</button>
@@ -316,14 +329,20 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
     </div>
 
     <!-- 결과 카드 -->
-    <div class="result-card">
-      <div class="stamp-mark" id="stampMark">계산<br>완료</div>
-      <p class="doc-label">RETIREMENT SETTLEMENT</p>
+    <div class="result-card press-card" id="resultCard">
+      <div class="stamp-mark" id="stampMark"></div>
+      <p class="doc-label">MY RETIREMENT PAY</p>
       <h3>퇴직금 명세 (추정)</h3>
-      <p class="sub" id="resultSub">좌측 정보를 입력하고 계산하기를 눌러주세요.</p>
+      <p class="sub" id="resultSub">위 정보를 입력하고 계산하기를 눌러주세요.</p>
       <div id="resultBody">
         <div class="placeholder-msg">입사일·퇴사일·임금 정보를 입력하고<br>[퇴직금 계산하기]를 눌러주세요.</div>
       </div>
+    </div>
+
+    <!-- 결과 공유 바 -->
+    <div class="share-sticky">
+      <button type="button" class="share-btn share-save">📸 이미지로 저장</button>
+      <button type="button" class="share-btn kakao share-kakao">💬 공유하기</button>
     </div>
   </div>
 
@@ -497,22 +516,39 @@ table.ledger tr.highlight td{background:var(--gold-bg);font-weight:700;color:var
 
     document.getElementById('resultSub').textContent=`재직기간 ${yrs}년 ${mos}개월 (${workDays.toLocaleString()}일) 기준 추정 퇴직금`;
 
-    document.getElementById('resultBody').innerHTML=`
+    const resultBodyEl = document.getElementById('resultBody');
+    resultBodyEl.innerHTML=`
       <div class="net-amount">
-        <span class="label">세후 예상 수령액</span>
-        <span class="value">${won(netPay)}<small> 원</small></span>
+        <span class="label">💚 세후 예상 수령액</span>
+        <span class="value"><span class="count-target">${won(netPay)}</span><small> 원</small></span>
       </div>
-      <table class="ledger">
-        <tr><th>항목</th><th style="text-align:right;">금액</th></tr>
-        <tr><td>1일 평균임금</td><td class="amt">${won(avgDailyWage)} 원</td></tr>
-        <tr><td>재직일수</td><td class="amt">${workDays.toLocaleString()} 일</td></tr>
-        <tr class="highlight"><td>법정 퇴직금 (세전)</td><td class="amt">${won(retirementPay)} 원</td></tr>
-        <tr><td>퇴직소득세 (추정)</td><td class="amt">-${won(retirementTax)} 원</td></tr>
-        <tr><td>지방소득세 (추정)</td><td class="amt">-${won(localTax)} 원</td></tr>
-        <tr class="deduct-total"><td>세금 합계</td><td class="amt">-${won(totalTax)} 원</td></tr>
-        <tr class="total"><td>세후 실수령 퇴직금</td><td class="amt">${won(netPay)} 원</td></tr>
-      </table>
+      <div id="retireDonut"></div>
+      <div class="accordion">
+        <button type="button" class="accordion-toggle">상세 내역 보기 <span class="arrow">▾</span></button>
+        <div class="accordion-body"><div class="accordion-body-inner">
+          <table class="ledger">
+            <tr><th>항목</th><th style="text-align:right;">금액</th></tr>
+            <tr><td>1일 평균임금</td><td class="amt">${won(avgDailyWage)} 원</td></tr>
+            <tr><td>재직일수</td><td class="amt">${workDays.toLocaleString()} 일</td></tr>
+            <tr class="highlight"><td>법정 퇴직금 (세전)</td><td class="amt">${won(retirementPay)} 원</td></tr>
+            <tr><td>퇴직소득세 (추정)</td><td class="amt">-${won(retirementTax)} 원</td></tr>
+            <tr><td>지방소득세 (추정)</td><td class="amt">-${won(localTax)} 원</td></tr>
+            <tr class="deduct-total"><td>세금 합계</td><td class="amt">-${won(totalTax)} 원</td></tr>
+            <tr class="total"><td>세후 실수령 퇴직금</td><td class="amt">${won(netPay)} 원</td></tr>
+          </table>
+        </div></div>
+      </div>
     `;
+
+    if(window.PayCal){
+      const netPct = Math.round((netPay/retirementPay)*100);
+      PayCal.renderDonut(document.getElementById('retireDonut'), [
+        { label:'세후 수령액', value:netPay, color:'#10B981' },
+        { label:'퇴직소득세·지방소득세', value:totalTax, color:'#FBBF24' }
+      ], netPct+'%', '수령 비율');
+      PayCal.runAutoCountUp(resultBodyEl);
+      PayCal.initAccordions(resultBodyEl);
+    }
 
     const stamp=document.getElementById('stampMark');
     stamp.classList.remove('show');

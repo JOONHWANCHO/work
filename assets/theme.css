@@ -1,0 +1,274 @@
+/* ============================================================
+   THEME.CSS — "퇴근 후의 가벼움과 안정감" 디자인 시스템
+   2026-07 UI/UX 개편판. 모든 페이지가 이 파일을 공유합니다.
+   토큰(색상 변수)만 바꿔도 전체 사이트 톤이 함께 바뀌도록
+   기존 페이지의 --ink / --surface / --line 등 변수명은 그대로
+   유지하고 "값"만 민트 틸 테마로 교체했습니다.
+   ============================================================ */
+
+:root{
+  /* ---- Primary: 민트 틸 (Mint Teal) ---- */
+  --mint:        #10B981;
+  --mint-deep:   #059669;
+  --mint-soft:   #D1FAE5;
+  --mint-bg:     #ECFDF5;
+
+  /* ---- Secondary: 웜 버터 (Warm Butter) ---- */
+  --butter:      #FEF3C7;
+  --butter-deep: #FDE68A;
+  --butter-ink:  #92400E;   /* 버터 배경 위에 올라가는 강조 텍스트 (AA 대비) */
+
+  /* ---- Neutral / Background ---- */
+  --paper:      #F8FAFC;   /* 배경 (라이트 쿨그레이) */
+  --paper-deep: #EEF2F6;
+  --surface:    #FFFFFF;
+  --ink:        #0F172A;   /* 본문 텍스트 */
+  --ink-soft:   #475569;   /* 보조 텍스트 */
+  --ink-faint:  #64748B;   /* 타임스탬프 등 저강조 텍스트 (WCAG AA 유지) */
+  --line:       #E2E8F0;
+  --line-soft:  #EEF2F6;
+
+  /* ---- 기존 변수명 호환 (레거시 "장부" 컨셉 → 민트 테마로 리매핑) ---- */
+  --stamp:      #059669;   /* 구 "도장 레드" → 민트 딥 (버튼/강조) */
+  --stamp-deep: #047857;
+  --gold:       #92400E;   /* 구 "골드" → 버터 카드 위 강조 텍스트 */
+  --gold-bg:    #FEF3C7;   /* 구 "골드 배경" → 웜 버터 */
+  --focus:      #059669;
+
+  /* ---- Typography: Pretendard 계열로 통일 (세리프/모노스페이스 제거) ---- */
+  --font-serif: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body:  'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:  'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 2px 10px rgba(15,23,42,.04), 0 1px 2px rgba(15,23,42,.04);
+  --shadow-hover: 0 12px 28px rgba(16,185,129,.14), 0 2px 8px rgba(15,23,42,.06);
+}
+
+/* 전역 톤 보정 : 숫자는 sans 굵게 + tabular-nums 로 통일 */
+body{ font-variant-numeric: tabular-nums; background-image:none !important; background-color: var(--paper); }
+.card, .result-card, .rate-card, .post-card, .news-card, .modal-box{ box-shadow: var(--shadow-card); }
+
+/* ============================================================
+   0. 상단 히어로 카운터 배지 / 신뢰 배지 톤 보정
+   ============================================================ */
+.updated-badge .dot{ background: var(--mint) !important; }
+
+/* ============================================================
+   1. Quick-Add 칩 버튼 (금액 입력 보조)
+   ============================================================ */
+.chip-row{
+  display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;
+}
+.chip{
+  font-family:var(--font-body); font-size:13px; font-weight:700;
+  color:var(--mint-deep); background:var(--mint-bg);
+  border:1.5px solid var(--mint-soft); border-radius:999px;
+  padding:7px 14px; cursor:pointer; line-height:1;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.chip:hover{ background:var(--mint-soft); }
+.chip:active{ transform:scale(.94); }
+.chip.chip-clear{ color:var(--ink-faint); background:var(--paper-deep); border-color:var(--line); }
+
+/* ============================================================
+   2. 토글 스위치 (O/X, 두 개 중 하나 선택)
+   ============================================================ */
+.toggle-switch{
+  display:inline-flex; background:var(--paper-deep); border:1px solid var(--line);
+  border-radius:999px; padding:4px; gap:2px;
+}
+.toggle-switch button{
+  border:none; background:transparent; cursor:pointer;
+  font-family:var(--font-body); font-size:13.5px; font-weight:700;
+  color:var(--ink-soft); padding:9px 18px; border-radius:999px;
+  transition: background .15s ease, color .15s ease, transform .08s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.toggle-switch button.active{
+  background:var(--mint); color:#fff;
+  box-shadow:0 2px 8px rgba(16,185,129,.35);
+}
+.toggle-switch button:active{ transform:scale(.96); }
+select.visually-hidden{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+
+/* ============================================================
+   3. 스텝 배지 (질문형 카드 헤더)
+   ============================================================ */
+.step-field{
+  margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--line-soft);
+}
+.step-field:last-of-type{ border-bottom:none; margin-bottom:8px; padding-bottom:0; }
+.step-badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; border-radius:50%; background:var(--mint);
+  color:#fff; font-size:11.5px; font-weight:800; margin-right:7px; flex-shrink:0;
+}
+.step-question{
+  display:flex; align-items:center; font-size:14.5px; font-weight:700; color:var(--ink);
+  margin-bottom:10px;
+}
+
+/* ============================================================
+   4. 도넛 차트 (CSS conic-gradient 기반)
+   ============================================================ */
+.donut-wrap{
+  display:flex; align-items:center; gap:20px; margin:18px 0 20px; flex-wrap:wrap;
+}
+.donut{
+  width:112px; height:112px; border-radius:50%; flex-shrink:0;
+  position:relative;
+  transition: background 1s cubic-bezier(.16,1,.3,1);
+}
+.donut::after{
+  content:''; position:absolute; inset:16px; border-radius:50%;
+  background:var(--surface); box-shadow: inset 0 1px 2px rgba(15,23,42,.05);
+}
+.donut-center{
+  position:absolute; inset:16px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; text-align:center; z-index:1;
+}
+.donut-center .pct{ font-size:15px; font-weight:800; color:var(--mint-deep); line-height:1.1; }
+.donut-center .txt{ font-size:9px; color:var(--ink-faint); margin-top:2px; }
+.donut-legend{ display:flex; flex-direction:column; gap:7px; flex:1; min-width:150px; }
+.donut-legend-item{ display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-soft); }
+.donut-legend-item .swatch{ width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+.donut-legend-item .amt{ margin-left:auto; font-weight:700; color:var(--ink); }
+
+/* ============================================================
+   5. 아코디언 (상세 내역 접기/펼치기)
+   ============================================================ */
+.accordion{ border:1px solid var(--line); border-radius:var(--radius-md); overflow:hidden; margin-top:6px; }
+.accordion-toggle{
+  width:100%; display:flex; align-items:center; justify-content:space-between;
+  padding:13px 16px; background:var(--paper-deep); border:none; cursor:pointer;
+  font-family:var(--font-body); font-size:13.5px; font-weight:700; color:var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+.accordion-toggle .arrow{ transition:transform .2s ease; font-size:11px; color:var(--ink-faint); }
+.accordion.open .accordion-toggle .arrow{ transform:rotate(180deg); }
+.accordion-body{
+  max-height:0; overflow:hidden; transition:max-height .28s ease;
+  background:var(--surface);
+}
+.accordion.open .accordion-body{ max-height:900px; }
+.accordion-body-inner{ padding:14px 16px 18px; }
+
+/* ============================================================
+   6. 하단 고정 공유 바 (Sticky Footer Actions)
+   ============================================================ */
+.share-sticky{
+  position:sticky; bottom:0; left:0; right:0; z-index:20;
+  display:flex; gap:10px; padding:12px 0 0; margin-top:18px;
+  background:linear-gradient(180deg, transparent, var(--paper) 22%);
+}
+.share-btn{
+  flex:1; display:flex; align-items:center; justify-content:center; gap:6px;
+  padding:13px; border-radius:var(--radius-md); font-size:13.5px; font-weight:700;
+  cursor:pointer; border:1.5px solid var(--line); background:var(--surface); color:var(--ink);
+  transition: transform .08s ease, background .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.share-btn:active{ transform:scale(.97); }
+.share-btn.primary{ background:var(--mint); border-color:var(--mint); color:#fff; }
+.share-btn.kakao{ background:#FEE500; border-color:#FEE500; color:#191600; }
+.share-toast{
+  position:fixed; left:50%; bottom:88px; transform:translateX(-50%) translateY(12px);
+  background:var(--ink); color:#fff; font-size:13px; font-weight:600;
+  padding:10px 18px; border-radius:999px; opacity:0; pointer-events:none;
+  transition:opacity .2s ease, transform .2s ease; z-index:50; white-space:nowrap;
+}
+.share-toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ============================================================
+   7. 카드 눌림 효과 (Micro-interaction)
+   ============================================================ */
+.press-card{ transition: transform .12s ease, box-shadow .12s ease; }
+.press-card:active{ transform:scale(.98); }
+
+/* ============================================================
+   8. 홈 화면 — 히어로 카드 / 아이콘 그리드 / 트렌드 팁
+   ============================================================ */
+.mint-hero-card{
+  position:relative; overflow:hidden; border-radius:24px;
+  background: linear-gradient(135deg, var(--mint-deep) 0%, var(--mint) 100%);
+  color:#fff; padding:36px 30px; margin-bottom:32px;
+  box-shadow: 0 16px 32px rgba(5,150,105,.22);
+}
+.mint-hero-card::before{
+  content:''; position:absolute; right:-40px; top:-40px; width:220px; height:220px;
+  border-radius:50%; background:rgba(255,255,255,.10);
+}
+.mint-hero-card::after{
+  content:''; position:absolute; left:-30px; bottom:-60px; width:160px; height:160px;
+  border-radius:50%; background:rgba(255,255,255,.08);
+}
+.mint-hero-eyebrow{
+  position:relative; font-size:13px; font-weight:700; color:rgba(255,255,255,.9);
+  margin:0 0 10px; display:flex; align-items:center; gap:6px;
+}
+.mint-hero-card h1{
+  position:relative; font-family:var(--font-body); font-weight:800;
+  font-size:clamp(21px,3.4vw,27px); line-height:1.4; margin:0 0 20px; color:#fff;
+}
+.mint-hero-cta{
+  position:relative; display:inline-flex; align-items:center; gap:8px;
+  background:#fff; color:var(--mint-deep); font-weight:800; font-size:15px;
+  padding:14px 22px; border-radius:999px; text-decoration:none;
+  box-shadow:0 8px 20px rgba(0,0,0,.12);
+  transition: transform .1s ease;
+}
+.mint-hero-cta:active{ transform:scale(.97); }
+
+.tile-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:700px){ .tile-grid{ grid-template-columns:repeat(3,1fr); gap:10px; } }
+@media(max-width:460px){ .tile-grid{ grid-template-columns:repeat(2,1fr); } }
+.mint-tile{
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg);
+  padding:20px 8px; text-decoration:none; color:var(--ink);
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+}
+.mint-tile:hover{ transform:translateY(-3px); box-shadow:var(--shadow-hover); border-color:var(--mint-soft); }
+.mint-tile:active{ transform:scale(.97); }
+.mint-tile .icon-box{
+  width:52px; height:52px; border-radius:16px; background:var(--mint-bg);
+  display:flex; align-items:center; justify-content:center; font-size:24px;
+}
+.mint-tile .icon-label{ font-size:12.5px; font-weight:700; text-align:center; line-height:1.4; }
+
+.tip-scroller{
+  display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:4px;
+}
+.tip-scroller::-webkit-scrollbar{ display:none; }
+.tip-card{
+  scroll-snap-align:start; flex:0 0 auto; width:min(78vw,320px);
+  background:var(--butter); border-radius:var(--radius-lg); padding:20px;
+  text-decoration:none; color:var(--ink); display:flex; flex-direction:column; gap:10px;
+  transition: transform .14s ease;
+}
+.tip-card:active{ transform:scale(.98); }
+.tip-card .tip-kicker{ font-size:11.5px; font-weight:800; color:var(--butter-ink); letter-spacing:.02em; }
+.tip-card .tip-title{ font-size:15px; font-weight:800; line-height:1.4; }
+.tip-card .tip-arrow{ margin-top:auto; font-size:12.5px; font-weight:700; color:var(--butter-ink); }
+
+/* ============================================================
+   9. 계산기 페이지: 단일 컬럼(모바일 앱형) 레이아웃
+   Desktop(>=768px)도 540px 폭으로 제한해 앱과 동일한 경험 제공
+   ============================================================ */
+.calc-grid.app-shell,
+.main-layout.app-shell{
+  display:flex; flex-direction:column; gap:20px;
+  max-width:540px; margin:24px auto 0;
+}
+
+/* count-up 대상 숫자에 은은한 강조 트랜지션 */
+.count-target{ display:inline-block; }

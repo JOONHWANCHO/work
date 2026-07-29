@@ -7,7 +7,7 @@
 <meta name="description" content="연봉 실수령액, 퇴직금, 연차수당, 연말정산, 실업급여, 최저임금까지 — 직장인을 위한 무료 계산기와 노무 지식을 한 곳에서 확인하세요.">
 <meta name="keywords" content="연봉 계산기, 퇴직금 계산기, 실업급여 계산기, 최저임금 계산기, 연차수당 계산기, 연말정산 계산기, 노무 계산기 모음">
 <link rel="canonical" href="https://paycal.kr/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2320283D'/%3E%3Ctext x='50' y='62' font-size='40' text-anchor='middle' fill='%23B23A2D'%3E%E5%8B%9E%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23059669'/%3E%3Ctext x='50' y='66' font-size='48' text-anchor='middle' fill='%23ffffff'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="모두의 계산기">
 <meta property="og:title" content="모두의 계산기 | 직장인 필수 계산기 모음">
@@ -19,7 +19,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://paycal.kr/assets/og-image.png">
-<meta name="theme-color" content="#20283D">
+<meta name="theme-color" content="#059669">
 <!-- ============================================================
      GOOGLE ANALYTICS 4 (GA4) 자리
      실제 배포 시 아래 주석을 해제하고 G-XXXXXXXXXX 를
@@ -38,42 +38,24 @@
      GOOGLE ADSENSE 스크립트 자리
      ============================================================ -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<!-- 공통 디자인 시스템 (2026-07 UI/UX 개편: 민트 틸 테마) -->
+<link rel="stylesheet" href="assets/theme.css">
 <!-- 공통 스크립트 — 조회수 트래킹 등 -->
 <script src="assets/site.js"></script>
+<!-- 공통 인터랙션(칩/토글/도넛/아코디언/카운트업/공유) -->
+<script src="assets/theme.js" defer></script>
 
 <style>
   /* ============================================================
-     DESIGN TOKENS — "급여명세서 / 사내 장부" 컨셉
+     DESIGN TOKENS — assets/theme.css 에서 민트 틸 테마로 정의됩니다
+     (2026-07 개편: "급여명세서/장부" 컨셉 → "퇴근 후의 가벼움" 컨셉)
      ============================================================ */
-  :root{
-    --paper:      #ECEFE3;
-    --paper-deep: #E2E6D4;
-    --surface:    #FFFFFF;
-    --ink:        #20283D;
-    --ink-soft:   #5B6478;
-    --ink-faint:  #616B80;
-    --line:       #C7CCB6;
-    --line-soft:  #D9DCCB;
-    --stamp:      #B23A2D;
-    --stamp-deep: #8F2C22;
-    --gold:       #93711C;
-    --gold-bg:    #F4ECD6;
-    --focus:      #20283D;
-
-    --font-serif: 'Noto Serif KR', serif;
-    --font-body:  'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono:  'IBM Plex Mono', monospace;
-  }
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
   body{
     margin:0; background:var(--paper);
-    background-image:linear-gradient(var(--line-soft) 1px, transparent 1px);
-    background-size:100% 42px;
     color:var(--ink); font-family:var(--font-body); line-height:1.6;
     -webkit-font-smoothing:antialiased;
   }
@@ -84,121 +66,79 @@
   .wrap{ max-width:1080px; margin:0 auto; padding:0 20px; }
 
   /* ---------- 헤더 ---------- */
-  header.site{ background:var(--ink); color:var(--paper); border-bottom:6px double var(--stamp); }
-  .site-bar{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px; max-width:1080px; margin:0 auto; gap:16px; flex-wrap:wrap; }
-  .brand{ display:flex; align-items:center; gap:12px; text-decoration:none; }
-  .brand-mark{ width:42px; height:42px; border-radius:50%; border:2px solid var(--stamp); color:var(--stamp); display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-weight:900; font-size:13px; transform:rotate(-8deg); flex-shrink:0; }
-  .brand-text .brand-name{ font-family:var(--font-serif); font-weight:700; font-size:19px; margin:0; letter-spacing:.01em; }
-  .brand-text p{ margin:2px 0 0; font-size:12px; color:#AEB6C7; letter-spacing:.04em; }
-  nav.tools{ display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; }
+  header.site{ background:var(--surface); color:var(--ink); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:30; }
+  .site-bar{ display:flex; align-items:center; justify-content:space-between; padding:14px 20px; max-width:1080px; margin:0 auto; gap:16px; flex-wrap:wrap; }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{ width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg,var(--mint),var(--mint-deep)); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:17px; flex-shrink:0; }
+  .brand-text .brand-name{ font-weight:800; color:var(--ink); font-size:18px; margin:0; letter-spacing:-.01em; }
+  .brand-text p{ margin:1px 0 0; font-size:11px; color:var(--ink-faint); letter-spacing:.02em; }
+  nav.tools{ display:flex; gap:6px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; }
   nav.tools::-webkit-scrollbar{ display:none; }
-  nav.tools .tab{ flex-shrink:0; font-size:13px; padding:7px 12px; border-radius:3px; border:1px solid rgba(255,255,255,.18); color:#C7CDDB; text-decoration:none; }
-  nav.tools .tab.active{ background:var(--stamp); border-color:var(--stamp); color:#fff; font-weight:600; }
-  nav.tools .tab:hover:not(.active){ background:rgba(255,255,255,.08); }
+  nav.tools .tab{ flex-shrink:0; font-size:13px; font-weight:600; padding:8px 13px; border-radius:999px; border:1px solid transparent; color:var(--ink-soft); text-decoration:none; }
+  nav.tools .tab.active{ background:var(--mint-bg); border-color:var(--mint-soft); color:var(--mint-deep); font-weight:800; }
+  nav.tools .tab:hover:not(.active){ background:var(--paper-deep); }
 
-  main.wrap{ padding-top:32px; padding-bottom:20px; }
+  main.wrap{ padding-top:28px; padding-bottom:20px; }
 
-  .eyebrow{ font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--stamp); font-weight:700; margin:0 0 6px; }
-
-  /* ---------- 배너 ---------- */
-  .hero-banner{
-    position:relative; overflow:hidden; border-radius:14px; border:1px solid var(--line);
-    background:linear-gradient(135deg, var(--ink) 0%, #2C374F 60%, var(--stamp-deep) 130%);
-    color:var(--paper); padding:48px 44px; margin-bottom:44px;
-    display:flex; align-items:center; justify-content:space-between; gap:28px; flex-wrap:wrap;
-  }
-  .hero-banner::before{
-    content:''; position:absolute; inset:0; opacity:.10;
-    background-image:radial-gradient(circle, #fff 1.5px, transparent 1.5px);
-    background-size:18px 18px;
-  }
-  .hero-copy{ position:relative; max-width:560px; }
-  .hero-copy .eyebrow{ color:#E7A99C; }
-  .hero-copy h1{ font-family:var(--font-serif); font-weight:900; font-size:clamp(22px,3.6vw,32px); margin:0 0 12px; line-height:1.35; }
-  .hero-copy p{ font-size:14.5px; color:#C7CDDB; margin:0 0 22px; line-height:1.7; }
-  .hero-cta{ display:inline-flex; align-items:center; gap:6px; background:var(--stamp); color:#fff; font-weight:700; font-size:14px; padding:12px 22px; border-radius:8px; text-decoration:none; }
-  .hero-cta:hover{ background:#c74436; }
-  .hero-visual{
-    position:relative; flex-shrink:0; width:220px; height:150px; border-radius:10px;
-    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
-    display:flex; align-items:center; justify-content:center; font-size:56px;
-  }
-  @media(max-width:640px){ .hero-banner{ padding:32px 24px; } .hero-visual{ display:none; } }
+  .eyebrow{ font-size:12.5px; letter-spacing:.01em; color:var(--mint-deep); font-weight:800; margin:0 0 6px; }
 
   /* ---------- 섹션 공통 ---------- */
   .section-head{ display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:20px; }
-  .section-head h2{ font-family:var(--font-serif); font-size:23px; margin:0; }
-  .section-head .more-link{ font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); text-decoration:none; }
+  .section-head h2{ font-size:21px; font-weight:800; margin:0; }
+  .section-head .more-link{ font-size:12.5px; font-weight:700; color:var(--mint-deep); text-decoration:none; }
   .section-head .more-link:hover{ text-decoration:underline; }
-  section.home-section{ margin-bottom:56px; }
-
-  /* ---------- 각종 계산기 아이콘 그리드 ---------- */
-  .calc-icon-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-  @media(max-width:700px){ .calc-icon-grid{ grid-template-columns:repeat(3,1fr); } }
-  @media(max-width:460px){ .calc-icon-grid{ grid-template-columns:repeat(2,1fr); } }
-  .calc-icon-tile{
-    display:flex; flex-direction:column; align-items:center; gap:10px;
-    background:var(--surface); border:1px solid var(--line); border-radius:12px;
-    padding:22px 10px; text-decoration:none; color:var(--ink);
-    transition:transform .12s, box-shadow .12s, border-color .12s;
-  }
-  .calc-icon-tile:hover{ transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,.08); border-color:var(--ink-soft); }
-  .calc-icon-tile .icon-box{
-    width:52px; height:52px; border-radius:12px; background:var(--paper-deep);
-    display:flex; align-items:center; justify-content:center; font-size:24px;
-  }
-  .calc-icon-tile .icon-label{ font-size:12.5px; font-weight:700; text-align:center; line-height:1.4; }
+  section.home-section{ margin-bottom:52px; }
 
   /* ---------- 뉴스 섹션 ---------- */
   .news-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr; grid-template-rows:auto auto; gap:16px; }
   @media(max-width:860px){ .news-grid{ grid-template-columns:1fr 1fr; } }
   @media(max-width:560px){ .news-grid{ grid-template-columns:1fr; } .news-card.featured{ grid-row:auto; } }
   .news-card{
-    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md);
     overflow:hidden; text-decoration:none; color:var(--ink); display:flex; flex-direction:column;
     transition:transform .12s, box-shadow .12s, border-color .12s;
   }
-  .news-card:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.08); border-color:var(--ink-soft); }
+  .news-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow-hover); border-color:var(--mint-soft); }
   .news-card.featured{ grid-row:span 2; }
   .news-thumb{
     aspect-ratio:16/10; display:flex; align-items:center; justify-content:center;
-    font-size:40px; background:linear-gradient(135deg, var(--paper-deep), var(--gold-bg));
+    font-size:40px; background:linear-gradient(135deg, var(--mint-bg), var(--butter));
     color:var(--ink-soft); flex-shrink:0;
   }
   .news-card.featured .news-thumb{ aspect-ratio:16/11; font-size:64px; }
   .news-body{ padding:14px 16px 18px; display:flex; flex-direction:column; gap:8px; flex:1; }
-  .news-cat{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.06em; color:var(--stamp); font-weight:700; }
+  .news-cat{ font-size:10.5px; letter-spacing:.03em; color:var(--mint-deep); font-weight:800; }
   .news-title{ font-size:14.5px; font-weight:700; line-height:1.45; margin:0; }
   .news-card.featured .news-title{ font-size:18px; }
   .news-summary{ font-size:12.5px; color:var(--ink-soft); line-height:1.6; margin:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .news-meta{ margin-top:auto; display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); padding-top:6px; }
+  .news-meta{ margin-top:auto; display:flex; justify-content:space-between; font-size:11px; color:var(--ink-faint); padding-top:6px; }
 
   /* ---------- 인기글 랭킹 ---------- */
-  .ranking-list{ display:flex; flex-direction:column; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface); }
+  .ranking-list{ display:flex; flex-direction:column; border:1px solid var(--line); border-radius:var(--radius-md); overflow:hidden; background:var(--surface); }
   .ranking-item{ display:flex; align-items:center; gap:16px; padding:14px 18px; text-decoration:none; color:var(--ink); border-bottom:1px solid var(--line); transition:background .12s; }
   .ranking-item:last-child{ border-bottom:none; }
   .ranking-item:hover{ background:var(--paper-deep); }
-  .ranking-rank{ font-family:var(--font-serif); font-weight:900; font-size:20px; width:26px; flex-shrink:0; color:var(--gold); text-align:center; }
-  .ranking-item:nth-child(n+4) .ranking-rank{ color:var(--ink-faint); font-size:16px; }
-  .ranking-thumb{ width:52px; height:52px; border-radius:8px; background:linear-gradient(135deg, var(--paper-deep), var(--gold-bg)); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .ranking-rank{ font-weight:800; font-size:18px; width:26px; flex-shrink:0; color:var(--mint-deep); text-align:center; }
+  .ranking-item:nth-child(n+4) .ranking-rank{ color:var(--ink-faint); font-size:15px; }
+  .ranking-thumb{ width:52px; height:52px; border-radius:12px; background:linear-gradient(135deg, var(--mint-bg), var(--butter)); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
   .ranking-text{ flex:1; min-width:0; }
-  .ranking-cat{ font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; color:var(--stamp); font-weight:700; margin-bottom:3px; }
+  .ranking-cat{ font-size:10.5px; letter-spacing:.03em; color:var(--mint-deep); font-weight:800; margin-bottom:3px; }
   .ranking-title{ font-size:14px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .ranking-views{ font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); flex-shrink:0; }
+  .ranking-views{ font-size:12px; color:var(--ink-faint); flex-shrink:0; }
 
   .category-tabs{ display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin-bottom:20px; padding-bottom:2px; }
   .category-tabs::-webkit-scrollbar{ display:none; }
-  .category-tabs button{ flex-shrink:0; font-family:var(--font-mono); font-size:12.5px; padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
-  .category-tabs button:hover{ border-color:var(--ink-soft); }
-  .category-tabs button.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .category-tabs button{ flex-shrink:0; font-size:12.5px; font-weight:700; padding:8px 15px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
+  .category-tabs button:hover{ border-color:var(--mint-soft); }
+  .category-tabs button.active{ background:var(--mint); color:#fff; border-color:var(--mint); }
 
   .loading-msg{ text-align:center; padding:40px; color:var(--ink-faint); font-size:14px; grid-column:1/-1; }
-  .error-msg{ padding:16px 18px; background:#FBF0EE; border-left:3px solid var(--stamp); border-radius:0 6px 6px 0; font-size:13px; color:var(--stamp-deep); grid-column:1/-1; }
-  .sheet-config-hint{ margin-top:14px; padding:12px 16px; background:var(--gold-bg); border:1px solid #E1D3A0; border-radius:6px; font-size:12.5px; color:#6B5618; line-height:1.7; }
-  .sheet-config-hint code{ background:rgba(0,0,0,.07); padding:1px 5px; border-radius:3px; font-family:var(--font-mono); font-size:11.5px; }
+  .error-msg{ padding:16px 18px; background:#FEF2F2; border-left:3px solid #EF4444; border-radius:0 6px 6px 0; font-size:13px; color:#B91C1C; grid-column:1/-1; }
+  .sheet-config-hint{ margin-top:14px; padding:12px 16px; background:var(--butter); border:1px solid var(--butter-deep); border-radius:var(--radius-sm); font-size:12.5px; color:var(--butter-ink); line-height:1.7; }
+  .sheet-config-hint code{ background:rgba(0,0,0,.07); padding:1px 5px; border-radius:3px; font-size:11.5px; }
 
   /* ---------- 광고 슬롯 ---------- */
-  .ad-slot{ display:flex; align-items:center; justify-content:center; margin:36px auto; background:var(--surface); border:1px dashed var(--line); border-radius:8px; color:var(--ink-faint); font-family:var(--font-mono); font-size:11px; }
+  .ad-slot{ display:flex; align-items:center; justify-content:center; margin:36px auto; background:var(--surface); border:1px dashed var(--line); border-radius:8px; color:var(--ink-faint); font-size:11px; }
   .ad-slot span{ padding:4px 10px; }
   .ad-slot.leaderboard{ max-width:1080px; min-height:90px; }
   .ad-slot.in-feed{ max-width:1080px; min-height:120px; }
@@ -208,7 +148,7 @@
   .footer-inner{ max-width:1080px; margin:0 auto; padding:44px 20px 28px; }
   .footer-top{ display:grid; grid-template-columns:2fr 1fr 1.4fr; gap:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,.12); }
   @media(max-width:700px){ .footer-top{ grid-template-columns:1fr; } }
-  .footer-col h4{ color:#fff; font-size:13px; margin:0 0 12px; font-family:var(--font-mono); letter-spacing:.06em; }
+  .footer-col h4{ color:#fff; font-size:13px; margin:0 0 12px; letter-spacing:.02em; }
   .footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
   .footer-col a{ color:#AEB6C7; text-decoration:none; font-size:13px; }
   .footer-col a:hover{ color:#fff; text-decoration:underline; }
@@ -288,7 +228,7 @@
 <header class="site">
   <div class="site-bar">
     <a href="index.html" class="brand">
-      <div class="brand-mark">勞務</div>
+      <div class="brand-mark">💰</div>
       <div class="brand-text">
         <p class="brand-name">모두의 계산기</p>
         <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
@@ -311,47 +251,72 @@
 <main class="wrap">
 
   <!-- ============================================================
-       배너 (BANNER)
+       히어로 카드 (MAIN DASHBOARD)
        ============================================================ -->
-  <section class="hero-banner">
-    <div class="hero-copy">
-      <p class="eyebrow">2026년 최신 기준 반영</p>
-      <h1>내 월급, 정확히 얼마 받을까?<br>직장인 필수 계산기 6종</h1>
-      <p>연봉 실수령액부터 퇴직금, 실업급여, 최저임금까지 — 4대보험·세금까지 반영한 정확한 계산 결과를 지금 바로 확인하세요.</p>
-      <a class="hero-cta" href="salary.html">지금 계산해보기 →</a>
-    </div>
-    <div class="hero-visual">🧮</div>
+  <section class="mint-hero-card">
+    <p class="mint-hero-eyebrow">💡 2026년 최신 기준 반영</p>
+    <h1>이번 달 내 통장에<br>찍힐 돈은 얼마일까요?</h1>
+    <a class="mint-hero-cta" href="salary.html">연봉 실수령액 바로 계산하기 →</a>
   </section>
 
   <!-- ============================================================
-       각종 계산기 (CALCULATOR GRID)
+       각종 계산기 (아이콘 그리드)
        ============================================================ -->
   <section class="home-section" id="calculators">
-    <div class="section-head"><h2>각종 계산기</h2></div>
-    <div class="calc-icon-grid">
-      <a class="calc-icon-tile" href="salary.html">
+    <div class="section-head"><h2>📌 직장인 필수 계산기</h2></div>
+    <div class="tile-grid">
+      <a class="mint-tile press-card" href="salary.html">
         <span class="icon-box">💰</span>
-        <span class="icon-label">연봉 실수령액</span>
+        <span class="icon-label">연봉<br>실수령액</span>
       </a>
-      <a class="calc-icon-tile" href="retirement.html">
+      <a class="mint-tile press-card" href="retirement.html">
         <span class="icon-box">📦</span>
-        <span class="icon-label">퇴직금 계산기</span>
+        <span class="icon-label">퇴직금<br>계산기</span>
       </a>
-      <a class="calc-icon-tile" href="annual-leave.html">
+      <a class="mint-tile press-card" href="annual-leave.html">
         <span class="icon-box">🏖️</span>
-        <span class="icon-label">연차수당 계산기</span>
+        <span class="icon-label">연차수당<br>계산기</span>
       </a>
-      <a class="calc-icon-tile" href="year-end-tax.html">
+      <a class="mint-tile press-card" href="year-end-tax.html">
         <span class="icon-box">🎁</span>
-        <span class="icon-label">연말정산 미리보기</span>
+        <span class="icon-label">연말정산<br>미리보기</span>
       </a>
-      <a class="calc-icon-tile" href="unemployment.html">
+      <a class="mint-tile press-card" href="unemployment.html">
         <span class="icon-box">🧾</span>
-        <span class="icon-label">실업급여 계산기</span>
+        <span class="icon-label">실업급여<br>계산기</span>
       </a>
-      <a class="calc-icon-tile" href="minimum-wage.html">
+      <a class="mint-tile press-card" href="minimum-wage.html">
         <span class="icon-box">⏱️</span>
-        <span class="icon-label">최저임금 계산기</span>
+        <span class="icon-label">최저임금<br>계산기</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       실시간 트렌드 팁 (스와이프 카드)
+       ============================================================ -->
+  <section class="home-section" id="tips">
+    <div class="section-head"><h2>🔥 지금 직장인들이 많이 찾는 정보</h2></div>
+    <div class="tip-scroller">
+      <a class="tip-card" href="minimum-wage.html">
+        <span class="tip-kicker">최저임금</span>
+        <span class="tip-title">2026 최저임금 반영 시급 계산법, 놓치지 마세요</span>
+        <span class="tip-arrow">자세히 보기 →</span>
+      </a>
+      <a class="tip-card" href="retirement.html">
+        <span class="tip-kicker">퇴직금</span>
+        <span class="tip-title">퇴직금 더 받는 퇴사일 타이밍이 따로 있다?</span>
+        <span class="tip-arrow">자세히 보기 →</span>
+      </a>
+      <a class="tip-card" href="year-end-tax.html">
+        <span class="tip-kicker">연말정산</span>
+        <span class="tip-title">13월의 월급, 환급 vs 추납 미리 확인하는 법</span>
+        <span class="tip-arrow">자세히 보기 →</span>
+      </a>
+      <a class="tip-card" href="unemployment.html">
+        <span class="tip-kicker">실업급여</span>
+        <span class="tip-title">퇴사 사유별로 실업급여 받는 조건이 다르다?</span>
+        <span class="tip-arrow">자세히 보기 →</span>
       </a>
     </div>
   </section>
