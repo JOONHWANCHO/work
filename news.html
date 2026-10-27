@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>최신 뉴스 | 모두의 계산기</title>
+<meta name="description" content="연봉·퇴직금·연차·연말정산·실업급여·최저임금까지, 모두의 계산기에 게시된 모든 노무·급여 글을 최신순으로 모아 볼 수 있습니다.">
+<link rel="canonical" href="https://paycal.kr/news.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23059669'/%3E%3Ctext x='50' y='66' font-size='48' text-anchor='middle' fill='%23ffffff'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="모두의 계산기">
+<meta property="og:title" content="최신 뉴스 | 모두의 계산기">
+<meta property="og:description" content="모두의 계산기에 게시된 모든 노무·급여 글을 최신순으로 모아 보세요.">
+<meta property="og:url" content="https://paycal.kr/news.html">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://paycal.kr/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://paycal.kr/assets/og-image.png">
+<meta name="theme-color" content="#059669">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<!-- 공통 디자인 시스템 (민트 틸 테마) -->
+<link rel="stylesheet" href="assets/theme.css">
+<!-- 공통 스크립트 — 페이지뷰 트래킹 등 -->
+<script src="assets/site.js"></script>
+
+<style>
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paper);
+    color:var(--ink); font-family:var(--font-body); line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; }
+  button{ font-family:inherit; }
+  :focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 20px; }
+  .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+  /* ---------- 헤더 (홈과 동일) ---------- */
+  header.site{ background:var(--surface); color:var(--ink); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:30; }
+  .site-bar{ display:flex; align-items:center; justify-content:space-between; padding:14px 20px; max-width:1080px; margin:0 auto; gap:16px; flex-wrap:wrap; }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{ width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg,var(--mint),var(--mint-deep)); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:17px; flex-shrink:0; }
+  .brand-text .brand-name{ font-weight:800; color:var(--ink); font-size:18px; margin:0; letter-spacing:-.01em; }
+  .brand-text p{ margin:1px 0 0; font-size:11px; color:var(--ink-faint); letter-spacing:.02em; }
+  nav.tools{ display:flex; gap:6px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; }
+  nav.tools::-webkit-scrollbar{ display:none; }
+  nav.tools .tab{ flex-shrink:0; font-size:13px; font-weight:600; padding:8px 13px; border-radius:999px; border:1px solid transparent; color:var(--ink-soft); text-decoration:none; }
+  nav.tools .tab.active{ background:var(--mint-bg); border-color:var(--mint-soft); color:var(--mint-deep); font-weight:800; }
+  nav.tools .tab:hover:not(.active){ background:var(--paper-deep); }
+
+  main.wrap{ padding-top:28px; padding-bottom:64px; }
+
+  .breadcrumb{ font-size:12.5px; color:var(--ink-faint); margin-bottom:18px; }
+  .breadcrumb a{ color:var(--ink-soft); text-decoration:none; }
+  .breadcrumb a:hover{ text-decoration:underline; }
+
+  /* ---------- 페이지 헤드 ---------- */
+  .page-head{ display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:8px 16px; margin-bottom:20px; }
+  .page-head h1{ font-size:26px; font-weight:800; letter-spacing:-.01em; margin:0; }
+  .page-head .lead{ margin:4px 0 0; font-size:13.5px; color:var(--ink-soft); }
+  .post-count{ font-size:12.5px; font-weight:700; color:var(--ink-faint); }
+
+  /* ---------- 카테고리 탭 (홈과 동일) ---------- */
+  .category-tabs{ display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin-bottom:20px; padding-bottom:2px; }
+  .category-tabs::-webkit-scrollbar{ display:none; }
+  .category-tabs button{ flex-shrink:0; font-size:12.5px; font-weight:700; padding:8px 15px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
+  .category-tabs button:hover{ border-color:var(--mint-soft); }
+  .category-tabs button.active{ background:var(--mint); color:#fff; border-color:var(--mint); }
+
+  /* ---------- 글 목록 (홈의 인기글 리스트와 같은 구조) ---------- */
+  .post-list{ display:flex; flex-direction:column; border:1px solid var(--line); border-radius:var(--radius-md); overflow:hidden; background:var(--surface); box-shadow:var(--shadow-card); }
+  .post-list:empty{ display:none; }
+  .post-item{ display:flex; align-items:flex-start; gap:16px; padding:18px 20px; text-decoration:none; color:var(--ink); border-bottom:1px solid var(--line); transition:background .12s; }
+  .post-item:last-child{ border-bottom:none; }
+  .post-item:hover{ background:var(--paper-deep); }
+  .post-thumb{ width:64px; height:64px; border-radius:14px; background:linear-gradient(135deg, var(--mint-bg), var(--butter)); display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; }
+  .post-text{ flex:1; min-width:0; display:flex; flex-direction:column; gap:4px; }
+  .post-cat{ font-size:10.5px; letter-spacing:.03em; color:var(--mint-deep); font-weight:800; }
+  .post-title{ font-size:16px; font-weight:700; line-height:1.45; margin:0; overflow-wrap:anywhere; }
+  .post-excerpt{ font-size:13px; color:var(--ink-soft); line-height:1.6; margin:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .post-meta{ display:flex; gap:14px; font-size:11.5px; color:var(--ink-faint); margin-top:4px; }
+  .post-meta .views{ margin-left:auto; }
+
+  @media(max-width:560px){
+    .page-head h1{ font-size:22px; }
+    .post-item{ gap:12px; padding:16px 14px; }
+    .post-thumb{ width:48px; height:48px; border-radius:12px; font-size:22px; }
+    .post-title{ font-size:15px; }
+  }
+
+  /* ---------- 상태 메시지 ---------- */
+  .loading-msg{ text-align:center; padding:40px; color:var(--ink-faint); font-size:14px; }
+  .error-msg{ padding:16px 18px; background:#FEF2F2; border-left:3px solid #EF4444; border-radius:0 6px 6px 0; font-size:13px; color:#B91C1C; }
+  .sheet-config-hint{ margin-bottom:16px; padding:12px 16px; background:var(--butter); border:1px solid var(--butter-deep); border-radius:var(--radius-sm); font-size:12.5px; color:var(--butter-ink); line-height:1.7; }
+  .sheet-config-hint code{ background:rgba(0,0,0,.07); padding:1px 5px; border-radius:3px; font-size:11.5px; }
+  .list-end{ text-align:center; padding:28px 0 4px; font-size:13px; color:var(--ink-faint); }
+  .more-btn{ display:block; margin:20px auto 0; font-size:13.5px; font-weight:700; padding:11px 22px; border-radius:999px; border:1px solid var(--mint-soft); background:var(--mint-bg); color:var(--mint-deep); cursor:pointer; }
+  .more-btn:hover{ background:var(--mint-soft); }
+  #sentinel{ height:1px; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .post-item, .category-tabs button{ transition:none; }
+  }
+
+  /* ---------- 푸터 (홈과 동일) ---------- */
+  footer.site{ background:var(--ink); color:#AEB6C7; margin-top:20px; }
+  .footer-inner{ max-width:1080px; margin:0 auto; padding:44px 20px 28px; }
+  .footer-top{ display:grid; grid-template-columns:2fr 1fr 1.4fr; gap:32px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,.12); }
+  @media(max-width:700px){ .footer-top{ grid-template-columns:1fr; } }
+  .footer-col h4{ color:#fff; font-size:13px; margin:0 0 12px; letter-spacing:.02em; }
+  .footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .footer-col a{ color:#AEB6C7; text-decoration:none; font-size:13px; }
+  .footer-col a:hover{ color:#fff; text-decoration:underline; }
+  .footer-col p{ font-size:12.5px; line-height:1.7; color:#8891A3; margin:0; }
+  .footer-legal{ padding-top:20px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12px; color:#7A8296; }
+  .footer-legal-links{ display:flex; gap:14px; }
+  .footer-legal-links a{ color:#AEB6C7; text-decoration:none; }
+  .footer-legal-links a:hover{ text-decoration:underline; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "최신 뉴스",
+  "description": "모두의 계산기에 게시된 모든 노무·급여 글을 최신순으로 모아 볼 수 있는 페이지",
+  "url": "https://paycal.kr/news.html",
+  "inLanguage": "ko-KR",
+  "isPartOf": { "@type": "WebSite", "name": "모두의 계산기", "url": "https://paycal.kr/" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://paycal.kr/" },
+    { "@type": "ListItem", "position": 2, "name": "최신 뉴스", "item": "https://paycal.kr/news.html" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="site-bar">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">💰</div>
+      <div class="brand-text">
+        <p class="brand-name">모두의 계산기</p>
+        <p>HR &amp; PAYROLL TOOLS FOR OFFICE WORKERS</p>
+      </div>
+    </a>
+    <nav class="tools" aria-label="계산기 메뉴">
+      <a href="index.html" class="tab">홈</a>
+      <a href="salary.html" class="tab">연봉 실수령액</a>
+      <a href="retirement.html" class="tab">퇴직금 계산기</a>
+      <a href="annual-leave.html" class="tab">연차수당 계산기</a>
+      <a href="year-end-tax.html" class="tab">연말정산 미리보기</a>
+      <a href="unemployment.html" class="tab">실업급여 계산기</a>
+      <a href="minimum-wage.html" class="tab">최저임금 계산기</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="breadcrumb">
+    <a href="index.html">홈</a> › <span>최신 뉴스</span>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <h1>최신 뉴스</h1>
+      <p class="lead">게시된 모든 글을 최신순으로 모았어요.</p>
+    </div>
+    <span class="post-count" id="postCount"></span>
+  </div>
+
+  <div class="category-tabs" id="categoryTabs" role="group" aria-label="카테고리 필터"></div>
+
+  <div class="sheet-config-hint" id="sheetHint" style="display:none">
+    📋 구글 시트에서 글을 불러오지 못해 샘플 글을 보여드리고 있어요.
+    <code>assets/site.js</code>의 <code>SHEET_ID</code>와 시트 게시 상태를 확인해 주세요.
+  </div>
+
+  <div id="postList" class="post-list"></div>
+  <div id="statusBox"><div class="loading-msg">글을 불러오는 중…</div></div>
+  <div id="sentinel" aria-hidden="true"></div>
+  <button type="button" class="more-btn" id="moreBtn" hidden>더 보기</button>
+  <div class="sr-only" id="liveMsg" aria-live="polite"></div>
+  <noscript><div class="error-msg">글 목록을 보려면 JavaScript를 켜 주세요.</div></noscript>
+</main>
+
+<footer class="site">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-col">
+        <h4>모두의 계산기</h4>
+        <ul>
+          <li><a href="salary.html">연봉 실수령액 계산기</a></li>
+          <li><a href="retirement.html">퇴직금 계산기</a></li>
+          <li><a href="annual-leave.html">연차수당 계산기</a></li>
+          <li><a href="year-end-tax.html">연말정산 미리보기</a></li>
+          <li><a href="unemployment.html">실업급여 계산기</a></li>
+          <li><a href="minimum-wage.html">최저임금 계산기</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>참고 기관</h4>
+        <ul>
+          <li><a href="https://www.nps.or.kr" target="_blank" rel="noopener">국민연금공단</a></li>
+          <li><a href="https://www.nhis.or.kr" target="_blank" rel="noopener">국민건강보험공단</a></li>
+          <li><a href="https://www.ei.go.kr" target="_blank" rel="noopener">고용보험 (고용노동부)</a></li>
+          <li><a href="https://www.hometax.go.kr" target="_blank" rel="noopener">국세청 홈택스</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>안내</h4>
+        <p>본 사이트의 계산 결과는 정보 제공 목적의 추정치이며 법적 효력이 없습니다. 4대보험 요율은 매년 변경될 수 있으므로 반드시 공식 기관에서 확인하세요.</p>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>© 2026 모두의 계산기. All rights reserved.</span>
+      <div class="footer-legal-links">
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="terms.html">이용약관</a>
+        <a href="contact.html">문의</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     POSTS SCRIPT — Google Sheets에서 전체 글을 읽어 20개씩 무한 스크롤로 표시
+     ============================================================ -->
+<script>
+(function(){
+  "use strict";
+
+  const SHEET_ID   = (window.SITE && SITE.SHEET_ID) || '';
+  const SHEET_NAME = (window.SITE && SITE.SHEET_NAME) || '시트1';
+  const FIELD_NAMES = ['id','category','emoji','title','summary','tags','date','content','views'];
+  const PAGE_SIZE  = 20;
+  const STATE_KEY  = 'pc_news_state';   // 뒤로가기 시 목록 위치 복원용
+
+  /* -------- 샘플 글 (시트 연동 실패 시 폴백) -------- */
+  const SAMPLE_POSTS = [
+    { id:1, category:'4대보험', emoji:'🏥', title:'4대보험료는 어떻게 계산되나요?', summary:'국민연금·건강보험·장기요양보험·고용보험 4가지 보험료의 요율과 계산 방식을 단계별로 쉽게 정리했습니다.', date:'2025-07-01', views:15230 },
+    { id:2, category:'소득세', emoji:'💰', title:'근로소득세, 어떻게 계산되나요?', summary:'누진세율 구조와 근로소득공제·세액공제 흐름을 한눈에 정리합니다.', date:'2025-07-05', views:21870 },
+    { id:3, category:'퇴직금', emoji:'📋', title:'퇴직금 계산, 이것만 알면 됩니다', summary:'평균임금 산정 방법부터 퇴직소득세까지, 퇴사 전 반드시 알아야 할 퇴직금 계산 공식을 설명합니다.', date:'2025-07-10', views:12480 },
+    { id:4, category:'연차', emoji:'🏖️', title:'입사 1년차 연차, 몇 개가 맞나요?', summary:'2020년 근로기준법 개정으로 바뀐 연차 계산 방식을 정확히 알려드립니다.', date:'2025-07-15', views:8930 },
+    { id:5, category:'연말정산', emoji:'🎁', title:'연말정산 환급 늘리는 핵심 공제 5가지', summary:'연금저축·IRP부터 월세 세액공제까지, 직장인이 놓치기 쉬운 핵심 공제 항목 5가지를 정리합니다.', date:'2025-07-20', views:18650 },
+    { id:6, category:'노무상식', emoji:'⚖️', title:'주휴수당이란? 지급 조건과 계산법', summary:'알바, 파트타임도 받을 수 있는 주휴수당의 지급 조건과 정확한 계산 방법을 사례와 함께 설명합니다.', date:'2025-07-25', views:6410 }
+  ];
+
+  const $list   = document.getElementById('postList');
+  const $tabs   = document.getElementById('categoryTabs');
+  const $count  = document.getElementById('postCount');
+  const $status = document.getElementById('statusBox');
+  const $sentinel = document.getElementById('sentinel');
+  const $moreBtn  = document.getElementById('moreBtn');
+  const $live   = document.getElementById('liveMsg');
+  const $hint   = document.getElementById('sheetHint');
+
+  let ALL = [];          // 정규화·정렬된 전체 글
+  let VIEW = [];         // 현재 카테고리로 필터된 글
+  let shown = 0;         // 지금까지 화면에 그린 개수
+  let CAT = '전체';
+  let observer = null;
+
+  /* -------- 유틸 (홈/상세 페이지와 동일한 포맷) -------- */
+  function getViews(p){ return Number(String(p.views||'0').replace(/[^0-9]/g,'')) || 0; }
+  function formatViews(n){ return n >= 10000 ? (n/10000).toFixed(1).replace(/\.0$/,'') + '만' : n.toLocaleString('ko-KR'); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  // "2025-07-01", "2025. 7. 1" 등 시트 표기 차이를 YYYY-MM-DD로 통일
+  function normDate(s){
+    const m = String(s||'').match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+    return m ? `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}` : String(s||'').substring(0,10);
+  }
+
+  // 요약이 비어 있으면 마크다운 본문 앞부분으로 대체
+  function stripMd(md){
+    return String(md||'')
+      .replace(/```[\s\S]*?```/g,' ')
+      .replace(/`([^`]*)`/g,'$1')
+      .replace(/!\[[^\]]*\]\([^)]*\)/g,'')
+      .replace(/\[([^\]]*)\]\([^)]*\)/g,'$1')
+      .replace(/^\s{0,3}#{1,6}\s*/gm,'')
+      .replace(/^\s*>\s?/gm,'')
+      .replace(/^\s*[-*+]\s+/gm,'')
+      .replace(/^[\s:|-]{3,}$/gm,' ')
+      .replace(/[|*_~]/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+  function excerpt(p){
+    const s = String(p.summary||'').trim();
+    if (s) return s;
+    const body = stripMd(p.content);
+    return body.length > 120 ? body.slice(0,120) + '…' : body;
+  }
+
+  /* -------- Google Sheets(gviz) 파싱 — index.html과 동일 -------- */
+  function cellValue(cell, colName){
+    if (!cell || cell.v == null) return '';
+    if (colName === 'date') {
+      if (cell.f) return cell.f;
+      if (typeof cell.v === 'string' && cell.v.startsWith('Date(')) {
+        const m = cell.v.match(/Date\((\d+),(\d+),(\d+)\)/);
+        if (m) return `${m[1]}-${String(+m[2]+1).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
+      }
+      return String(cell.v);
+    }
+    return String(cell.v);
+  }
+
+  function parseGvizJson(text){
+    const start = text.indexOf('(');
+    const end = text.lastIndexOf(')');
+    if (start === -1 || end === -1) throw new Error('gviz 응답 형식 오류');
+    const data = JSON.parse(text.slice(start + 1, end));
+    const table = data.table;
+    if (!table) throw new Error('table 필드 없음');
+    const rawLabels = (table.cols || []).map(c => (c.label || '').toLowerCase().trim());
+    const hasRealLabels = FIELD_NAMES.some(f => rawLabels.includes(f));
+    const cols = hasRealLabels ? rawLabels : FIELD_NAMES;
+    let rows = table.rows || [];
+    if ((table.parsedNumHeaders === 0 || table.parsedNumHeaders == null) && !hasRealLabels) rows = rows.slice(1);
+    return rows.filter(r => r && r.c && r.c.some(c => c && c.v != null)).map(r => {
+      const obj = {};
+      cols.forEach((col, i) => {
+        const cell = (r.c && r.c[i] !== undefined) ? r.c[i] : null;
+        obj[col] = cellValue(cell, col);
+      });
+      return obj;
+    });
+  }
+
+  /* -------- 렌더링 -------- */
+  function itemHtml(p){
+    return `
+      <a class="post-item" href="content.html?id=${encodeURIComponent(p.id)}">
+        <span class="post-thumb" aria-hidden="true">${esc(p.emoji || '📄')}</span>
+        <div class="post-text">
+          <span class="post-cat">${esc(p.category||'')}</span>
+          <h2 class="post-title">${esc(p.title||'')}</h2>
+          <p class="post-excerpt">${esc(excerpt(p))}</p>
+          <div class="post-meta">
+            <span>${esc(p._date)}</span>
+            <span class="views">👁 ${formatViews(p._views)}</span>
+          </div>
+        </div>
+      </a>`;
+  }
+
+  function updateStatus(){
+    const done = shown >= VIEW.length;
+    $count.textContent = `전체 ${VIEW.length.toLocaleString('ko-KR')}개`;
+    if (!VIEW.length) {
+      $status.innerHTML = '<div class="error-msg">해당 카테고리의 글이 없습니다.</div>';
+    } else if (done) {
+      $status.innerHTML = '<div class="list-end">모든 글을 확인했어요 🎉</div>';
+    } else {
+      $status.innerHTML = '';
+    }
+    $live.textContent = VIEW.length ? `${shown}개 표시 중, 전체 ${VIEW.length}개` : '';
+  }
+
+  // sentinel을 다시 관찰해야 화면이 덜 찼을 때 연달아 다음 묶음이 로드됩니다
+  function armObserver(){
+    const done = shown >= VIEW.length;
+    if (!('IntersectionObserver' in window)) {
+      $moreBtn.hidden = done;            // 구형 브라우저: "더 보기" 버튼으로 대체
+      return;
+    }
+    if (!observer) {
+      observer = new IntersectionObserver(entries => {
+        if (entries.some(e => e.isIntersecting)) renderMore();
+      }, { rootMargin: '600px 0px' });
+    }
+    observer.unobserve($sentinel);
+    if (!done) observer.observe($sentinel);
+  }
+
+  function renderMore(){
+    if (shown >= VIEW.length) return;
+    const next = VIEW.slice(shown, shown + PAGE_SIZE);
+    $list.insertAdjacentHTML('beforeend', next.map(itemHtml).join(''));
+    shown += next.length;
+    updateStatus();
+    armObserver();
+  }
+
+  function applyFilter(){
+    VIEW = CAT === '전체' ? ALL : ALL.filter(p => p.category === CAT);
+    shown = 0;
+    $list.innerHTML = '';
+    updateStatus();
+    renderMore();
+  }
+
+  function buildTabs(){
+    const cats = ['전체', ...Array.from(new Set(ALL.map(p => p.category).filter(Boolean)))];
+    $tabs.innerHTML = cats.map(c =>
+      `<button type="button" data-cat="${esc(c)}" class="${c===CAT?'active':''}" aria-pressed="${c===CAT}">${esc(c)}</button>`
+    ).join('');
+    $tabs.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        CAT = btn.dataset.cat;
+        $tabs.querySelectorAll('button').forEach(b => {
+          const on = b === btn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-pressed', on);
+        });
+        applyFilter();
+      });
+    });
+    return cats;
+  }
+
+  /* -------- 뒤로가기 시 보던 위치 복원 -------- */
+  const isBackNav = (function(){
+    try {
+      const nav = performance.getEntriesByType('navigation')[0];
+      return !!nav && nav.type === 'back_forward';
+    } catch(e){ return false; }
+  })();
+  if (isBackNav && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  function saveState(){
+    try { sessionStorage.setItem(STATE_KEY, JSON.stringify({ cat: CAT, count: shown, y: window.scrollY })); } catch(e){}
+  }
+  function restoreState(cats){
+    if (!isBackNav) return;
+    try {
+      const s = JSON.parse(sessionStorage.getItem(STATE_KEY) || 'null');
+      if (!s) return;
+      if (s.cat && cats.includes(s.cat) && s.cat !== CAT) {
+        CAT = s.cat;
+        $tabs.querySelectorAll('button').forEach(b => {
+          const on = b.dataset.cat === CAT;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-pressed', on);
+        });
+        applyFilter();
+      }
+      while (shown < s.count && shown < VIEW.length) renderMore();
+      window.scrollTo(0, s.y || 0);
+    } catch(e){}
+  }
+  document.addEventListener('click', e => { if (e.target.closest && e.target.closest('a.post-item')) saveState(); }, true);
+  window.addEventListener('pagehide', saveState);
+
+  $moreBtn.addEventListener('click', renderMore);
+
+  /* -------- 초기화 -------- */
+  function start(posts){
+    ALL = posts
+      .filter(p => p && String(p.title||'').trim())
+      .map(p => Object.assign({}, p, { _date: normDate(p.date), _views: getViews(p) }))
+      .sort((a, b) => b._date.localeCompare(a._date) || ((Number(b.id)||0) - (Number(a.id)||0)));
+    const cats = buildTabs();
+    applyFilter();
+    restoreState(cats);
+  }
+
+  function init(){
+    if (!SHEET_ID) { $hint.style.display = 'block'; start(SAMPLE_POSTS); return; }
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    fetch(url)
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
+      .then(text => {
+        const posts = parseGvizJson(text);
+        if (posts.length === 0) throw new Error('포스팅 데이터가 없습니다.');
+        start(posts);
+      })
+      .catch(err => {
+        console.warn('[Sheets] 연동 실패:', err.message);
+        $hint.style.display = 'block';
+        start(SAMPLE_POSTS);
+      });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
